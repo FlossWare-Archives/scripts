@@ -1,5 +1,13 @@
 #!/bin/bash
 
+#
+# This will parse out a maven pom.xml's version element.
+#
+# You must specify a full path to pom.xml plus pom name.
+# For example:
+#    maven-get-pom-version.sh /home/sfloess/project/pom.xml
+#
+
 ensureParam() {
     if [ $# -lt 1 -o $# -gt 1 ]
     then

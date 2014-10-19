@@ -1,5 +1,20 @@
 #!/bin/sh 
 
+#
+# Open Shift does not allow one to affect the ~/.ssh directory.  So,
+# for example, one cannot create ssh passwordless keys.  This is
+# particularly challenging if you want Jenkins to make changes and
+# commit/push-out those changes.  By using this script in conjunction
+# with GIT_SSH, you can overcome some of these challenges.  You must
+# specify the directory where your ssh keys reside.
+#
+# To use:
+#  ssh-git.sh [directory to your ssh keys] [git params]
+#
+# Review openshift-push-to-github.sh to see how to incorporate this
+# script and GIT_SSH.
+#
+
 ensureParams() {
     if [ $# -lt 2 ]
     then

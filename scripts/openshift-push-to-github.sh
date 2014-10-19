@@ -1,5 +1,21 @@
 #!/bin/bash
 
+#
+# This script will allow one to push out to github.  Since
+# Open Shift does not allow direct access to ~/.ssh (as it is
+# owned by root), setting up a password-less ssh key is
+# challenging - and therefore we must use a different directory
+# than ~/.ssh.  Additionally, since Jenkins can clone a git
+# repo when building, if it's to be done ssh-less, you will likely
+# (for ease of use) clone using the https protocol.
+#
+# We can change the remote to ssh and push out that way using
+# this script.
+#
+# To use:
+#   openshift-git-push-to-git.sh [Some git commit message]
+#
+
 ensureMessage() {
     if [ $# -lt 1 ]
     then

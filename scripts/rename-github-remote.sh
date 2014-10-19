@@ -1,5 +1,16 @@
 #!/bin/bash
 
+#
+# This will change the the remote protocol from https to git
+# for github.
+#
+# For example should you clone a github repo using the https
+# protocol, you get a push ref similar to https://github.com/FlossWare/java.git
+#
+# This script will change it to something similar to:
+#  git@github.com:FlossWare/java.git
+#
+ 
 ensureProtocol() {
     PROTOCOL=`echo $1 | cut -f 1 -d ':'`
 
@@ -9,7 +20,7 @@ ensureProtocol() {
         echo "ERROR!"
         echo "  Incorrect protocol [${PROTOCOL}] for remote [${REMOTE}]"
         echo
-        exit 1
+        exit
     fi
 }
 

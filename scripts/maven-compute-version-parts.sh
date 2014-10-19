@@ -1,5 +1,19 @@
 #!/bin/bash
 
+#
+# This will the compute all the versions in a maven pom.xml
+# in the form of major.minor.release.  Each portion is stored
+# in the following environment variables:
+#
+#   MAVEN_MAJOR_VERSION   - the major version.
+#   MAVEN_MINOR_VERSION   - the minor version.
+#   MAVEN_RELEASE_VERSION - the release version.
+#
+# You must specify a full path to pom.xml plus pom name.
+# For example:
+#    maven-compute-version-parts.sh /home/sfloess/project/pom.xml
+#
+
 DIR=`dirname $0`
 
 MAVEN_VERSION=`${DIR}/maven-get-pom-version.sh $*`

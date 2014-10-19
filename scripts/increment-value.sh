@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#
+# This script take a lone parameter and increments the
+# value handed in.
+#
+
 if [ $# -lt 1 -o $# -gt 1 ]
 then
     echo
