@@ -29,4 +29,16 @@
 DIR=`dirname $0`
 
 ${DIR}/maven-bump-release.sh $PWD/pom.xml
+
+. ${DIR}/maven-compute-version-parts.sh ${PWD}/pom.xml
+
+BRANCH=${MAVEN_MAJOR_VERSION}.${MAVEN_MINOR_VERSION}
+
+git checkout ${BRANCH}
+
+if [ $? -eq 1 ]
+then
+    git checkout -b ${BRANCH}
+fi
+
 ${DIR}/openshift-version-change-push-to-github.sh
