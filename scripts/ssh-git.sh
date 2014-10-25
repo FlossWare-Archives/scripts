@@ -69,4 +69,4 @@ shift
 ensureIdentityFile ${IDENTITY_FILE}
 
 # Call out and do the needful.
-exec ssh -i ${IDENTITY_FILE} -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "$@"
+exec ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i ${IDENTITY_FILE} "$@"
