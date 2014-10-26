@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 
 #
 # This file is part of the FlossWare family of open source software.
@@ -19,28 +19,23 @@
 #
 
 #
-# This script will allow one to push out to bump a minor version and
-# push that out to github.
+# This script will allow one to create a git branch from a maven pom version.
 #
 # To use:
-#   openshift-git-bump-minor-push-to-github.sh [initial branch to rev]
+#   git-branch-from-maven-version.sh
 #
-
-if [ $# -lt 1 ]
-then
-    echo
-    echo "ERROR:"
-    echo "   Please provide the branch in which to bump the minor version"
-    echo
-    exit 1
-fi
 
 DIR=`dirname $0`
 
-git checkout $1
+cd ${WORKSPACE}
 
-${DIR}/maven-bump-minor.sh $PWD/pom.xml
+. ${DIR}/maven-compute-version-parts.sh
 
-git checkout -b `${DIR}/maven-get-pom-version.sh pom.xml`
+BRANCH=${MAVEN_MAJOR_VERSION}.${MAVEN_MINOR_VERSION}
 
-${DIR}/openshift-version-change-push-to-github.sh
+git checkout ${BRANCH}
+
+if [ $? -eq 1 ]
+then
+    git checkout -b ${BRANCH}
+fi

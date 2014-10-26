@@ -34,11 +34,13 @@
 
 DIR=`dirname $0`
 
-MAVEN_VERSION=`${DIR}/maven-get-pom-version.sh $*`
+cd ${WORKSPACE}
+
+MAVEN_VERSION=`${DIR}/maven-get-pom-version.sh`
 
 if [ $? -ne 0 ]
 then
-    ${DIR}/maven-get-pom-version.sh $*
+    ${DIR}/maven-get-pom-version.sh
 
     exit $?
 fi

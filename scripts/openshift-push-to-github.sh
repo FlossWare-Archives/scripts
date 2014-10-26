@@ -31,21 +31,10 @@
 # this script.
 #
 # To use:
-#   openshift-git-push-to-git.sh [Some git commit message]
+#   openshift-git-push-to-git.sh
 #
 
-ensureMessage() {
-    if [ $# -lt 1 ]
-    then
-        echo
-        echo "ERROR:"
-        echo "  Must enter command line parameters that represent a git commit message"
-        echo
-        exit 1
-    fi
-}
-
-ensureMessage $*
+cd ${WORKSPACE}
 
 DIR=`dirname $0`
 
@@ -53,9 +42,7 @@ DIR=`dirname $0`
 
 export GIT_SSH=${DIR}/openshift-git-push.sh
 
-${DIR}/rename-github-remote.sh
-
-git commit -am "$*"
+${DIR}/github-rename-https-remote.sh
 
 CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
 

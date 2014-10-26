@@ -31,6 +31,8 @@
 
 DIR=`dirname $0`
 
+cd ${WORKSPACE}
+
 . ${DIR}/openshift-config.sh
 
 ${DIR}/ssh-git.sh ${OPEN_SHIFT_SSH_DIR}/id_rsa $@

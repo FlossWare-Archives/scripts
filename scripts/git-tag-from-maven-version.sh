@@ -19,15 +19,14 @@
 #
 
 #
-# This script will take the pom version and use that as a commit message
-# pushing out to github.
+# This script will allow one to create a git tag from the maven version.
 #
 # To use:
-#   openshift-version-change-push-to-github.sh
+#   git-tag-from-maven-version.sh
 #
 
 DIR=`dirname $0`
 
-MSG="Jenkins version bump [`${DIR}/maven-get-pom-version.sh pom.xml`]"
+cd ${WORKSPACE}
 
-${DIR}/openshift-push-to-github.sh ${MSG}
+git tag `${DIR}/maven-get-pom-version.sh`

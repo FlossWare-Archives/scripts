@@ -19,28 +19,16 @@
 #
 
 #
-# This script will allow one to push out to bump a major version and
-# push that out to github.
+# This script will take the pom version and use that as a commit message.
 #
 # To use:
-#   openshift-git-bump-major-push-to-github.sh [initial branch to rev]
+#   git-msg-from-maven-version.sh
 #
 
-if [ $# -lt 1 ]
-then
-    echo
-    echo "ERROR:"
-    echo "   Please provide the branch in which to bump the major version"
-    echo
-    exit 1
-fi
+cd ${WORKSPACE}
 
 DIR=`dirname $0`
 
-git checkout $1
+MSG="Jenkins version bump [`${DIR}/maven-get-pom-version.sh pom.xml`]"
 
-${DIR}/maven-bump-major.sh $PWD/pom.xml
-
-git checkout -b `${DIR}/maven-get-pom-version.sh pom.xml`
-
-${DIR}/openshift-version-change-push-to-github.sh
+git commit -am "${MSG}"

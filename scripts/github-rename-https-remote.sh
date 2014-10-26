@@ -35,12 +35,13 @@ ensureProtocol() {
     if [ "${PROTOCOL}" != "https" ]
     then
         echo
-        echo "ERROR!"
-        echo "  Incorrect protocol [${PROTOCOL}] for remote [${REMOTE}]"
+        echo "Protocol [${PROTOCOL}] for remote [${REMOTE}] is not [https] - ignoring"
         echo
         exit
     fi
 }
+
+cd ${WORKSPACE}
 
 REMOTE=`git remote -v | grep push | sed -e 's/origin//' -e 's/ (push)//' -e 's/\t//'`
 
