@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 
 #
 # This file is part of the FlossWare family of open source software.
@@ -19,12 +19,11 @@
 #
 
 #
-# This script will allow one to create a git tag from the maven version.
-#
-# To use:
-#   git-tag-from-maven-version.sh
+# Jenkins convenience script for git-branch-from-maven-version.sh
 #
 
 DIR=`dirname $0`
 
-git tag `${DIR}/maven-get-pom-version.sh`
+cd ${WORKSPACE}
+
+. ${DIR}/git-branch-from-maven-version.sh

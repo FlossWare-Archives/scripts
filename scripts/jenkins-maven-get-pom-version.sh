@@ -19,12 +19,11 @@
 #
 
 #
-# This script will allow one to create a git tag from the maven version.
+# Jenkins convenience script for maven-get-pom-version.sh
 #
-# To use:
-#   git-tag-from-maven-version.sh
-#
+
+cd ${WORKSPACE}
 
 DIR=`dirname $0`
 
-git tag `${DIR}/maven-get-pom-version.sh`
+${DIR}/maven-get-pom-version.sh

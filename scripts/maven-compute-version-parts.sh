@@ -34,8 +34,6 @@
 
 DIR=`dirname $0`
 
-cd ${WORKSPACE}
-
 MAVEN_VERSION=`${DIR}/maven-get-pom-version.sh`
 
 if [ $? -ne 0 ]

@@ -27,8 +27,6 @@
 
 DIR=`dirname $0`
 
-cd ${WORKSPACE}
-
 . ${DIR}/maven-compute-version-parts.sh
 
 BRANCH=${MAVEN_MAJOR_VERSION}.${MAVEN_MINOR_VERSION}

@@ -25,10 +25,8 @@
 #   git-msg-from-maven-version.sh
 #
 
-cd ${WORKSPACE}
-
 DIR=`dirname $0`
 
-MSG="Jenkins version bump [`${DIR}/maven-get-pom-version.sh pom.xml`]"
+MSG="Version bump [`${DIR}/maven-get-pom-version.sh pom.xml`]"
 
 git commit -am "${MSG}"

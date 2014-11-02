@@ -42,8 +42,6 @@ ensureProtocol() {
 }
 
 convertGitHubRemote() {
-    cd ${WORKSPACE}
-
     REMOTE=`git remote -v | grep push | sed -e 's/origin//' -e 's/ (push)//' -e 's/\t//'`
 
     ensureProtocol ${REMOTE}

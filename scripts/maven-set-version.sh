@@ -39,6 +39,4 @@ then
     exit 1
 fi
 
-cd ${WORKSPACE}
-
 mvn -DallowSnaphots=false -DnewVersion="$1" -DgenerateBackupPoms=false versions:set

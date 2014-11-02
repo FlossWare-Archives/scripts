@@ -59,8 +59,6 @@ ensureIdentityFile() {
     fi
 }
 
-cd ${WORKSPACE}
-
 # Check we have some params...
 ensureParams $@
 

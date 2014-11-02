@@ -31,8 +31,6 @@
 
 DIR=`dirname $0`
 
-cd ${WORKSPACE}
-
 . ${DIR}/maven-compute-version-parts.sh
 
 if [ $? -ne 0 ]

@@ -26,6 +26,4 @@
 #    maven-get-pom-version.sh
 #
 
-cd ${WORKSPACE}
-
 echo 'xpath /* [local-name()="project"]/* [local-name()="version"]/text()' | xmllint --shell pom.xml | grep content | cut -f 2 -d '='
