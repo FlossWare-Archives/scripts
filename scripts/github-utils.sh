@@ -41,13 +41,15 @@ ensureProtocol() {
     fi
 }
 
-cd ${WORKSPACE}
+convertGitHubRemote() {
+    cd ${WORKSPACE}
 
-REMOTE=`git remote -v | grep push | sed -e 's/origin//' -e 's/ (push)//' -e 's/\t//'`
+    REMOTE=`git remote -v | grep push | sed -e 's/origin//' -e 's/ (push)//' -e 's/\t//'`
 
-ensureProtocol ${REMOTE}
+    ensureProtocol ${REMOTE}
 
-NEW_REMOTE=`echo ${REMOTE} | sed -e 's/https:\/\/github.com\//git@github.com:/'`
+    NEW_REMOTE=`echo ${REMOTE} | sed -e 's/https:\/\/github.com\//git@github.com:/'`
 
-git remote remove origin
-git remote add origin ${NEW_REMOTE}
+    git remote remove origin
+    git remote add origin ${NEW_REMOTE}
+}

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 
 #
 # This file is part of the FlossWare family of open source software.
@@ -19,32 +19,35 @@
 #
 
 #
-# This script will allow one to push out to github.  Since
-# Open Shift does not allow direct access to ~/.ssh (as it is
-# owned by root), setting up a password-less ssh key is
-# challenging - and therefore we must use a different directory
-# than ~/.ssh.  Additionally, since Jenkins can clone a git
-# repo when building, if it's to be done ssh-less, you will likely
-# (for ease of use) clone using the https protocol.
+# Creates a bintray version
 #
-# We can change the remote to ssh and push out that way using
-# this script.
-#
-# To use:
-#   openshift-git-push-to-git.sh
-#
-
-cd ${WORKSPACE}
 
 DIR=`dirname $0`
 
-. ${DIR}/openshift-config.sh
-. ${DIR}/github-utils.sh
+. ${DIR}/bintray-utils.sh
 
-export GIT_SSH=${DIR}/openshift-git-push.sh
+set-bintray-vars $*
 
-convertGitHubRemote
+ensureData() {
+    if [ "${BINTRAY_NAME}" = "" ]
+    then
+        echo "Please provide name param!"
+        exit 1
+    fi
 
-CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
+    if [ "${BINTRAY_REPO}" = "" ]
+    then
+        echo "Please provide repo param!"
+        exit 1
+    fi
 
-git push origin ${CURRENT_BRANCH}
+    if [ "${BINTRAY_PACKAGE}" = "" ]
+    then
+        echo "Please provide package param!"
+        exit 1
+    fi
+}
+
+ensureData
+        
+curl -v -k -u ${BINTRAY_USER}:${BINTRAY_KEY} -X DELETE https://api.bintray.com/packages/${BINTRAY_ACCOUNT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/versions/${BINTRAY_NAME}

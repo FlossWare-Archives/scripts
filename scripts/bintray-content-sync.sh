@@ -19,32 +19,38 @@
 #
 
 #
-# This script will allow one to push out to github.  Since
-# Open Shift does not allow direct access to ~/.ssh (as it is
-# owned by root), setting up a password-less ssh key is
-# challenging - and therefore we must use a different directory
-# than ~/.ssh.  Additionally, since Jenkins can clone a git
-# repo when building, if it's to be done ssh-less, you will likely
-# (for ease of use) clone using the https protocol.
+# Sync bintray content to sonatype
 #
-# We can change the remote to ssh and push out that way using
-# this script.
-#
-# To use:
-#   openshift-git-push-to-git.sh
-#
-
-cd ${WORKSPACE}
 
 DIR=`dirname $0`
 
-. ${DIR}/openshift-config.sh
-. ${DIR}/github-utils.sh
+. ${DIR}/bintray-utils.sh
 
-export GIT_SSH=${DIR}/openshift-git-push.sh
+set-bintray-vars $*
 
-convertGitHubRemote
+ensureData() {
+    if [ "${BINTRAY_VERSION}" = "" ]
+    then
+        echo "Please provide version param!"
+        exit 1
+    fi
 
-CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
+    if [ "${BINTRAY_REPO}" = "" ]
+    then
+        echo "Please provide repo param!"
+        exit 1
+    fi
 
-git push origin ${CURRENT_BRANCH}
+    if [ "${BINTRAY_PACKAGE}" = "" ]
+    then
+        echo "Please provide package param!"
+        exit 1
+    fi
+}
+
+ensureData
+
+CLOSE_FIELD_JSON=`compute-json-field close 1`
+BINTRAY_CREATE=`compute-json-object ${SONATYPE_USER_JSON} ${SONATYPE_PASSWORD_JSON} ${CLOSE_FIELD_JSON}`
+        
+curl -v -k -u ${BINTRAY_USER}:${BINTRAY_KEY} -X POST https://api.bintray.com/maven_central_sync/${BINTRAY_ACCOUNT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/versions/${BINTRAY_VERSION} --data "${BINTRAY_CREATE}"

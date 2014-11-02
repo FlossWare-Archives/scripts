@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 
 #
 # This file is part of the FlossWare family of open source software.
@@ -19,32 +19,18 @@
 #
 
 #
-# This script will allow one to push out to github.  Since
-# Open Shift does not allow direct access to ~/.ssh (as it is
-# owned by root), setting up a password-less ssh key is
-# challenging - and therefore we must use a different directory
-# than ~/.ssh.  Additionally, since Jenkins can clone a git
-# repo when building, if it's to be done ssh-less, you will likely
-# (for ease of use) clone using the https protocol.
-#
-# We can change the remote to ssh and push out that way using
-# this script.
+# This script will allow one to create a new release branch (if it does nto exist),
+# bump the verion, generate a message and tag it.
 #
 # To use:
-#   openshift-git-push-to-git.sh
+#   continuous-delivery-release.sh
 #
 
-cd ${WORKSPACE}
+separate-with-commas() {
+    echo $* | tr -s ' ' ','
+}
 
-DIR=`dirname $0`
-
-. ${DIR}/openshift-config.sh
-. ${DIR}/github-utils.sh
-
-export GIT_SSH=${DIR}/openshift-git-push.sh
-
-convertGitHubRemote
-
-CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
-
-git push origin ${CURRENT_BRANCH}
+convert-to-csv() {
+    VALUE="\(\([[:alnum:]]\)\|\(-\)\|\(\.\)\)\+"
+    echo $* | sed -e "s/${VALUE}/\"\0\"/g" -e "s/\" \"/\", \"/g"
+}
