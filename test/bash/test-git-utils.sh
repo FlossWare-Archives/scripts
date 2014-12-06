@@ -47,6 +47,7 @@ test-compute-git-user() {
 
     assert-equals "HA" "`compute-git-user HA ${TEMP_GIT_CONFIG}`" &&
 
+    GIT_COMMITTER_NAME="" &&
     ACTUAL=`compute-git-user "" ${TEMP_GIT_CONFIG}` &&
     assert-equals "${EXPECTED_NAME}" "${ACTUAL}" &&
 
@@ -67,6 +68,7 @@ test-compute-git-email() {
 
     assert-equals "HA@foobar.com" "`compute-git-user HA@foobar.com ${TEMP_GIT_CONFIG}`" &&
 
+    GIT_COMMITTER_EMAIL="" &&
     ACTUAL=`compute-git-email "" ${TEMP_GIT_CONFIG}` &&
     assert-equals "${EXPECTED_EMAIL}" "${ACTUAL}" &&
 
@@ -93,6 +95,8 @@ test-compute-git-user-info() {
     ACTUAL1=`compute-git-user-info "${DEFAULT_USER1}" "${DEFAULT_EMAIL1}" ${TEMP_GIT_CONFIG}` &&
     assert-equals "${EXPECTED1}" "${ACTUAL1}" &&
 
+    GIT_COMMITTER_NAME="" &&
+    GIT_COMMITTER_EMAIL="" &&
     ACTUAL2=`compute-git-user-info "" "" "${TEMP_GIT_CONFIG}"` &&
     assert-equals "${EXPECTED_NAME} <${EXPECTED_EMAIL}>" "${ACTUAL2}" &&
 
