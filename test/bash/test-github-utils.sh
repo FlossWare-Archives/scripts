@@ -43,8 +43,8 @@ test-ensureProtocol() {
 #
 test-convertProtocol() {
     assert-failure convertProtocol &&
-    assert-equals "convertProtocol of http" "git@github.com:FlossWare/core.git" "`convertProtocol https://github.com/FlossWare/core.git`" &&
-    assert-equals "convertProtocol of git" "git@github.com:FlossWare/core.git" "`convertProtocol git@github.com:FlossWare/core.git`"
+    assert-equals "git@github.com:FlossWare/core.git" "`convertProtocol https://github.com/FlossWare/core.git`" &&
+    assert-equals "git@github.com:FlossWare/core.git" "`convertProtocol git@github.com:FlossWare/core.git`"
 }
 
 #
@@ -65,7 +65,7 @@ test-convertGitHubRemote() {
     FULL_REMOTE=`git remote -v`
     REMOTE=`echo ${FULL_REMOTE}  | cut -f 2 -d ' '`
 
-    assert-equals "Should have correct remote" "git@github.com:FlossWare/core.git" "${REMOTE}"
+    assert-equals "git@github.com:FlossWare/core.git" "${REMOTE}"
 
     cd - 1>/dev/null
     rm -rf ${TEST_DIR}

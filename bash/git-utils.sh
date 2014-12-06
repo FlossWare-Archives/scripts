@@ -28,22 +28,34 @@ DIR=`dirname ${BASH_SOURCE[0]}`
 . ${DIR}/jenkins-utils.sh
 
 #
+# Compute the git config file.
+#
+# Optional params:
+#   $1 - If set, this is what's returned.
+#
+compute-git-config() {
+    compute-default-value ${HOME}/.gitconfig $1
+}
+
+#
 # Compute the git user.  If one hands in a param and no
 # defaults can be found (aka the git config or jenkins
 # values), the param will be selected.
 #
 # Optional params:
 #   $1 - The default value to use if no git user found.
+#   $2 - The git config file to use.
 #
 compute-git-user() {
-    GIT=`git config --list | grep user.name | cut -f 2 -d '='`
+    CONFIG=`compute-git-config "$2"`
+    GIT=`git config -f ${CONFIG} --get user.name`
     JENKINS=`compute-jenkins-git-user`
 
     # Cheating - if we are run by Jenkins and the values are set, we will
     # Jenkins values..
     DEFAULT=`compute-default-value ${GIT} ${JENKINS}`
 
-    echo `compute-default-value ${DEFAULT} $1`
+    echo `compute-default-value ${DEFAULT} "$1"`
 }
 
 #
@@ -53,16 +65,18 @@ compute-git-user() {
 #
 # Optional params:
 #   $1 - The default value to use if no git user found.
+#   $2 - The git config file to use.
 #
 compute-git-email() {
-    GIT=`git config --list | grep user.email | cut -f 2 -d '='`
+    CONFIG=`compute-git-config "$2"`
+    GIT=`git config -f ${CONFIG} --get user.email`
     JENKINS=`compute-jenkins-git-email`
 
     # Cheating - if we are run by Jenkins and the values are set, we will
     # Jenkins values..
     DEFAULT=`compute-default-value ${GIT} ${JENKINS}`
 
-    echo `compute-default-value ${DEFAULT} $1`
+    echo `compute-default-value ${DEFAULT} "$1"`
 }
 
 #
@@ -74,9 +88,11 @@ compute-git-email() {
 # params:
 #   $1 - default user
 #   $2 - default email
+#   $3 - The git config file to use.
 #
 compute-git-user-info() {
-    COMPUTE_GIT_EMAIL=`compute-git-email $2`
+    CONFIG=`compute-git-config "$3"`
+    COMPUTE_GIT_EMAIL=`compute-git-email "$2" "${CONFIG}"`
     if [ "${COMPUTE_GIT_EMAIL}" != "" ]
     then
         # Purposely preceeding a space for the echose statement below...
@@ -84,7 +100,7 @@ compute-git-user-info() {
     fi
 
     # If a git email address exists, it will have a space...
-    echo "`compute-git-user $1`${GIT_EMAIL}"
+    echo "`compute-git-user "$1" ${CONFIG}`${GIT_EMAIL}"
 }
 
 #

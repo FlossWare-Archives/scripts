@@ -25,28 +25,16 @@
 DIR=`dirname ${BASH_SOURCE[0]}`
 
 #
-# Asserting params equals.  If 3 params are handed in, it is assumed $1 is a message and
-# $2 and $3 will be compared.  Otherwise $1 an $2 are compared.
+# Asserting params equals. 
 #
 assert-equals() {
-    if [ $# -lt 3 ]
+    if [ "$1" != "$2" ]
     then
-        MSG=" ... "
-        LHS=$1
-        RHS=$2
-    else
-        MSG="[$1] ... "
-        LHS=$2
-        RHS=$3
-    fi
-
-    if [ "${LHS}" != "${RHS}" ]
-    then
-        echo "    FAIL:  Tested ${MSG}  [${LHS}] != [${RHS}]"
+        echo "    FAIL:  Tested [$1] != [$2]"
 
         exit 1
     else
-        echo "    PASS:  Tested ${MSG}  [${LHS}] == [${RHS}]"
+        echo "    PASS:  Tested [$1] == [$2]"
     fi  
 }
 
@@ -55,24 +43,13 @@ assert-equals() {
 # $2 and $3 will be compared.  Otherwise $1 an $2 are compared.
 #
 assert-not-equals() {
-    if [ $# -lt 3 ]
+    if [ "$1" = "$2" ]
     then
-        MSG=" ... "
-        LHS=$1
-        RHS=$2
-    else
-        MSG="[$1] ... "
-        LHS=$2
-        RHS=$3
-    fi
-
-    if [ "${LHS}" = "${RHS}" ]
-    then
-        echo "    FAIL:  Tested ${MSG}  [${LHS}] == [${RHS}]"
+        echo "    FAIL:  Tested [$1] == [$2]"
 
         exit 1
     else
-        echo "    PASS:  Tested ${MSG}  [${LHS}] != [${RHS}]"
+        echo "    PASS:  Tested [$1] != [$2]"
     fi  
 }
 
@@ -222,6 +199,8 @@ test-suite-end() {
     echo
     echo "========================================================="
     echo
+
+    $*
 
     exit ${EXIT}
 }

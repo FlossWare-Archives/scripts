@@ -33,10 +33,11 @@ BASH_DIR=${DIR}/../../bash
 # Test computing default values
 #
 test-compute-default-value() {
-    assert-equals "compute-default-value" "`compute-default-value 1 2`" 2 &&
-    assert-equals "compute-default-value" "`compute-default-value 3`" 3 &&
+    assert-equals "`compute-default-value 0 ""`" 0 &&
+    assert-equals "`compute-default-value 1 2`" 2 &&
+    assert-equals "`compute-default-value 3`" 3 &&
 
-    assert-not-equals "compute-default-value" "`compute-default-value 4 5`" 4 &&
+    assert-not-equals "`compute-default-value 4 5`" 4 &&
     assert-not-blank `compute-default-value 6`
 }
 
@@ -102,9 +103,9 @@ test-ensure-dir-exists() {
 #
 test-separate-with-commas() {
     assert-blank `separate-with-commas` &&
-    assert-equals "separate-with-commas for one param" `separate-with-commas 22` 22 &&
-    assert-equals "separate-with-commas for two params" `separate-with-commas 33 44` "33,44" &&
-    assert-equals "separate-with-commas for three params" `separate-with-commas 55 667 898` "55,667,898"
+    assert-equals `separate-with-commas 22` 22 &&
+    assert-equals `separate-with-commas 33 44` "33,44" &&
+    assert-equals `separate-with-commas 55 667 898` "55,667,898"
 }
 
 #
@@ -115,7 +116,7 @@ test-convert-to-dashed-list() {
     ACTUAL=`convert-to-dashed-list "${INITIAL}"`
     EXPECTED=`echo -e "- hello\n- BAR"`
 
-    assert-equals "convert-to-dashed-list" "${EXPECTED}" "${ACTUAL}"
+    assert-equals "${EXPECTED}" "${ACTUAL}"
 }
 
 #
@@ -123,28 +124,28 @@ test-convert-to-dashed-list() {
 #
 test-convert-to-csv() {
     assert-blank `convert-to-csv` &&
-    assert-equals "convert-to-csv with one param" "`convert-to-csv 1`" "\"1\"" &&
-    assert-equals "convert-to-csv with two params" "`convert-to-csv 2a 33`" "\"2a\", \"33\"" &&
-    assert-equals "convert-to-csv with three params" "`convert-to-csv 444 5555 66666`" "\"444\", \"5555\", \"66666\"" &&
-    assert-equals "convert-to-csv with alpha params" "`convert-to-csv Hello World`" "\"Hello\", \"World\"" &&
-    assert-equals "convert-to-csv with alpha numeric params" "`convert-to-csv Hello1 World2`" "\"Hello1\", \"World2\"" &&
-    assert-equals "convert-to-csv with alpha numeric params" "`convert-to-csv Hello-1 W-orld2`" "\"Hello-1\", \"W-orld2\""
+    assert-equals "`convert-to-csv 1`" "\"1\"" &&
+    assert-equals "`convert-to-csv 2a 33`" "\"2a\", \"33\"" &&
+    assert-equals "`convert-to-csv 444 5555 66666`" "\"444\", \"5555\", \"66666\"" &&
+    assert-equals "`convert-to-csv Hello World`" "\"Hello\", \"World\"" &&
+    assert-equals "`convert-to-csv Hello1 World2`" "\"Hello1\", \"World2\"" &&
+    assert-equals "`convert-to-csv Hello-1 W-orld2`" "\"Hello-1\", \"W-orld2\""
 }
 
 #
 # Test incrementing values
 #
 test-increment-value() {
-    assert-equals "increment-value with a positive integer" "`increment-value 3`" "4" &&
-    assert-equals "increment-value with a negative integer" "`increment-value -100`" "-99"
+    assert-equals "`increment-value 3`" "4" &&
+    assert-equals "`increment-value -100`" "-99"
 }
 
 #
 # Test decrementing values
 #
 test-decrement-value() {
-    assert-equals "decrement-value with a positive integer" "`decrement-value 3`" "2" &&
-    assert-equals "decrement-value with a negative integer" "`decrement-value -100`" "-101"
+    assert-equals "`decrement-value 3`" "2" &&
+    assert-equals "`decrement-value -100`" "-101"
 }
 
 #
@@ -164,7 +165,7 @@ test-execute-with-newlines-preserved() {
     EXPECTED=`echo -e "Hello\nWorld\nToday"`
     ACTUAL=`execute-with-newlines-preserved echo -e "Hello\nWorld\nToday"`
 
-    assert-equals "execute-with-newlines-preserved with new lines" "${EXPECTED}" "${ACTUAL}"
+    assert-equals "${EXPECTED}" "${ACTUAL}"
 
 }
 

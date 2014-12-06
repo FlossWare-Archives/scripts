@@ -73,7 +73,7 @@ info-msg() {
 #   $2 - If defined will be the value returned.
 #
 compute-default-value() {
-    if [ $# -eq 2 ]
+    if [ $# -eq 2  -a "$2" != "" ]
     then
         echo $2
     else

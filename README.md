@@ -7,6 +7,7 @@ Welcome to the FlossWare Jenkins related functionality.  We currently use an [Op
 We are currently refactoring and unit testing.  Thus far the reliable (aka unit tested) scripts are:
 * common-utils.sh
 * github-utils.sh
+* git-utils.sh
 
 While the others have been somewhat manually tested, please assume they are unreliable.
 

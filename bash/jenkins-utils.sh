@@ -29,9 +29,11 @@ DIR=`dirname ${BASH_SOURCE[0]}`
 #
 # Make sure workspace exists...
 #
-ensure-dir-exists ${WORKSPACE}
+ensure-workspace() {
+    ensure-dir-exists ${WORKSPACE} &&
 
-cd ${WORKSPACE}
+    cd ${WORKSPACE}
+}
 
 #
 # Return the Jenkins git user.
