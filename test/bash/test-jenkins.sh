@@ -45,7 +45,7 @@ test-ensure-workspace() {
 # Test we can compute the jenkins git user.
 #
 test-compute-jenkins-git-user() {
-    assert-equals "" "`jenkins-git-user`" &&
+    assert-equals "" "`compute-jenkins-git-user`" &&
     GIT_COMMITTER_NAME=`generate-unique` &&
     assert-equals "${GIT_COMMITTER_NAME}" "`compute-jenkins-git-user`"
 }
@@ -54,7 +54,7 @@ test-compute-jenkins-git-user() {
 # Test we can compute the jenkins git user.
 #
 test-compute-jenkins-git-email() {
-    assert-equals "" "`jenkins-git-email`" &&
+    assert-equals "" "`compute-jenkins-git-email`" &&
     GIT_COMMITTER_EMAIL=`generate-unique` &&
     assert-equals "${GIT_COMMITTER_EMAIL}" "`compute-jenkins-git-email`"
 }
