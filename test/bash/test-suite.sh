@@ -27,3 +27,4 @@ DIR=`dirname ${BASH_SOURCE[0]}`
 ${DIR}/test-common-utils.sh
 ${DIR}/test-github-utils.sh
 ${DIR}/test-git-utils.sh
+${DIR}/test-jenkins.sh
