@@ -23,10 +23,11 @@
 #
 
 run-test-suite() {
-    . `dirname ${BASH_SOURCE[0]}`/test-common-utils.sh &&
-    . `dirname ${BASH_SOURCE[0]}`/test-github-utils.sh &&
-    . `dirname ${BASH_SOURCE[0]}`/test-git-utils.sh &&
+    . `dirname ${BASH_SOURCE[0]}`/test-common-utils.sh  &&
+    . `dirname ${BASH_SOURCE[0]}`/test-github-utils.sh  &&
+    . `dirname ${BASH_SOURCE[0]}`/test-git-utils.sh     &&
     . `dirname ${BASH_SOURCE[0]}`/test-jenkins-utils.sh &&
-    . `dirname ${BASH_SOURCE[0]}`/test-json-utils.sh &&
-    . `dirname ${BASH_SOURCE[0]}`/test-maven-utils.sh
+    . `dirname ${BASH_SOURCE[0]}`/test-json-utils.sh    &&
+    . `dirname ${BASH_SOURCE[0]}`/test-maven-utils.sh   &&
+    . `dirname ${BASH_SOURCE[0]}`/test-rpm-utils.sh
 }
