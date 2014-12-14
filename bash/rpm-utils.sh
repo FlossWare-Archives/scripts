@@ -171,7 +171,8 @@ compute-rpm-change-log-entry() {
 #   $1 - the rpm file
 #
 compute-rpm-version-bump-msg() {
-    MSG="Version bump [`compute-full-rpm-version $1`]" &&
+    VERSION=`compute-full-rpm-version $1` &&
+    MSG="Version bump [${VERSION}]" &&
     echo "${MSG}"
 }
 
@@ -185,8 +186,8 @@ increment-rpm-release() {
     NEW_RELEASE=`compute-next-rpm-release $1` &&
     UNIQUE_FILE=`mktemp` &&
 
-   sed -e "s/^Release:\( \)*\([0-9]\)\+/Release: ${NEW_RELEASE}/g" $1 > /tmp/${UNIQUE_FILE} &&
-   mv /tmp/${UNIQUE_FILE} $1
+    sed -e "s/^Release:\( \)*\([0-9]\)\+/Release: ${NEW_RELEASE}/g" $1 > ${UNIQUE_FILE} &&
+    mv ${UNIQUE_FILE} $1
 }
 
 #
@@ -202,15 +203,15 @@ git-add-rpm-changelog() {
         exit $#
     fi
 
-    sed -n '1,/%changelog/ p' $1 > /tmp/${UNIQUE_FILE}
-    compute-rpm-change-log-entry $1 >> /tmp/${UNIQUE_FILE}
+    sed -n '1,/%changelog/ p' $1 > ${UNIQUE_FILE}
+    compute-rpm-change-log-entry $1 >> ${UNIQUE_FILE}
 
     if [ $? -ne 0 ]
     then
-        rm /tmp/${UNIQUE_FILE}
+        rm ${UNIQUE_FILE}
     else
-        cat $1 | sed -n '/%changelog/,$ p' | sed -e '/%changelog/ d' >> /tmp/${UNIQUE_FILE}
-        mv /tmp/${UNIQUE_FILE} $1
+        cat $1 | sed -n '/%changelog/,$ p' | sed -e '/%changelog/ d' >> ${UNIQUE_FILE}
+        mv ${UNIQUE_FILE} $1
     fi
 }
 
@@ -229,7 +230,7 @@ git-tag-from-rpm() {
 # pom.xml version...
 #
 git-msg-from-rpm() {
-    MSG="`compute-rpm-version-bump-msg *`" &&
+    MSG="`compute-rpm-version-bump-msg $*`" &&
     git commit -am "${MSG}"
 }
 
