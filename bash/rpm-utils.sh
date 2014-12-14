@@ -184,7 +184,7 @@ compute-rpm-version-bump-msg() {
 #
 increment-rpm-release() {
     NEW_RELEASE=`compute-next-rpm-release $1` &&
-    UNIQUE_FILE=`mktemp` &&
+    UNIQUE_FILE=`mktemp -u` &&
 
     sed -e "s/^Release:\( \)*\([0-9]\)\+/Release: ${NEW_RELEASE}/g" $1 > ${UNIQUE_FILE} &&
     mv ${UNIQUE_FILE} $1
@@ -194,7 +194,7 @@ increment-rpm-release() {
 # Set a change log message
 #
 git-add-rpm-changelog() {
-    UNIQUE_FILE=`mktemp`
+    UNIQUE_FILE=`mktemp -u`
 
     ensure-file-exists $1
     if [ $? -ne 0 ]
