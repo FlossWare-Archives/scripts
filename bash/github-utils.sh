@@ -18,9 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #
 
-DIR=`dirname ${BASH_SOURCE[0]}`
-
-. ${DIR}/common-utils.sh
+. `dirname ${BASH_SOURCE[0]}`/common-utils.sh
 
 #
 # Ensure a we have the correct protocol...

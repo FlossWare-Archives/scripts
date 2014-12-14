@@ -22,9 +22,7 @@
 # General purpose maven utility script.
 #
 
-DIR=`dirname ${BASH_SOURCE[0]}`
-
-. ${DIR}/common-utils.sh
+. `dirname ${BASH_SOURCE[0]}`/common-utils.sh
 
 #
 # Assuming we are standing in a directory that has a pom.xml,
@@ -37,74 +35,136 @@ maven-get-pom-version() {
 }
 
 #
-# Store parts of the version.
+# Compute the major version.
 #
-maven-store-version-parts() {
-    MAVEN_VERSION=`maven-get-pom-version` &&
+# Required params:
+#   $1 - the version in Major.Minor.Release format.
+#
+maven-compute-major-version() {
+    ensure-total-params 1 $* &&
 
-    #
-    # We can try to get each field - but if the version is "2"
-    # all the major, minor and release will all be 2
-    #
-    MAVEN_MAJOR_VERSION=`echo ${MAVEN_VERSION} | cut -f 1 -d '.'` &&
-    MAVEN_MINOR_VERSION=`echo ${MAVEN_VERSION} | cut -f 2 -d '.'` &&
-    MAVEN_RELEASE_VERSION=`echo ${MAVEN_VERSION} | cut -f 3 -d '.'`
+    echo $1 | cut -f 1 -d '.'
 }
 
 #
-# Disect the parts of the maven version - major, minor and release.
+# Compute the minor version.
 #
-maven-compute-version-parts() {
-    . maven-store-version-parts
+# Required params:
+#   $1 - the version in Major.Minor.Release format.
+#
+maven-compute-minor-version() {
+    ensure-total-params 1 $* &&
 
-    if [ $? -ne 0 ]
-    then
-        exit $?
-    fi
+    echo $1 | cut -f 2 -d '.'
+}
 
-    TOTAL_DOTS=`echo "${MAVEN_VERSION}" | grep -o "\." | wc -l` 
+#
+# Compute the release version.
+#
+# Required params:
+#   $1 - the version in Major.Minor.Release format.
+#
+maven-compute-release-version() {
+    ensure-total-params 1 $* &&
 
-    #
-    # If all we had was a 2 for version, then this will ensure
-    # we have have 0 for minor and 0 for release
-    #
-    if [ "${TOTAL_DOTS}" -lt 1 ] 
-    then
-        MAVEN_MINOR_VERSION="0"
-        MAVEN_RELEASE_VERSION="0"
-    elif [ "${TOTAL_DOTS}" -lt 2 ] 
-    then
-        #   
-        # If we had 2.1 then release would be empty string
-        #   
-        MAVEN_RELEASE_VERSION="0"
-    fi
+    echo $1 | cut -f 3 -d '.'
+}
 
-    #
-    # Below we want to ensure we didnt get a
-    # version like "..." or ".." or "."
-    #
-    if [ "${MAVEN_MAJOR_VERSION}" = "" ]
-    then
-        MAVEN_MAJOR_VERSION="0"
-    fi 
+#
+# Compute the next major version.
+#
+# Required params:
+#   $1 - the version in Major.Minor.Release format.
+#
+maven-compute-next-major-version() {
+    VERSION=`maven-compute-major-version $1` &&
+    increment-value ${VERSION}
+}
 
-    if [ "${MAVEN_MINOR_VERSION}" = "" ]
-    then
-        MAVEN_MINOR_VERSION="0"
-    fi
+#
+# Compute the next minor version.
+#
+# Required params:
+#   $1 - the version in Major.Minor.Release format.
+#
+maven-compute-next-minor-version() {
+    VERSION=`maven-compute-minor-version $1` &&
+    increment-value ${VERSION}
+}
 
-    if [ "${MAVEN_RELEASE_VERSION}" = "" ]
-    then
-        MAVEN_RELEASE_VERSION="0"
-    fi
+#
+# Compute the next release version.
+#
+# Required params:
+#   $1 - the version in Major.Minor.Release format.
+#
+maven-compute-next-release-version() {
+    VERSION=`maven-compute-release-version $1` &&
+    increment-value ${VERSION}
+}
+
+#
+# Retrieve the major version from the current working
+# dir's pom.xml.
+#
+maven-get-pom-major-version() {
+    VERSION=`maven-get-pom-version` &&
+    maven-compute-major-version ${VERSION}
+}
+
+#
+# Retrieve the minor version from the current working
+# dir's pom.xml.
+#
+maven-get-pom-minor-version() {
+    VERSION=`maven-get-pom-version` &&
+    maven-compute-minor-version ${VERSION}
+}
+
+#
+# Retrieve the release version from the current working
+# dir's pom.xml.
+#
+maven-get-pom-release-version() {
+    VERSION=`maven-get-pom-version` &&
+    maven-compute-release-version ${VERSION}
+}
+
+#
+# Retrieve the major version from the current working
+# dir's pom.xml.
+#
+maven-get-pom-next-major-version() {
+    VERSION=`maven-get-pom-version` &&
+    maven-compute-next-major-version ${VERSION}
+}
+
+#
+# Retrieve the minor version from the current working
+# dir's pom.xml.
+#
+maven-get-pom-next-minor-version() {
+    VERSION=`maven-get-pom-version` &&
+    maven-compute-next-minor-version ${VERSION}
+}
+
+#
+# Retrieve the release version from the current working
+# dir's pom.xml.
+#
+maven-get-pom-next-release-version() {
+    VERSION=`maven-get-pom-version` &&
+    maven-compute-next-release-version ${VERSION}
 }
 
 #
 # Set the versions (parent and any child) on pom.xml's. 
 # Must pass in one param to denote the version.
 #
-maven-set-version() {
+# Required params:
+#   $1 - the version in Major.Minor.Release format to set.
+#
+maven-set-pom-version() {
     ensure-total-params 1 $* &&
 
     mvn -DallowSnaphots=false -DnewVersion="$1" -DgenerateBackupPoms=false versions:set
@@ -113,45 +173,34 @@ maven-set-version() {
 #
 # Bump the major version of a pom.xml
 #
-maven-bump-major() {
-    . maven-compute-version-parts &&
-
-    NEW_MAVEN_MAJOR_VERSION=`increment-value ${MAVEN_MAJOR_VERSION}` &&
-
-    maven-set-version "${NEW_MAVEN_MAJOR_VERSION}.0.0"
+maven-bump-pom-major-version() {
+    VERSION="`maven-get-pom-next-major-version`.0.0" &&
+    maven-set-pom-version ${VERSION}
 }
 
 #
 # Bump the minor version of a pom.xml
 #
-maven-bump-minor() {
-    . maven-compute-version-parts &&
-
-    NEW_MAVEN_MINOR_VERSION=`increment-value ${MAVEN_MINOR_VERSION}` &&
-
-    maven-set-version "${MAVEN_MAJOR_VERSION}.${NEW_MAVEN_MINOR_VERSION}.0"
+maven-bump-pom-minor-version() {
+    VERSION="`maven-get-pom-major-version`.`maven-get-pom-next-minor-version`.0" &&
+    maven-set-pom-version ${VERSION}
 }
 
 #
 # Bump the release of a pom.xml
 #
-maven-bump-release() {
-    . maven-compute-version-parts &&
-
-    NEW_MAVEN_RELEASE_VERSION=`increment-value ${MAVEN_RELEASE_VERSION}` &&
-
-    ${DIR}/maven-set-version.sh "${MAVEN_MAJOR_VERSION}.${MAVEN_MINOR_VERSION}.${NEW_MAVEN_RELEASE_VERSION}"
+maven-bump-pom-release-version() {
+    VERSION="`maven-get-pom-major-version`.`maven-get-pom-minor-version`.`maven-get-pom-next-release-version`" &&
+    maven-set-pom-version ${VERSION}
 }
 
 #
 # Create a branch from the Maven major and minor numbers.
 #
-git-branch-from-maven-version() {
-    . maven-compute-version-parts &&
+git-branch-from-maven-pom-version() {
+    BRANCH="`maven-get-pom-major-version`.`maven-get-pom-minor-version`" &&
 
-    BRANCH=${MAVEN_MAJOR_VERSION}.${MAVEN_MINOR_VERSION} &&
-
-    git checkout ${BRANCH} &&
+    git checkout ${BRANCH}
 
     if [ $? -eq 1 ]
     then
@@ -163,15 +212,15 @@ git-branch-from-maven-version() {
 # Simple create a version bump message from the current
 # pom.xml version...
 #
-git-msg-from-maven-version-bump() {
-    MSG="Version bump [`maven-get-pom-version`]" &&
-
-    git commit -am "${MSG}"
+git-msg-from-maven-pom-version-bump() {
+    VERSION=`maven-get-pom-version` &&
+    git commit -am "Version bump [${VERSION}]"
 }
 
 #
 # Create a tag from the pom.xml version.
 #
-git-tag-from-maven-version() {
-    git tag `maven-get-pom-version`
+git-tag-from-maven-pom-version() {
+    VERSION=`maven-get-pom-version` &&
+    git tag ${VERSION}
 }

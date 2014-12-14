@@ -247,3 +247,10 @@ execute-with-newlines-preserved() {
 
     IFS=${OLD_IFS}
 }
+
+#
+# Useless - but makes a nice placeholder.
+#
+noop() {
+    NOOP=""
+}

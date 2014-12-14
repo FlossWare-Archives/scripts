@@ -22,11 +22,8 @@
 # Tests the github-utils.sh scripts
 #
 
-DIR=`dirname ${BASH_SOURCE[0]}`
-BASH_DIR=${DIR}/../../bash
-
-. ${BASH_DIR}/git-utils.sh
-. ${BASH_DIR}/test-utils.sh
+. `dirname ${BASH_SOURCE[0]}`/../../bash/git-utils.sh
+. `dirname ${BASH_SOURCE[0]}`/../../bash/test-utils.sh
 
 #
 # Test computing the git config
@@ -153,6 +150,18 @@ setup-git-repo() {
 }
 
 #
+# Test computing the git current branch.
+#
+test-compute-git-current-branch() {
+    setup-git-repo &&
+    cd /tmp &&
+    assert-failure compute-git-current-branch &&
+    cd ${TEMP_GIT_DIR} &&
+    git checkout master &&
+    assert-equals "master" `compute-git-current-branch`
+}
+
+#
 # Test one line
 #
 test-git-log-oneline() {
@@ -189,18 +198,13 @@ TEMP_GIT_DIR=`mktemp -u`
 
 # ----------------------------------------------------
 
-test-suite-start
+unit-test-should-pass test-compute-git-config
+unit-test-should-pass test-compute-git-user
+unit-test-should-pass test-compute-git-email
+unit-test-should-pass test-compute-git-user-info
+unit-test-should-pass test-compute-git-current-branch
+unit-test-should-pass test-git-log-oneline
 
-    # ------------------------------------------------
-
-    unit-test-should-pass test-compute-git-config
-    unit-test-should-pass test-compute-git-user
-    unit-test-should-pass test-compute-git-email
-    unit-test-should-pass test-compute-git-user-info
-    unit-test-should-pass test-git-log-oneline
-
-    # ------------------------------------------------
-
-test-suite-end cleanup
+cleanup
 
 # ----------------------------------------------------

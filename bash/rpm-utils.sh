@@ -22,10 +22,8 @@
 # RPM utilities
 #
 
-DIR=`dirname ${BASH_SOURCE[0]}`
-
-. ${DIR}/common-utils.sh
-. ${DIR}/git-utils.sh
+. `dirname ${BASH_SOURCE[0]}`/common-utils.sh
+. `dirname ${BASH_SOURCE[0]}`/git-utils.sh
 
 #
 # Retrieve the version from an RPM.  The RPM is

@@ -22,10 +22,11 @@
 # Tests our scripts
 #
 
-DIR=`dirname ${BASH_SOURCE[0]}`
-
-${DIR}/test-common-utils.sh
-${DIR}/test-github-utils.sh
-${DIR}/test-git-utils.sh
-${DIR}/test-jenkins-utils.sh
-${DIR}/test-json-utils.sh
+run-test-suite() {
+    . `dirname ${BASH_SOURCE[0]}`/test-common-utils.sh
+    . `dirname ${BASH_SOURCE[0]}`/test-github-utils.sh
+    . `dirname ${BASH_SOURCE[0]}`/test-git-utils.sh
+    . `dirname ${BASH_SOURCE[0]}`/test-jenkins-utils.sh
+    . `dirname ${BASH_SOURCE[0]}`/test-json-utils.sh
+    . `dirname ${BASH_SOURCE[0]}`/test-maven-utils.sh
+}

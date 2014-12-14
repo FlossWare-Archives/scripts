@@ -22,11 +22,8 @@
 # Tests the github-utils.sh scripts
 #
 
-DIR=`dirname ${BASH_SOURCE[0]}`
-BASH_DIR=${DIR}/../../bash
-
-. ${BASH_DIR}/jenkins-utils.sh
-. ${BASH_DIR}/test-utils.sh
+. `dirname ${BASH_SOURCE[0]}`/../../bash/jenkins-utils.sh
+. `dirname ${BASH_SOURCE[0]}`/../../bash/test-utils.sh
 
 #
 # Test ensure we have a workspace
@@ -59,16 +56,8 @@ test-compute-jenkins-git-email() {
 
 # ----------------------------------------------------
 
-test-suite-start
-
-    # ------------------------------------------------
-
-    unit-test-should-pass test-ensure-workspace
-    unit-test-should-pass test-compute-jenkins-git-user
-    unit-test-should-pass test-compute-jenkins-git-email
-
-    # ------------------------------------------------
-
-test-suite-end
+unit-test-should-pass test-ensure-workspace
+unit-test-should-pass test-compute-jenkins-git-user
+unit-test-should-pass test-compute-jenkins-git-email
 
 # ----------------------------------------------------

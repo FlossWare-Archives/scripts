@@ -19,30 +19,21 @@
 #
 
 #
-# Jenkins utilities...
+# This is sort of a junit type testing class.
 #
 
 . `dirname ${BASH_SOURCE[0]}`/common-utils.sh
+. `dirname ${BASH_SOURCE[0]}`/test-utils.sh
 
-#
-# Make sure workspace exists...
-#
-ensure-workspace() {
-    ensure-dir-exists ${WORKSPACE} &&
+# ----------------------------------------------------
 
-    cd ${WORKSPACE}
-}
+ensure-total-params 1 $*
+ensure-file-exists $1
 
-#
-# Return the Jenkins git user.
-#
-compute-jenkins-git-user() {
-    echo ${GIT_COMMITTER_NAME}
-}
+. $1
 
-#
-# Return the Jenkins git email
-#
-compute-jenkins-git-email() {
-    echo ${GIT_COMMITTER_EMAIL}
-}
+test-suite-start
+    run-test-suite
+test-suite-end
+
+# ----------------------------------------------------

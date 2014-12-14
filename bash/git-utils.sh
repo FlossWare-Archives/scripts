@@ -22,10 +22,8 @@
 # Git utilities
 #
 
-DIR=`dirname ${BASH_SOURCE[0]}`
-
-. ${DIR}/common-utils.sh
-. ${DIR}/jenkins-utils.sh
+. `dirname ${BASH_SOURCE[0]}`/common-utils.sh
+. `dirname ${BASH_SOURCE[0]}`/jenkins-utils.sh
 
 #
 # Compute the git config file.
@@ -101,6 +99,13 @@ compute-git-user-info() {
 
     # If a git email address exists, it will have a space...
     echo "`compute-git-user "$1" ${CONFIG}`${GIT_EMAIL}"
+}
+
+#
+# Assuming we are standing in a git repo, return the current branch.
+#
+compute-git-current-branch() {
+    git rev-parse --abbrev-ref HEAD
 }
 
 #

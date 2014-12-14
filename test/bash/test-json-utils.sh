@@ -22,13 +22,8 @@
 # Tests the github-utils.sh scripts
 #
 
-DIR=`dirname ${BASH_SOURCE[0]}`
-BASH_DIR=${DIR}/../../bash
-
-
-. ${BASH_DIR}/json-utils.sh
-. ${BASH_DIR}/test-utils.sh
-
+. `dirname ${BASH_SOURCE[0]}`/../../bash/json-utils.sh
+. `dirname ${BASH_SOURCE[0]}`/../../bash/test-utils.sh
 
 #
 # Test computing a JSON field
@@ -86,18 +81,10 @@ test-compute-json-object() {
 
 # ----------------------------------------------------
 
-test-suite-start
-
-    # ------------------------------------------------
-
-    unit-test-should-pass test-compute-json-field
-    unit-test-should-pass test-compute-json-field-if-value-set
-    unit-test-should-pass test-compute-json-array-field-if-value-set
-    unit-test-should-pass test-separate-json-fields-with-commas
-    unit-test-should-pass test-compute-json-object
-
-    # ------------------------------------------------
-
-test-suite-end
+unit-test-should-pass test-compute-json-field
+unit-test-should-pass test-compute-json-field-if-value-set
+unit-test-should-pass test-compute-json-array-field-if-value-set
+unit-test-should-pass test-separate-json-fields-with-commas
+unit-test-should-pass test-compute-json-object
 
 # ----------------------------------------------------

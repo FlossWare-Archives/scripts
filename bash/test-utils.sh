@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 
 #
 # This file is part of the FlossWare family of open source software.
@@ -22,7 +22,7 @@
 # This is sort of a junit type testing class.
 #
 
-DIR=`dirname ${BASH_SOURCE[0]}`
+. `dirname ${BASH_SOURCE[0]}`/common-utils.sh
 
 #
 # Asserting params equals. 
@@ -118,9 +118,25 @@ assert-failure() {
 }
 
 #
+# Called when a unit test finishes.
+#
+unit-test-setup() {
+    noop
+}
+
+#
+# Called when a unit test ends.
+#
+unit-test-teardown() {
+    noop
+}
+
+#
 # Run a test
 #
 unit-test() {
+    unit-test-setup
+
     expected_status=$1
     shift
 
@@ -143,6 +159,8 @@ unit-test() {
 
         TOTAL_PASSED_TESTS=`expr ${TOTAL_PASSED_TESTS} + 1`
     fi  
+
+    unit-test-teardown
 }
 
 #
@@ -160,9 +178,32 @@ unit-test-should-fail() {
 }
 
 #
+# Called when the test suite begins.
+#
+test-suite-setup() {
+    noop
+}
+
+#
+# Called when the test suite ends.
+#
+test-suite-teardown() {
+    noop
+}
+
+#
+# Called to define all tests in a suite.
+#
+run-test-suite() {
+    noop
+}
+
+#
 # Start our test suite.
 #
 test-suite-start() {
+    test-suite-setup
+
     export TOTAL_FAILED_TESTS=0
     export TOTAL_PASSED_TESTS=0
 
@@ -176,6 +217,8 @@ test-suite-start() {
 # End our test suite.
 #
 test-suite-end() {
+    test-suite-teardown
+
     echo
     echo "========================================================="
     echo

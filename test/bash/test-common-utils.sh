@@ -22,12 +22,8 @@
 # Tests the common-utils.sh scripts
 #
 
-DIR=`dirname ${BASH_SOURCE[0]}`
-BASH_DIR=${DIR}/../../bash
-
-. ${BASH_DIR}/common-utils.sh
-. ${BASH_DIR}/test-utils.sh
-
+. `dirname ${BASH_SOURCE[0]}`/../../bash/common-utils.sh
+. `dirname ${BASH_SOURCE[0]}`/../../bash/test-utils.sh
 
 #
 # Test computing default values
@@ -171,45 +167,37 @@ test-execute-with-newlines-preserved() {
 
 # ----------------------------------------------------
 
-test-suite-start
+unit-test-should-pass emit-msg Testing 1
+unit-test-should-fail error-msg Testing 2
+unit-test-should-pass warning-msg Testing 3
+unit-test-should-pass info-msg Testing 4
 
-    # ------------------------------------------------
+unit-test-should-pass test-compute-default-value
 
-    unit-test-should-pass emit-msg Testing 1
-    unit-test-should-fail error-msg Testing 2
-    unit-test-should-pass warning-msg Testing 3
-    unit-test-should-pass info-msg Testing 4
+unit-test-should-pass test-ensure-total-params
 
-    unit-test-should-pass test-compute-default-value
+unit-test-should-pass test-ensure-min-params
 
-    unit-test-should-pass test-ensure-total-params
+unit-test-should-pass test-ensure-max-params
 
-    unit-test-should-pass test-ensure-min-params
+unit-test-should-pass test-ensure-max-params
 
-    unit-test-should-pass test-ensure-max-params
+unit-test-should-pass test-ensure-file-exists
 
-    unit-test-should-pass test-ensure-max-params
+unit-test-should-pass test-ensure-dir-exists
 
-    unit-test-should-pass test-ensure-file-exists
+unit-test-should-pass test-separate-with-commas
 
-    unit-test-should-pass test-ensure-dir-exists
+unit-test-should-pass test-convert-to-dashed-list
 
-    unit-test-should-pass test-separate-with-commas
+unit-test-should-pass test-convert-to-csv
 
-    unit-test-should-pass test-convert-to-dashed-list
+unit-test-should-pass test-increment-value
 
-    unit-test-should-pass test-convert-to-csv
+unit-test-should-pass test-decrement-value
 
-    unit-test-should-pass test-increment-value
+unit-test-should-pass test-generate-unique
 
-    unit-test-should-pass test-decrement-value
-
-    unit-test-should-pass test-generate-unique
-
-    unit-test-should-pass test-execute-with-newlines-preserved
-
-    # ------------------------------------------------
-
-test-suite-end
+unit-test-should-pass test-execute-with-newlines-preserved
 
 # ----------------------------------------------------

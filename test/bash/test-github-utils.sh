@@ -22,12 +22,8 @@
 # Tests the github-utils.sh scripts
 #
 
-DIR=`dirname ${BASH_SOURCE[0]}`
-BASH_DIR=${DIR}/../../bash
-
-. ${BASH_DIR}/github-utils.sh
-. ${BASH_DIR}/test-utils.sh
-
+. `dirname ${BASH_SOURCE[0]}`/../../bash/github-utils.sh
+. `dirname ${BASH_SOURCE[0]}`/../../bash/test-utils.sh
 
 #
 # Test ensure protocol
@@ -73,16 +69,8 @@ test-convertGitHubRemote() {
 
 # ----------------------------------------------------
 
-test-suite-start
-
-    # ------------------------------------------------
-
-    unit-test-should-pass test-ensureProtocol
-    unit-test-should-pass test-convertProtocol
-    unit-test-should-pass test-convertGitHubRemote
-
-    # ------------------------------------------------
-
-test-suite-end
+unit-test-should-pass test-ensureProtocol
+unit-test-should-pass test-convertProtocol
+unit-test-should-pass test-convertGitHubRemote
 
 # ----------------------------------------------------
