@@ -27,7 +27,7 @@
 . `dirname ${BASH_SOURCE[0]}`/../../bash/test-utils.sh
 
 export TEST_DIR=`mktemp -u`
-export CURRENT_DIR=`dirname \`realpath ${BASH_SOURCE[0]}\``
+export CURRENT_DIR=`dirname \`readlink -f -- "${BASH_SOURCE[0]}"\``
 
 #
 # Simply setup by creating an empty git repo for testing.
