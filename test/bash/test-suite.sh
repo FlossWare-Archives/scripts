@@ -28,3 +28,4 @@ ${DIR}/test-common-utils.sh
 ${DIR}/test-github-utils.sh
 ${DIR}/test-git-utils.sh
 ${DIR}/test-jenkins-utils.sh
+${DIR}/test-json-utils.sh

@@ -36,7 +36,10 @@ compute-json-field() {
 compute-json-field-if-value-set() {
     if [ "$2" != "" ]
     then
-        echo "\"$1\" : \"$2\""
+        NAME=$1
+        shift
+
+        echo "\"${NAME}\" : \"$*\""
     fi
 }
 
@@ -57,7 +60,8 @@ compute-json-array-field-if-value-set() {
 }
 
 #
-# Takes all parens and converts to commas.
+# Takes all params which represent JSON fields and separates them
+# with commas.
 #
 separate-json-fields-with-commas() {
     FIELD='"\(\([[:alnum:]]\)*\([[:blank:]]\)*\)\+"'

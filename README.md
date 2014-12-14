@@ -17,6 +17,7 @@ We are currently refactoring and unit testing.  Thus far the reliable (aka unit 
 * [github-utils.sh] (https://github.com/FlossWare/scripts/blob/master/bash/guthub-utils.sh)
 * [git-utils.sh] (https://github.com/FlossWare/scripts/blob/master/bash/git-utils.sh)
 * [jenkins-utils.sh] (https://github.com/FlossWare/scripts/blob/master/bash/jenkins-utils.sh)
+* [json-utils.sh] (https://github.com/FlossWare/scripts/blob/master/bash/json-utils.sh)
 
 While the others have been somewhat manually tested, please assume they are unreliable.
 

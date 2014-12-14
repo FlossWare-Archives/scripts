@@ -25,10 +25,8 @@
 DIR=`dirname ${BASH_SOURCE[0]}`
 BASH_DIR=${DIR}/../../bash
 
-
 . ${BASH_DIR}/jenkins-utils.sh
 . ${BASH_DIR}/test-utils.sh
-
 
 #
 # Test ensure we have a workspace
@@ -58,6 +56,7 @@ test-compute-jenkins-git-email() {
     GIT_COMMITTER_EMAIL=`generate-unique` &&
     assert-equals "${GIT_COMMITTER_EMAIL}" "`compute-jenkins-git-email`"
 }
+
 # ----------------------------------------------------
 
 test-suite-start
