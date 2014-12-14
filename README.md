@@ -19,6 +19,7 @@ We are currently refactoring and unit testing.  Thus far the reliable (aka unit 
 * [jenkins-utils.sh] (https://github.com/FlossWare/scripts/blob/master/bash/jenkins-utils.sh)
 * [json-utils.sh] (https://github.com/FlossWare/scripts/blob/master/bash/json-utils.sh)
 * [maven-utils.sh] (https://github.com/FlossWare/scripts/blob/master/bash/maven-utils.sh)
+* [rpm-utils.sh] (https://github.com/FlossWare/scripts/blob/master/bash/rpm-utils.sh)
 
 While the others have been somewhat manually tested, please assume they are unreliable.
 
