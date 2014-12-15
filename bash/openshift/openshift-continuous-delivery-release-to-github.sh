@@ -26,9 +26,7 @@
 #   openshift-continuous-delivery-release-to-github.sh
 #
 
-DIR=`dirname ${BASH_SOURCE[0]}`
-
 cd ${WORKSPACE}
 
-${DIR}/continuous-delivery-release.sh
-${DIR}/openshift-push-to-github.sh
+`dirname ${BASH_SOURCE[0]}`/continuous-delivery-release.sh
+`dirname ${BASH_SOURCE[0]}`/openshift-push-to-github.sh

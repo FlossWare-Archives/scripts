@@ -25,8 +25,6 @@
 #  . openshift-config.sh
 #
 
-DIR=`dirname ${BASH_SOURCE[0]}`
-
-export PATH=${DIR}:${PATH}
+export PATH=`dirname ${BASH_SOURCE[0]}`:`dirname ${BASH_SOURCE[0]}`/..:${PATH}
 
 export OPEN_SHIFT_SSH_DIR=${HOME}/app-root/runtime/.ssh

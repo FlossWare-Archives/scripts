@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 
 #
 # This file is part of the FlossWare family of open source software.
@@ -19,18 +19,15 @@
 #
 
 #
-# Open Shift does not allow us to affect change to
-# ~/.ssh as this directory is owned by root.
-#
-# We will use a different directory for ssh identities
-# and must denote this using the ssh-git.sh script.
+# This script will allow one to bump the maven pom version, generate
+# a message for the bump and tag it.
 #
 # To use:
-#   openshift-git-push.sh [remote] [branch]
+#   prepare-release.sh
 #
 
-cd ${WORKSPACE}
+. `dirname ${BASH_SOURCE[0]}`/maven-utils.sh
 
-. `dirname ${BASH_SOURCE[0]}`/openshift-config.sh
-
-`dirname ${BASH_SOURCE[0]}`/../ssh-git.sh ${OPEN_SHIFT_SSH_DIR}/id_rsa $@
+maven-bump-pom-release-version
+git-msg-from-maven-pom-version-bump
+git-tag-from-maven-pom-version

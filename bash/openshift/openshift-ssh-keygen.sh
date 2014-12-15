@@ -27,9 +27,7 @@
 #  open-shift-ssh-keygen.sh
 #
 
-DIR=`dirname ${BASH_SOURCE[0]}`
-
-. ${DIR}/openshift-config.sh
+. `dirname ${BASH_SOURCE[0]}`/openshift-config.sh
 
 mkdir -p ${OPEN_SHIFT_SSH_DIR}
 

@@ -29,9 +29,9 @@ DIR=`dirname ${BASH_SOURCE[0]}`
 set-bintray-vars $*
 
 ensureData() {
-    if [ "${BINTRAY_NAME}" = "" ]
+    if [ "${BINTRAY_ACCOUNT}" = "" ]
     then
-        echo "Please provide name param!"
+        echo "Please provide account param!"
         exit 1
     fi
 
@@ -56,4 +56,5 @@ ensureData() {
 
 ensureData
         
+echo curl -v -k -u ${BINTRAY_USER}:${BINTRAY_KEY} -X POST https://api.bintray.com/content/${BINTRAY_ACCOUNT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/${BINTRAY_VERSION}/publish
 curl -v -k -u ${BINTRAY_USER}:${BINTRAY_KEY} -X POST https://api.bintray.com/content/${BINTRAY_ACCOUNT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/${BINTRAY_VERSION}/publish

@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash  -x
 
 #
 # This file is part of the FlossWare family of open source software.
@@ -19,18 +19,9 @@
 #
 
 #
-# This script will allow one to create a new release branch (if it does nto exist),
-# bump the verion, generate a message and tag it.
-#
-# To use:
-#   continuous-delivery-release.sh
+# Publishes bintray maven artifacts
 #
 
-DIR=`dirname ${BASH_SOURCE[0]}`
+. `dirname ${BASH_SOURCE[0]}`/../maven-utils.sh
 
-cd ${WORKSPACE}
-
-${DIR}/git-branch-from-maven-version.sh
-${DIR}/maven-bump-release.sh
-${DIR}/git-msg-from-maven-version-bump.sh
-${DIR}/git-tag-from-maven-version.sh
+`dirname ${BASH_SOURCE[0]}`/content-publish.sh $* --repo maven --version `maven-get-pom-version`

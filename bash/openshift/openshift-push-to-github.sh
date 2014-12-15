@@ -36,15 +36,12 @@
 
 cd ${WORKSPACE}
 
-DIR=`dirname ${BASH_SOURCE[0]}`
+. `dirname ${BASH_SOURCE[0]}`/openshift-config.sh
+. `dirname ${BASH_SOURCE[0]}`/../github-utils.sh
+. `dirname ${BASH_SOURCE[0]}`/../git-utils.sh
 
-. ${DIR}/openshift-config.sh
-. ${DIR}/github-utils.sh
-
-export GIT_SSH=${DIR}/openshift-git-push.sh
+export GIT_SSH=`dirname ${BASH_SOURCE[0]}`/openshift-git-push.sh
 
 convertGitHubRemote
 
-CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
-
-git push origin ${CURRENT_BRANCH}
+git push origin `compute-git-current-branch` --tags
