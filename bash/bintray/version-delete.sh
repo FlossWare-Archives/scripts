@@ -29,9 +29,9 @@ DIR=`dirname ${BASH_SOURCE[0]}`
 set-bintray-vars $*
 
 ensureData() {
-    if [ "${BINTRAY_NAME}" = "" ]
+    if [ "${BINTRAY_VERSION}" = "" ]
     then
-        echo "Please provide name param!"
+        echo "Please provide version param!"
         exit 1
     fi
 
@@ -50,4 +50,4 @@ ensureData() {
 
 ensureData
         
-curl -v -k -u ${BINTRAY_USER}:${BINTRAY_KEY} -X DELETE https://api.bintray.com/packages/${BINTRAY_ACCOUNT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/versions/${BINTRAY_NAME}
+curl -v -k -u ${BINTRAY_USER}:${BINTRAY_KEY} -X DELETE https://api.bintray.com/packages/${BINTRAY_ACCOUNT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/versions/${BINTRAY_VERSION}
