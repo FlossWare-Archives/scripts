@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 
 #
 # This file is part of the FlossWare family of open source software.
@@ -19,15 +19,11 @@
 #
 
 #
-# Tests our scripts
+# Creates bintray rpmcontent
 #
 
-run-test-suite() {
-    . `dirname ${BASH_SOURCE[0]}`/test-common-utils.sh  &&
-    . `dirname ${BASH_SOURCE[0]}`/test-github-utils.sh  &&
-    . `dirname ${BASH_SOURCE[0]}`/test-git-utils.sh     &&
-    . `dirname ${BASH_SOURCE[0]}`/test-jenkins-utils.sh &&
-    . `dirname ${BASH_SOURCE[0]}`/test-json-utils.sh    &&
-    . `dirname ${BASH_SOURCE[0]}`/test-maven-utils.sh   &&
-    . `dirname ${BASH_SOURCE[0]}`/test-rpm-utils.sh 
-}
+. `dirname ${BASH_SOURCE[0]}`/../rpm-utils.sh
+
+`dirname ${BASH_SOURCE[0]}`/content-publish.sh $* --repo rpm --version `compute-full-rpm-version`
+
+curl -v -k -T ${BINTRAY_FILE} -u ${BINTRAY_USER}:${BINTRAY_KEY} -H "X-Bintray-Package:${BINTRAY_PACKAGE}" -H "X-Bintray-Version:${BINTRAY_VERSION}" -X PUT https://api.bintray.com/content/${BINTRAY_ACCOUNT}/${BINTRAY_REPO}/${BINTRAY_NAME}

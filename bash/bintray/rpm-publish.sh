@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 
 #
 # This file is part of the FlossWare family of open source software.
@@ -19,15 +19,23 @@
 #
 
 #
-# Tests our scripts
+# Publishes bintray maven artifacts
 #
 
-run-test-suite() {
-    . `dirname ${BASH_SOURCE[0]}`/test-common-utils.sh  &&
-    . `dirname ${BASH_SOURCE[0]}`/test-github-utils.sh  &&
-    . `dirname ${BASH_SOURCE[0]}`/test-git-utils.sh     &&
-    . `dirname ${BASH_SOURCE[0]}`/test-jenkins-utils.sh &&
-    . `dirname ${BASH_SOURCE[0]}`/test-json-utils.sh    &&
-    . `dirname ${BASH_SOURCE[0]}`/test-maven-utils.sh   &&
-    . `dirname ${BASH_SOURCE[0]}`/test-rpm-utils.sh 
+. `dirname ${BASH_SOURCE[0]}`/../rpm-utils.sh
+. `dirname ${BASH_SOURCE[0]}`/bintray-utils.sh
+
+set-bintray-vars $*
+
+ensureData() {
+    if [ "${BINTRAY_CONTEXT}" = "" ]
+    then
+        echo "Please provide context param (this is the spec file)!"
+        exit 1
+    fi
 }
+
+ensureData
+
+`dirname ${BASH_SOURCE[0]}`/content-create.sh $* --version `compute-full-rpm-version ${BINTRAY_CONTEXT}`
+`dirname ${BASH_SOURCE[0]}`/content-publish.sh $* --version `compute-full-rpm-version ${BINTRAY_CONTEXT}`

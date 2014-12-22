@@ -66,6 +66,7 @@ bintray-param-usage() {
     echo "  --name         the name (for package, version, etc)"
     echo "  --version      the version"
     echo "  --file         the file"
+    echo "  --context      the context file in which --file is being pushed (for example a spec file)"
 }
 
 #
@@ -85,6 +86,7 @@ bintray-debug() {
         echo "    BINTRAY_DESCRIPTION  [${BINTRAY_DESCRIPTION}]"
         echo "    BINTRAY_VERSION      [${BINTRAY_VERSION}]"
         echo "    BINTRAY_FILE         [${BINTRAY_FILE}]"
+        echo "    BINTRAY_CONTEXT      [${BINTRAY_CONTEXT}]"
         echo
         echo "    SONATYPE_USER        [${SONATYPE_USER}]"
         echo "    SONATYPE_PASWORD     [${SONATYPE_PASWORD}]"
@@ -160,6 +162,10 @@ set-bintray-vars() {
 
             --file) shift
                 export BINTRAY_FILE=$1
+                ;;
+
+            --context) shift
+                export BINTRAY_CONTEXT=$1
                 ;;
         esac
 

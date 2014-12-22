@@ -29,8 +29,6 @@
 #   openshift-git-push.sh [remote] [branch]
 #
 
-cd ${WORKSPACE}
-
 . `dirname ${BASH_SOURCE[0]}`/openshift-config.sh
 
 `dirname ${BASH_SOURCE[0]}`/../ssh-git.sh ${OPEN_SHIFT_SSH_DIR}/id_rsa $@

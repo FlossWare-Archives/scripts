@@ -29,12 +29,6 @@ DIR=`dirname ${BASH_SOURCE[0]}`
 set-bintray-vars $*
 
 ensureData() {
-    if [ "${BINTRAY_NAME}" = "" ]
-    then
-        echo "Please provide name param!"
-        exit 1
-    fi
-
     if [ "${BINTRAY_REPO}" = "" ]
     then
         echo "Please provide repo param!"
@@ -62,4 +56,4 @@ ensureData() {
 
 ensureData
         
-curl -v -k -T ${BINTRAY_FILE} -u ${BINTRAY_USER}:${BINTRAY_KEY} -H "X-Bintray-Package:${BINTRAY_PACKAGE}" -H "X-Bintray-Version:${BINTRAY_VERSION}" -X PUT https://api.bintray.com/content/${BINTRAY_ACCOUNT}/${BINTRAY_REPO}/${BINTRAY_NAME}
+curl -v -k -T ${BINTRAY_FILE} -u ${BINTRAY_USER}:${BINTRAY_KEY} -X PUT https://api.bintray.com/content/${BINTRAY_ACCOUNT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/${BINTRAY_VERSION}/`basename ${BINTRAY_FILE}`

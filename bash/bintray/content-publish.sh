@@ -56,5 +56,4 @@ ensureData() {
 
 ensureData
         
-echo curl -v -k -u ${BINTRAY_USER}:${BINTRAY_KEY} -X POST https://api.bintray.com/content/${BINTRAY_ACCOUNT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/${BINTRAY_VERSION}/publish
 curl -v -k -u ${BINTRAY_USER}:${BINTRAY_KEY} -X POST https://api.bintray.com/content/${BINTRAY_ACCOUNT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/${BINTRAY_VERSION}/publish

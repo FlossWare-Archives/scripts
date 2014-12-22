@@ -150,9 +150,9 @@ compute-rpm-change-log-entry() {
     ensure-file-exists $1 &&
 
     CURRENT_VERSION=`compute-full-rpm-version $1` &&
-    NEW_VERSION=`compute-next-full-rpm-version $1` &&
+    NEXT_VERSION=`compute-next-full-rpm-version $1` &&
 
-    echo "* `compute-rpm-date` `compute-git-user-info` ${NEW_VERSION}" &&
+    echo "* `compute-rpm-date` `compute-git-user-info` ${NEXT_VERSION}" &&
 
     LOG="`git-log-pretty ${CURRENT_VERSION}`"
 

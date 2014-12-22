@@ -34,8 +34,6 @@
 #   openshift-git-push-to-git.sh
 #
 
-cd ${WORKSPACE}
-
 . `dirname ${BASH_SOURCE[0]}`/openshift-config.sh
 . `dirname ${BASH_SOURCE[0]}`/../github-utils.sh
 . `dirname ${BASH_SOURCE[0]}`/../git-utils.sh
