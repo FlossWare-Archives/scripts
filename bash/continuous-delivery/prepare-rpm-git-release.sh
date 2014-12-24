@@ -26,9 +26,9 @@
 #   prepare-release.sh
 #
 
-. `dirname ${BASH_SOURCE[0]}`/rpm-utils.sh
+. `dirname ${BASH_SOURCE[0]}`/../rpm-utils.sh
 
 git-add-rpm-changelog $* &&
 increment-rpm-release $* &&
-git-msg-from-rpm $* &&
-git-tag-from-rpm $* 
+git-msg-from-rpm      $* &&
+git-tag-from-rpm      $* 
