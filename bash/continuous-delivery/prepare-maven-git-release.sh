@@ -23,11 +23,11 @@
 # a message for the bump and tag it.
 #
 # To use:
-#   prepare-release.sh
+#   prepare-maven-git-release.sh
 #
 
-. `dirname ${BASH_SOURCE[0]}`/maven-utils.sh
+. `dirname ${BASH_SOURCE[0]}`/../maven-utils.sh
 
-maven-bump-pom-release-version
-git-msg-from-maven-pom-version-bump
+maven-bump-pom-release-version &&
+git-msg-from-maven-pom-version-bump &&
 git-tag-from-maven-pom-version
