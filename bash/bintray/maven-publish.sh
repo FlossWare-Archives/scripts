@@ -24,4 +24,4 @@
 
 . `dirname ${BASH_SOURCE[0]}`/../maven-utils.sh
 
-`dirname ${BASH_SOURCE[0]}`/content-publish.sh $* --repo maven --version `maven-get-pom-version`
+`dirname ${BASH_SOURCE[0]}`/content-publish.sh $* --bintrayRepo maven --bintrayVersion `maven-get-pom-version`
