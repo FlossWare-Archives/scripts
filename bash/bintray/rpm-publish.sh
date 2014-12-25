@@ -37,5 +37,5 @@ ensureData() {
 
 ensureData
 
-`dirname ${BASH_SOURCE[0]}`/content-create.sh $* --version `compute-full-rpm-version ${BINTRAY_CONTEXT}`
-`dirname ${BASH_SOURCE[0]}`/content-publish.sh $* --version `compute-full-rpm-version ${BINTRAY_CONTEXT}`
+`dirname ${BASH_SOURCE[0]}`/content-create.sh $* --bintrayVersion `compute-full-rpm-version ${BINTRAY_CONTEXT}`
+`dirname ${BASH_SOURCE[0]}`/content-publish.sh $* --bintrayVersion `compute-full-rpm-version ${BINTRAY_CONTEXT}`

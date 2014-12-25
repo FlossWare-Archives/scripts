@@ -53,20 +53,20 @@ DIR=`dirname ${BASH_SOURCE[0]}`
 bintray-param-usage() {
     echo "`dirname $0` Usage:"
     echo
-    echo "  PARAM          DESCRIPTION"
-    echo "  -----------    -----------"
-    echo "  --help         help!"
-    echo "  --user         user name"
-    echo "  --key          API key"
-    echo "  --account      account name"
-    echo "  --repo         repo type - maven, rpm, et"
-    echo "  --licenses     the licenses for your bintray packages"
-    echo "  --package      package name"
-    echo "  --description  description"
-    echo "  --name         the name (for package, version, etc)"
-    echo "  --version      the version"
-    echo "  --file         the file"
-    echo "  --context      the context file in which --file is being pushed (for example a spec file)"
+    echo "  PARAM                 DESCRIPTION"
+    echo "  --------------------  -----------"
+    echo "  --help                help!"
+    echo "  --bintrayUser         user name"
+    echo "  --bintrayKey          API key"
+    echo "  --bintrayAccount      account name"
+    echo "  --bintrayRepo         repo type - maven, rpm, et"
+    echo "  --bintrayLicenses     the licenses for your bintray packages"
+    echo "  --bintrayPackage      package name"
+    echo "  --bintrayDescription  description"
+    echo "  --bintrayName         the name (for package, version, etc)"
+    echo "  --bintrayVersion      the version"
+    echo "  --bintrayFile         the file"
+    echo "  --bintrayContext      the context file in which --file is being pushed (for example a spec file)"
 }
 
 #
@@ -124,47 +124,47 @@ set-bintray-vars() {
                 exit 0
                 ;;
 
-            --user) shift
+            --bintrayUser) shift
                 export BINTRAY_USER=$1
                 ;;
 
-            --key) shift
+            --bintrayKey) shift
                 export BINTRAY_KEY=$1
                 ;;
 
-            --account) shift
+            --bintrayAccount) shift
                 export BINTRAY_ACCOUNT=$1
                 ;;
 
-            --repo) shift
+            --bintrayRepo) shift
                 export BINTRAY_REPO=$1
                 ;;
 
-            --package) shift
+            --bintrayPackage) shift
                 export BINTRAY_PACKAGE=$1
                 ;;
 
-            --licenses) shift
+            --bintrayLicenses) shift
                 export BINTRAY_LICENSES=$1
                 ;;
 
-            --description) shift
+            --bintrayDescription) shift
                 export BINTRAY_DESCRIPTION=$1
                 ;;
 
-            --version) shift
+            --bintrayVersion) shift
                 export BINTRAY_VERSION=$1
                 ;;
 
-            --name) shift
+            --bintrayName) shift
                 export BINTRAY_NAME=$1
                 ;;
 
-            --file) shift
+            --bintrayFile) shift
                 export BINTRAY_FILE=$1
                 ;;
 
-            --context) shift
+            --bintrayContext) shift
                 export BINTRAY_CONTEXT=$1
                 ;;
         esac
