@@ -22,7 +22,7 @@
 # Tests the github-utils.sh scripts
 #
 
-. `dirname ${BASH_SOURCE[0]}`/../../bash/github-utils.sh
+. `dirname ${BASH_SOURCE[0]}`/../../bash/gitrepo-utils.sh
 . `dirname ${BASH_SOURCE[0]}`/../../bash/test-utils.sh
 
 #
@@ -31,7 +31,9 @@
 test-ensureProtocol() {
     assert-failure ensureProtocol &&
     assert-success ensureProtocol "https://github.com/FlossWare/core.git" &&
-    assert-success ensureProtocol "git@github.com:FlossWare/core.git"
+    assert-success ensureProtocol "git@github.com:FlossWare/core.git"  &&
+    assert-success ensureProtocol "https://flossware@bitbucket.org/flossware/scripts-test-maven.git" &&
+    assert-success ensureProtocol "git@bitbucket.org:flossware/scripts-test-maven.git"
 }
 
 #
@@ -40,13 +42,15 @@ test-ensureProtocol() {
 test-convertProtocol() {
     assert-failure convertProtocol &&
     assert-equals "git@github.com:FlossWare/core.git" "`convertProtocol https://github.com/FlossWare/core.git`" &&
-    assert-equals "git@github.com:FlossWare/core.git" "`convertProtocol git@github.com:FlossWare/core.git`"
+    assert-equals "git@github.com:FlossWare/core.git" "`convertProtocol git@github.com:FlossWare/core.git`"  &&
+    assert-equals "git@bitbucket.org:flossware/scripts-test-maven.git" "`convertProtocol https://flossware@bitbucket.org/flossware/scripts-test-maven.git`" &&
+    assert-equals "git@bitbucket.org:flossware/scripts-test-maven.git" "`convertProtocol git@bitbucket.org:flossware/scripts-test-maven.git`"
 }
 
 #
 # Test converting a github remote...
 #
-test-convertGitHubRemote() {
+test-convertGitRemote-github() {
     TEST_DIR=`mktemp -u`
 
     mkdir -p ${TEST_DIR}
@@ -56,21 +60,46 @@ test-convertGitHubRemote() {
     git clone https://github.com/FlossWare/core.git
     cd core
 
-    convertGitHubRemote
+    convertGitRemote
 
     FULL_REMOTE=`git remote -v`
     REMOTE=`echo ${FULL_REMOTE}  | cut -f 2 -d ' '`
 
+    cd - 1>/dev/null
+    rm -rf ${TEST_DIR}
+
     assert-equals "git@github.com:FlossWare/core.git" "${REMOTE}"
+}
+
+#
+# Test converting a bitbucket remote...
+#
+test-convertGitRemote-bitbucket() {
+    TEST_DIR=`mktemp -u`
+
+    mkdir -p ${TEST_DIR}
+    
+    cd ${TEST_DIR}
+
+    git clone git@bitbucket.org:flossware/scripts-test-maven.git
+    cd scripts-test-maven
+
+    convertGitRemote
+
+    FULL_REMOTE=`git remote -v`
+    REMOTE=`echo ${FULL_REMOTE}  | cut -f 2 -d ' '`
 
     cd - 1>/dev/null
     rm -rf ${TEST_DIR}
+
+    assert-equals "git@bitbucket.org:flossware/scripts-test-maven.git" "${REMOTE}"
 }
 
 # ----------------------------------------------------
 
 unit-test-should-pass test-ensureProtocol
 unit-test-should-pass test-convertProtocol
-unit-test-should-pass test-convertGitHubRemote
+unit-test-should-pass test-convertGitRemote-github
+unit-test-should-pass test-convertGitRemote-bitbucket
 
 # ----------------------------------------------------

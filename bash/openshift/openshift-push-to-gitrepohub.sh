@@ -35,11 +35,11 @@
 #
 
 . `dirname ${BASH_SOURCE[0]}`/openshift-config.sh
-. `dirname ${BASH_SOURCE[0]}`/../github-utils.sh
+. `dirname ${BASH_SOURCE[0]}`/../gitrepo-utils.sh
 . `dirname ${BASH_SOURCE[0]}`/../git-utils.sh
 
 export GIT_SSH=`dirname ${BASH_SOURCE[0]}`/openshift-git-push.sh
 
-convertGitHubRemote
+convertGitRemote
 
 git push origin `compute-git-current-branch` --tags

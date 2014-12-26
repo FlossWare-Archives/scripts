@@ -24,7 +24,7 @@
 # Ensure a we have the correct protocol...
 #
 # Required params:
-#   $1 - A git remote, for example git@github.com:FlossWare/scripts.git
+#   $1 - A git remote, for example git@github.com:FlossWare/scripts.git or git@bitbucket.org:flossware/scripts-test-maven.git
 #
 ensureProtocol() {
     ensure-total-params 1 $* &&
@@ -46,24 +46,27 @@ ensureProtocol() {
 convertProtocol() {
     ensure-total-params 1 $* &&
 
-    echo "$1" | sed -e 's/https:\/\/github.com\//git@github.com:/'
+    echo "$1" | sed -e 's/https:\/\/github.com\//git@github.com:/' | sed -e 's/https:\/\/\([[:alnum:]_]\)\+@bitbucket.org\//git@bitbucket.org:/'
 }
 
 
 #
 # This function will change the the remote protocol from https to git
-# for github.
+# for github or bintray.
 #
 # For example should you clone a github repo using the https
-# protocol, you get a push ref similar to https://github.com/FlossWare/java.git
+# protocol, you get a push ref similar to https://github.com/FlossWare/java.git or
+# https://flossware@bitbucket.org/flossware/scripts-test-maven.git
 #
 # This script will change it to something similar to:
-#  git@github.com:FlossWare/java.git
+#    git@github.com:FlossWare/java.git
+# Or
+#    git@bitbucket.org:flossware/scripts-test-maven.git
 #
 # No params are expected.  However, it is assumed when this function is executed,
 # the current working directory is in a git area.
 #
-convertGitHubRemote() {
+convertGitRemote() {
     REMOTE_NAME=`git remote`
     REMOTE=`git remote -v | grep push | sed -e "s/${REMOTE_NAME}//" -e 's/ (push)//' -e 's/\t//'`
 
