@@ -25,16 +25,37 @@
 . `dirname ${BASH_SOURCE[0]}`/common-utils.sh
 
 #
+# Emit a message that a test passed.
+#
+emitTestPassMsg() {
+    emitColoredMsg "darkGreen" "    PASS:  $@"
+}
+
+#
+# Emit a message that a test failed.
+#
+emitTestFailMsg() {
+    emitColoredMsg "lightRed"  "    FAIL:  $@"
+}
+
+#
+# Emit an informational message.
+#
+emitTestInfoMsg() {
+    emitColoredMsg "cyan"  "    $@"
+}
+
+#
 # Asserting params equals. 
 #
 assert-equals() {
     if [ "$1" != "$2" ]
     then
-        echo "    FAIL:  Tested [$1] != [$2]"
+        emitTestFailMsg "Tested [$1] != [$2]"
 
         exit 1
     else
-        echo "    PASS:  Tested [$1] == [$2]"
+        emitTestPassMsg "Tested [$1] == [$2]"
     fi  
 }
 
@@ -45,11 +66,11 @@ assert-equals() {
 assert-not-equals() {
     if [ "$1" = "$2" ]
     then
-        echo "    FAIL:  Tested [$1] == [$2]"
+        emitTestFailMsg "Tested [$1] == [$2]"
 
         exit 1
     else
-        echo "    PASS:  Tested [$1] != [$2]"
+        emitTestPassMsg "Tested [$1] != [$2]"
     fi  
 }
 
@@ -59,9 +80,9 @@ assert-not-equals() {
 assert-blank() {
     if [ "$1" = "" ]
     then
-        echo "    PASS:  assert-blank"
+        emitTestPassMsg "assert-blank"
     else
-        echo "    FAIL:  assert-blank [$1]"
+        emitTestFailMsg "assert-blank [$1]"
 
         exit 1
     fi  
@@ -73,11 +94,11 @@ assert-blank() {
 assert-not-blank() {
     if [ "$1" = "" ]
     then
-        echo "    FAIL:  assert-not-blank [$1]"
+        emitTestFailMsg "assert-not-blank [$1]"
 
         exit 1
     else
-        echo "    PASS:  assert-not-blank"
+        emitTestPassMsg "assert-not-blank"
     fi  
 }
 
@@ -91,11 +112,11 @@ assert-success() {
 
     if [ $? -ne 0 ]
     then
-        echo "    FAIL:  assert-success [$*]"
+        emitTestFailMsg "assert-success [$*]"
 
         exit 1
     else
-        echo "    PASS:  assert-success [$*]"
+        emitTestPassMsg "assert-success [$*]"
     fi
 }
 
@@ -109,9 +130,9 @@ assert-failure() {
 
     if [ $? -ne 0 ]
     then
-        echo "    PASS:  assert-failure [$*]"
+        emitTestPassMsg "assert-failure [$*]"
     else
-        echo "    FAIL:  assert-failure [$*]"
+        emitTestFailMsg "assert-failure [$*]"
 
         exit 1
     fi
@@ -140,8 +161,8 @@ unit-test() {
     expected_status=$1
     shift
 
-    echo "---------------------------------------------------------"
-    echo "Executing:  [$*]"
+    emitTestInfoMsg "---------------------------------------------------------"
+    emitTestInfoMsg "Executing:  [$*]"
     echo 
 
     EXECUTING=`$* 1>&2`
@@ -151,11 +172,11 @@ unit-test() {
 
     if [ "${EXIT}" != "${expected_status}" ]
     then
-        echo "UNIT TEST FAIL:  Tested [$1] ... exit status expected = ${expected_status} / actual = ${EXIT}"
+        emitTestFailMsg "UNIT TEST FAIL:  Tested [$1] ... exit status expected = ${expected_status} / actual = ${EXIT}"
 
         TOTAL_FAILED_TESTS=`expr ${TOTAL_FAILED_TESTS} + 1`
     else
-        echo "UNIT TEST PASS:  Tested [$1]"
+        emitTestPassMsg "UNIT TEST PASS:  Tested [$1]"
 
         TOTAL_PASSED_TESTS=`expr ${TOTAL_PASSED_TESTS} + 1`
     fi  
@@ -208,7 +229,7 @@ test-suite-start() {
     export TOTAL_PASSED_TESTS=0
 
     echo
-    echo "TESTING..."
+    emitTestInfoMsg "TESTING..."
     echo 
 }
 
@@ -220,27 +241,27 @@ test-suite-end() {
     test-suite-teardown
 
     echo
-    echo "========================================================="
+    emitTestInfoMsg "========================================================="
     echo
-    echo "TEST RESULTS:"
+    emitTestInfoMsg "TEST RESULTS:"
     echo
-    echo "    Passed = [${TOTAL_PASSED_TESTS}]"
-    echo "    Failed = [${TOTAL_FAILED_TESTS}]"
+    emitTestInfoMsg "    Passed = [${TOTAL_PASSED_TESTS}]"
+    emitTestInfoMsg "    Failed = [${TOTAL_FAILED_TESTS}]"
     echo
 
     if [ "${TOTAL_FAILED_TESTS}" != "0" ]
     then
-        echo "TEST SUITE FAILED!"
+        emitTestInfoMsg "TEST SUITE FAILED!"
 
         EXIT=1
     else
-        echo "TEST SUITE PASSED!"
+        emitTestInfoMsg "TEST SUITE PASSED!"
 
         EXIT=0
     fi
 
     echo
-    echo "========================================================="
+    emitTestInfoMsg "========================================================="
     echo
 
     $*

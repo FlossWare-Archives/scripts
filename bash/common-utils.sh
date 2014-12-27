@@ -23,13 +23,98 @@
 #
 
 #
+# If color is enabled, it will return $1
+# otherwise empty string.
+#
+getColor() {
+    tput colors 1>/dev/null
+    if [ $? -eq 0 ]
+    then
+        echo -e $1
+    else
+        echo ""
+    fi
+}
+
+#
+# Return a foreground based upon mneumonic.
+#
+getForeground() {
+    declare -A foreground
+
+    foreground["default"]="39"
+
+    foreground["black"]="30"
+    foreground["red"]="31"
+    foreground["green"]="32"
+    foreground["yellow"]="33"
+    foreground["blue"]="34"
+    foreground["magenta"]="35"
+    foreground["cyan"]="36"
+    foreground["lightGray"]="37"
+
+    foreground["darkGray"]="90"
+    foreground["lightRed"]="91"
+    foreground["darkGreen"]="92"
+    foreground["lightYellow"]="93"
+    foreground["lightBlue"]="94"
+    foreground["lightMagenta"]="95"
+    foreground["lightCyan"]="96"
+    foreground["white"]="97"
+
+    getColor "\e[${foreground[$1]}m"
+}
+
+#
+# Return a background based upon mneumonic.
+#
+getBackground() {
+    declare -A background
+
+    background["default"]="49"
+
+    background["black"]="40"
+    background["red"]="41"
+    background["green"]="42"
+    background["yellow"]="43"
+    background["blue"]="44"
+    background["magenta"]="45"
+    background["cyan"]="46"
+    background["lightGray"]="47"
+
+    background["darkGray"]="100"
+    background["lightRed"]="101"
+    background["darkGreen"]="102"
+    background["lightYellow"]="103"
+    background["lightBlue"]="104"
+    background["lightMagenta"]="105"
+    background["lightCyan"]="106"
+    background["white"]="107"
+
+    getColor "\e[${background[$1]}m"
+}
+
+#
 # Emit a message to std err
 #
 # Optional params:
 #   $* - these will be echo'd to std-err.
 #
 emit-msg() {
-    echo $* 1>&2
+    echo "$@" 1>&2
+}
+
+#
+# Emit a message in color (if supported)
+#
+# Required params:
+#   $1 - the color as gound above in getForeground
+#
+emitColoredMsg() {
+    COLOR=$1
+    shift
+
+    emit-msg "`getForeground ${COLOR}`$@`getForeground default`"
 }
 
 #
@@ -39,7 +124,8 @@ emit-msg() {
 #   $* - these will be echo'd to std-err.
 #
 error-msg() {
-    emit-msg "ERROR:  $*"
+    emitColoredMsg "red" "ERROR:  $@"
+
     exit 1
 }
 #
@@ -49,7 +135,7 @@ error-msg() {
 #   $* - these will be echo'd to std-err.
 #
 warning-msg() {
-    emit-msg "WARNING:  $*"
+    emitColoredMsg "yellow" "WARNING:  $@"
 }
 
 #
@@ -59,7 +145,7 @@ warning-msg() {
 #   $* - these will be echo'd to std-err.
 #
 info-msg() {
-    emit-msg "INFO:  $*"
+    emitColoredMsg "green" "INFO:  $@"
 }
 
 #
