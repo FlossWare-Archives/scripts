@@ -27,7 +27,7 @@
 # otherwise empty string.
 #
 getColor() {
-    tput colors 1>/dev/null
+    tput colors 1>/dev/null 2>/dev/null
     if [ $? -eq 0 ]
     then
         echo -e $1
