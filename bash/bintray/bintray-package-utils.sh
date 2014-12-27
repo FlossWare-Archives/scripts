@@ -19,26 +19,29 @@
 #
 
 #
-# Creates a bintray package
+# Utility for bintray content.
 #
 
-. `dirname ${BASH_SOURCE[0]}`/bintray-package-utils.sh $*
+. `dirname ${BASH_SOURCE[0]}`/bintray-utils.sh 
+
+set-bintray-vars $*
 
 #
-# Ensure we have the correct data for package create.
+# Ensure we have the correct package data.
 #
-ensurePackageCreateData() {
-    ensurePackageData
+ensurePackageData() {
+    ensureBintrayData
 
-    if [ "${BINTRAY_LICENSES}" = "" ]
+    if [ "${BINTRAY_REPO}" = "" ]
     then
-        echo "Please provide licenses param [--bintrayLicenses]!"
+        echo "Please provide repo param!"
+        exit 1
+    fi
+
+
+    if [ "${BINTRAY_PACKAGE}" = "" ]
+    then
+        echo "Please provide package param [--bintrayPackage]!"
         exit 1
     fi
 }
-
-ensurePackageCreateData
-        
-BINTRAY_CREATE=`compute-json-object ${BINTRAY_PACKAGE_JSON} ${BINTRAY_LICENSES_JSON} ${BINTRAY_DESC_JSON}`
-
-curl -v -k -u ${BINTRAY_USER}:${BINTRAY_KEY} -H "Content-Type: application/json" -X POST https://api.bintray.com/packages/${BINTRAY_ACCOUNT}/${BINTRAY_REPO} --data "${BINTRAY_CREATE}"

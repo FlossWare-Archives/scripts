@@ -19,11 +19,36 @@
 #
 
 #
-# Creates bintray rpmcontent
+# Utility for bintray content.
 #
 
-. `dirname ${BASH_SOURCE[0]}`/../rpm-utils.sh
+. `dirname ${BASH_SOURCE[0]}`/bintray-utils.sh
 
-`dirname ${BASH_SOURCE[0]}`/content-publish.sh $* --repo rpm --version `compute-full-rpm-version`
+set-bintray-vars $*
 
-curl -v -k -T ${BINTRAY_FILE} -u ${BINTRAY_USER}:${BINTRAY_KEY} -H "X-Bintray-Package:${BINTRAY_PACKAGE}" -H "X-Bintray-Version:${BINTRAY_VERSION}" -X PUT https://api.bintray.com/content/${BINTRAY_ACCOUNT}/${BINTRAY_REPO}/${BINTRAY_NAME}
+#
+# Esnure we have content data.
+#
+ensureVersionData() {
+    ensureBintrayData
+
+    if [ "${BINTRAY_REPO}" = "" ]
+    then
+        echo "Please provide repo param [--bintrayRepo]!"
+        exit 1
+    fi
+
+    if [ "${BINTRAY_PACKAGE}" = "" ]
+    then
+        echo "Please provide package param [--bintrayPackage]!"
+        exit 1
+    fi
+
+    if [ "${BINTRAY_VERSION}" = "" ]
+    then
+        echo "Please provide version param [--bintrayVersion]!"
+        exit 1
+    fi
+}
+
+ensureVersionData

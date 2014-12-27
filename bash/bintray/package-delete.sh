@@ -22,26 +22,8 @@
 # Delete a bintray package
 #
 
-DIR=`dirname ${BASH_SOURCE[0]}`
+. `dirname ${BASH_SOURCE[0]}`/bintray-package-utils.sh $*
 
-. ${DIR}/bintray-utils.sh
-
-set-bintray-vars $*
-
-ensureData() {
-    if [ "${BINTRAY_REPO}" = "" ]
-    then
-        echo "Please provide repo param!"
-        exit 1
-    fi
-
-    if [ "${BINTRAY_NAME}" = "" ]
-    then
-        echo "Please provide name param!"
-        exit 1
-    fi
-}
-
-ensureData
+ensurePackageData
         
-curl -v -k -u ${BINTRAY_USER}:${BINTRAY_KEY} -X DELETE https://api.bintray.com/packages/${BINTRAY_ACCOUNT}/${BINTRAY_REPO}/${BINTRAY_NAME}
+curl -v -k -u ${BINTRAY_USER}:${BINTRAY_KEY} -X DELETE https://api.bintray.com/packages/${BINTRAY_ACCOUNT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}

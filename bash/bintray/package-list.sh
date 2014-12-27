@@ -24,21 +24,6 @@
 
 . `dirname ${BASH_SOURCE[0]}`/bintray-package-utils.sh $*
 
-#
-# Ensure we have the correct data for package create.
-#
-ensurePackageCreateData() {
-    ensurePackageData
-
-    if [ "${BINTRAY_LICENSES}" = "" ]
-    then
-        echo "Please provide licenses param [--bintrayLicenses]!"
-        exit 1
-    fi
-}
-
-ensurePackageCreateData
+ensurePackageData
         
-BINTRAY_CREATE=`compute-json-object ${BINTRAY_PACKAGE_JSON} ${BINTRAY_LICENSES_JSON} ${BINTRAY_DESC_JSON}`
-
-curl -v -k -u ${BINTRAY_USER}:${BINTRAY_KEY} -H "Content-Type: application/json" -X POST https://api.bintray.com/packages/${BINTRAY_ACCOUNT}/${BINTRAY_REPO} --data "${BINTRAY_CREATE}"
+curl -v -k -u ${BINTRAY_USER}:${BINTRAY_KEY} -H "Content-Type: application/json" -X GET https://api.bintray.com/packages/${BINTRAY_ACCOUNT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/files

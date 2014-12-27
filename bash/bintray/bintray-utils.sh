@@ -43,9 +43,7 @@ fi
 #
 # Need some json utility functionality...
 #
-DIR=`dirname ${BASH_SOURCE[0]}`
-
-. ${DIR}/../json-utils.sh
+. `dirname ${BASH_SOURCE[0]}`/../json-utils.sh
 
 #
 # Simply emity param usages...
@@ -108,7 +106,8 @@ bintray-debug() {
 set-bintray-json-vars() {
     export BINTRAY_LICENSES_JSON=`compute-json-array-field-if-value-set licenses ${BINTRAY_LICENSES}`
     export BINTRAY_DESCRIPTION_JSON=`compute-json-field-if-value-set desc ${BINTRAY_DESCRIPTION}`
-    export BINTRAY_NAME_JSON=`compute-json-field-if-value-set name ${BINTRAY_NAME}`
+    export BINTRAY_PACKAGE_JSON=`compute-json-field-if-value-set name ${BINTRAY_PACKAGE}`
+    export BINTRAY_VERSION_JSON=`compute-json-field-if-value-set name ${BINTRAY_VERSION}`
     export SONATYPE_USER_JSON=`compute-json-field-if-value-set username ${SONATYPE_USER}`
     export SONATYPE_PASSWORD_JSON=`compute-json-field-if-value-set password ${SONATYPE_PASSWORD}`
 }
@@ -174,4 +173,27 @@ set-bintray-vars() {
 
     set-bintray-json-vars
     bintray-debug
+}
+
+#
+# Ensure the data is correct.
+#
+ensureBintrayData() {
+    if [ "${BINTRAY_USER}" = "" ]
+    then
+        echo "Please provide user param [--bintrayUser]!"
+        exit 1
+    fi
+
+    if [ "${BINTRAY_KEY}" = "" ]
+    then
+        echo "Please provide key param [--bintrayKey]!"
+        exit 1
+    fi
+
+    if [ "${BINTRAY_ACCOUNT}" = "" ]
+    then
+        echo "Please provide account param [--bintrayAccount]!"
+        exit 1
+    fi
 }

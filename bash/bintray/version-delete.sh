@@ -22,32 +22,6 @@
 # Creates a bintray version
 #
 
-DIR=`dirname ${BASH_SOURCE[0]}`
+. `dirname ${BASH_SOURCE[0]}`/bintray-version-util.sh $*
 
-. ${DIR}/bintray-utils.sh
-
-set-bintray-vars $*
-
-ensureData() {
-    if [ "${BINTRAY_VERSION}" = "" ]
-    then
-        echo "Please provide version param!"
-        exit 1
-    fi
-
-    if [ "${BINTRAY_REPO}" = "" ]
-    then
-        echo "Please provide repo param!"
-        exit 1
-    fi
-
-    if [ "${BINTRAY_PACKAGE}" = "" ]
-    then
-        echo "Please provide package param!"
-        exit 1
-    fi
-}
-
-ensureData
-        
 curl -v -k -u ${BINTRAY_USER}:${BINTRAY_KEY} -X DELETE https://api.bintray.com/packages/${BINTRAY_ACCOUNT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/versions/${BINTRAY_VERSION}

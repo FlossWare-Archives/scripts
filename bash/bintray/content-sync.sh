@@ -21,34 +21,7 @@
 #
 # Sync bintray content to sonatype
 #
-
-DIR=`dirname ${BASH_SOURCE[0]}`
-
-. ${DIR}/bintray-utils.sh
-
-set-bintray-vars $*
-
-ensureData() {
-    if [ "${BINTRAY_VERSION}" = "" ]
-    then
-        echo "Please provide version param!"
-        exit 1
-    fi
-
-    if [ "${BINTRAY_REPO}" = "" ]
-    then
-        echo "Please provide repo param!"
-        exit 1
-    fi
-
-    if [ "${BINTRAY_PACKAGE}" = "" ]
-    then
-        echo "Please provide package param!"
-        exit 1
-    fi
-}
-
-ensureData
+. `dirname ${BASH_SOURCE[0]}`/bintray-content-utils.sh $*
 
 CLOSE_FIELD_JSON=`compute-json-field close 1`
 BINTRAY_CREATE=`compute-json-object ${SONATYPE_USER_JSON} ${SONATYPE_PASSWORD_JSON} ${CLOSE_FIELD_JSON}`

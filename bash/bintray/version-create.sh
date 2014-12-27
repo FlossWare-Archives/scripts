@@ -22,34 +22,8 @@
 # Creates a bintray version
 #
 
-DIR=`dirname ${BASH_SOURCE[0]}`
+. `dirname ${BASH_SOURCE[0]}`/bintray-version-util.sh $*
 
-. ${DIR}/bintray-utils.sh
-
-set-bintray-vars $*
-
-ensureData() {
-    if [ "${BINTRAY_NAME_JSON}" = "" ]
-    then
-        echo "Please provide name param!"
-        exit 1
-    fi
-
-    if [ "${BINTRAY_REPO}" = "" ]
-    then
-        echo "Please provide repo param!"
-        exit 1
-    fi
-
-    if [ "${BINTRAY_PACKAGE}" = "" ]
-    then
-        echo "Please provide package param!"
-        exit 1
-    fi
-}
-
-ensureData
-        
-BINTRAY_CREATE=`compute-json-object ${BINTRAY_NAME_JSON} ${BINTRAY_LICENSES_JSON} ${BINTRAY_DESC}`
+BINTRAY_CREATE=`compute-json-object ${BINTRAY_VERSION_JSON} ${BINTRAY_LICENSES_JSON} ${BINTRAY_DESC_JSON}`
 
 curl -v -k -u ${BINTRAY_USER}:${BINTRAY_KEY} -H "Content-Type: application/json" -X POST https://api.bintray.com/packages/${BINTRAY_ACCOUNT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/versions --data "${BINTRAY_CREATE}"

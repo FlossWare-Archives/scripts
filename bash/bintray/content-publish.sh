@@ -21,39 +21,6 @@
 #
 # Publishes bintray content
 #
-
-DIR=`dirname ${BASH_SOURCE[0]}`
-
-. ${DIR}/bintray-utils.sh
-
-set-bintray-vars $*
-
-ensureData() {
-    if [ "${BINTRAY_ACCOUNT}" = "" ]
-    then
-        echo "Please provide account param!"
-        exit 1
-    fi
-
-    if [ "${BINTRAY_REPO}" = "" ]
-    then
-        echo "Please provide repo param!"
-        exit 1
-    fi
-
-    if [ "${BINTRAY_PACKAGE}" = "" ]
-    then
-        echo "Please provide package param!"
-        exit 1
-    fi
-
-    if [ "${BINTRAY_VERSION}" = "" ]
-    then
-        echo "Please provide version param!"
-        exit 1
-    fi
-}
-
-ensureData
+. `dirname ${BASH_SOURCE[0]}`/bintray-content-utils.sh $*
         
 curl -v -k -u ${BINTRAY_USER}:${BINTRAY_KEY} -X POST https://api.bintray.com/content/${BINTRAY_ACCOUNT}/${BINTRAY_REPO}/${BINTRAY_PACKAGE}/${BINTRAY_VERSION}/publish
