@@ -56,9 +56,12 @@ As mentioned above, we use [Jenkins] (http://jenkins-ci.org).  There is a "gotch
 * Click on the Jenkins link (upper left) / Manage Jenkins / Configure System.
 * Navigate to the "Git plugin" section and provide values for "Global Config user.name Value" and "Global Config user.email Value."  We opted to name our user name "jenkins"
 * Click the "Save" button.
-* For your [Jenkins] (http://jenkins-ci.org) job, choose it and click configure.  Navigate down to the "Source Code Management" section for [Git] (http://git-scm.com).
-* Add an "Additional Behaviour" - specifically "Polling ignores commits from certain users."  For the "Excluded Users" enter the name of the [Jenkins] (http://jenkins-ci.org) user you configured above for "Global Config user.name Value"
-* Click the "Save" button.
+* For your [Jenkins] (http://jenkins-ci.org) job, choose it and click configure.
+  * Navigate down to the "Source Code Management" section for [Git] (http://git-scm.com).
+  * Add an "Additional Behaviour" - specifically "Checkout to a specific local branch."  For most cases use "master" as the branch name.
+  * Add an "Additional Behaviour" - specifically "Polling ignores commits from certain users."  For the "Excluded Users" enter the name of the [Jenkins] (http://jenkins-ci.org) user you configured above for "Global Config user.name Value"
+  * 
+  * Click the "Save" button.
 
 ##### FlossWare Scripts Job
 
