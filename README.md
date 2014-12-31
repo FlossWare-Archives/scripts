@@ -243,6 +243,12 @@ The content scripts allow you to create and publish your [Bintray] (https://bint
 * [conent-create.sh] (https://github.com/FlossWare/scripts/blob/master/bash/bintray/content-create.sh) will create content.  
 * [content-publish.sh] (https://github.com/FlossWare/scripts/blob/master/bash/bintray/content-publish.sh) will publish content.
 
+##### Publishing
+
+The publishing scripts allow you to publish your Maven and RPM [Bintray] (https://bintray.com) content.
+* [maven-publish.sh] (https://github.com/FlossWare/scripts/blob/master/bash/bintray/maven-publish.sh) will publish Java artifacts based upon the version contained within the `pom.xml`.
+* [rpm-publish.sh] (https://github.com/FlossWare/scripts/blob/master/bash/bintray/rpm-publish.sh) will create and publish RPM content.  Required parameter:  `bintrayContext`.
+
 
 ### Unit Testing
 
