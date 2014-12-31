@@ -11,7 +11,7 @@ This project got its start as a way to provide scripts for [Jenkins] (http://jen
 ### Directories
 
 The following represents our directory structure:
-* `bash` - bash utility scripts and some non 
+* `bash` - bash utility scripts and functions.
 * `bash/bintray` - Bintray related scripts for creating, listing, publishing and deleting artifacts.
 * `bash/continuous-delivery` - continuous delivery related scripts.  Presently only "short cuts" for preparing [Maven] (http://maven.apache.org) and RPM artifacts for release.
 * `bash/openshift` - OpenShift related scripts that can help with rev'ing artifact versions, pushing out artifacts to Bintray, Github, Bitbucket, etc.
@@ -51,26 +51,27 @@ If you are using [Jenkins] (http://jenkins-ci.org) at [OpenShift] (https://www.o
 
 ##### Configuration
 
-As mentioned above, we use [Jenkins] (http://jenkins-ci.org).  There is a "gotcha" you need to recognize:  [Jenkins] (http://jenkins-ci.org) not only builds, it is managing versioned files (like `pom.xml` or a spec file), but it is also publishing those changes back to a remote [Git] (http://git-scm.com) repository.  Therefore, when it builds, you need to instruct [Jenkins] (http://jenkins-ci.org) to exclude changes from itself.  If you do not, it will rev, commit, build checking repeat over and over again.  To stop this, you must configure as follows:
+As mentioned above, we use [Jenkins] (http://jenkins-ci.org).  There is a "gotcha" you need to recognize:  [Jenkins] (http://jenkins-ci.org) not only builds and manages versioned files (like `pom.xml` or a spec file), but it also publishes those changes back to a remote [Git] (http://git-scm.com) repository.  Therefore, when building, you need to instruct [Jenkins] (http://jenkins-ci.org) to exclude changes from itself.  If you do not, it will rev, build, commit, checkin...repeat - over and over again.  To avoid this, configure [Jenkins] (http://jenkins-ci.org) as follows:
 * Install the [Git Plugin] (https://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin) if not already installed.
-* Click on the Jenkins link (upper left) / Manage Jenkins / Configure System.
-* Navigate to the "Git plugin" section and provide values for "Global Config user.name Value" and "Global Config user.email Value."  We opted to name our user name "jenkins"
+* Click on the Jenkins link (upper left), then "Manage Jenkins" and "Configure System."
+* Navigate to the "Git plugin" section and provide values for "Global Config user.name Value" and "Global Config user.email Value."  We opted to name our user name "jenkins."
 * Click the "Save" button.
-* For your [Jenkins] (http://jenkins-ci.org) job, choose it and click configure.
+* For your [Jenkins] (http://jenkins-ci.org) job, choose it and click "configure."
   * Navigate down to the "Source Code Management" section for [Git] (http://git-scm.com).
-  * Add an "Additional Behaviour" - specifically "Checkout to a specific local branch."  For most cases use "master" as the branch name.
-  * Add an "Additional Behaviour" - specifically "Polling ignores commits from certain users."  For the "Excluded Users" enter the name of the [Jenkins] (http://jenkins-ci.org) user you configured above for "Global Config user.name Value"
+  * Add two "Additional Behaviour" options:
+    * "Checkout to a specific local branch."  For most cases use "master" as the branch name.
+    * "Polling ignores commits from certain users."  For the "Excluded Users" enter the name of the [Jenkins] (http://jenkins-ci.org) user you configured above for "Global Config user.name Value."
   * Click the "Save" button.
 
 ##### FlossWare Scripts Job
 
 We presently do not yet have the capability to RPM-ify our scripts (this will be resolved in [Issue #30] (https://github.com/FlossWare/scripts/issues/30)).  However, in [OpenShift] (https://www.openshift.com), we won't be able to install any RPM we generate and have to, instead, have a [Jenkins] (http://jenkins-ci.org) job that monitors our [Scripts Git Repo] (https://github.com/FlossWare/scripts.git) for changes to the master branch.  Our job is entitled `Flossware-scripts` and it can be utilized by other jobs refering to the scripts in the form of `$WORKSPACE/../FlossWare-scripts/bash`.  Below you will see how we execute the [FlossWare Scripts] (https://github.com/FlossWare/scripts).
 
-Additionally, you may want to consider installing the [Build Blocker Plugin] (https://wiki.jenkins-ci.org/display/JENKINS/Build+Blocker+Plugin) and block any of your jobs from building if a build of [FlossWare Scripts] (https://github.com/FlossWare/scripts) is executing.  Please note, a build of [FlossWare Scripts] (https://github.com/FlossWare/scripts) may be misleading - we simply need the job to update (aka checkout the latest) when there are changes to the scripts.
+Additionally, you may want to consider installing the [Build Blocker Plugin] (https://wiki.jenkins-ci.org/display/JENKINS/Build+Blocker+Plugin) and block any of your jobs from building if a build of [FlossWare Scripts] (https://github.com/FlossWare/scripts) is executing.  Please note, a build of [FlossWare Scripts] (https://github.com/FlossWare/scripts) may be misleading - we simply need the job to update (aka checkout the latest) when there are changes to the [scripts] (https://github.com/FlossWare/scripts).
 
 ##### OpenShift
 
-If you use a [Git] (http://git-scm.com) hosting service such as [GitHub] (https://github.com/), the [Jenkins] (http://jenkins-ci.org) `~/.ssh` directory is inaccessible as it's owned by root.  If you want [Jenkins] (http://jenkins-ci.org) to affect change to your versioning files (`pom.xml` or spec file), you will need a way to provide an `SSH key` so commits can be automatically propogated back out.  Presently we are defaulting to an `.ssh` directory in `${HOME}/app-root/runtime/.ssh`.  Additionally, we've provided the script `bash/openshift/openshift-keygen.sh` that will create the aforementioned directory and setup a passwordless `SSH key`.  You can then add the public key `${HOME}/app-root/runtime/.ssh/id_rsa.pub` to your [Git] (http://git-scm.com) hosting service.
+If you use a [Git] (http://git-scm.com) hosting service such as [GitHub] (https://github.com/), the [Jenkins] (http://jenkins-ci.org) `~/.ssh` directory is inaccessible as it's owned by root.  If you want [Jenkins] (http://jenkins-ci.org) to affect change to your versioning files (`pom.xml` or spec file), you will need a way to provide an `SSH key` so commits can be automatically propogated back.  Presently we are defaulting to an `SSH` directory at `${HOME}/app-root/runtime/.ssh`.  Additionally, we've provided the script `bash/openshift/openshift-keygen.sh` that can create the aforementioned directory and setup a passwordless `SSH key`.  You can then add the public key `${HOME}/app-root/runtime/.ssh/id_rsa.pub` to your [Git] (http://git-scm.com) hosting service.
 
 The [OpenShift] (https://www.openshift.com) script `bash/openshift/openshift-push-to-gitrepo.sh` will ensure that the `${HOME}/app-root/runtime/.ssh/id_rsa.pub` is used.
 
@@ -80,7 +81,7 @@ Below we denote examples that indirectly call out to [Bintray] (https://bintray.
 * [maven-publish.sh] (https://github.com/FlossWare/scripts/blob/master/bash/bintray/maven-publish.sh)
 * [rpm-publish.sh] (https://github.com/FlossWare/scripts/blob/master/bash/bintray/rpm-publish.sh)
 
-These two scripts reside with the other [Bintray] (https://bintray.com) scripts and honor the same command line parameters.  More information can be found below in the Bintray.
+These two scripts reside with the other [Bintray] (https://bintray.com) scripts and honor the same command line parameters.  More information can be found below in the Bintray section.
 
 #### Maven
 
@@ -95,7 +96,7 @@ For a `pom.xml`, versioning increments the third digit of an assumed three digit
 	<version>1.0.3</version>
 ```
 
-Once incremented, the version will next be `1.0.4` as seen below:
+The next version will be `1.0.4` as seen below:
 
 ```xml
   <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -104,7 +105,7 @@ Once incremented, the version will next be `1.0.4` as seen below:
 	<version>1.0.4</version>
 ```
 
-Once incremented, a tag is generated from the current `pom.xml` version and a comment is added to [Git] (http://git-scm.com).  For [Jenkins] (http://jenkins-ci.org), add an "Execute Shell" command before any [Maven] (http://maven.apache.org) invocation line as follows:
+Add an "Execute Shell" command before any [Maven] (http://maven.apache.org) invocation line as follows:
 
 ```bash
 cd $WORKSPACE &&
@@ -130,7 +131,7 @@ $WORKSPACE/../FlossWare-scripts/bash/bintray/maven-publish.sh --bintrayUser some
 
 The line `$WORKSPACE/../FlossWare-scripts/bash/openshift/openshift-push-to-gitrepo.sh` will commit and tag your `pom.xml` and push it out to either [GitHub] (https://github.com/) or [Bitbucket] (https://bitbucket.org/).
 
-Please note, supply the appropriate values to the `maven-publish.sh` script based upon your account.
+Please note, supply the appropriate values to the `maven-publish.sh` script based upon your account - see the Bintray section below for more information.
 
 #### RPM
 
@@ -145,7 +146,7 @@ Version: 1.0
 Release: 1
 ```
 
-Once incremented, the release will be 2, as can be seen below:
+The next release will be 2, as can be seen below:
 
 ```spec
 Summary: A set of scripts to help aid in Salesforce.com development and deployment
@@ -154,8 +155,7 @@ Version: 1.0
 Release: 2
 ```
 
-Once incremented, a tag is generated from the spec file (using the `Version` dash `Release`) and a comment is added to [Git] (http://git-scm.com).  For [Jenkins] (http://jenkins-ci.org), add an "Execute Shell" command before any statements you use to build your RPM as follows:
-
+Add an "Execute Shell" command before any statements you use to build your RPM as follows:
 
 ```bash
 cd $WORKSPACE &&
@@ -178,7 +178,7 @@ $WORKSPACE/../FlossWare-scripts/bash/openshift/openshift-push-to-gitrepo.sh &&
 $WORKSPACE/../FlossWare-scripts/bash/bintray/rpm-publish.sh --bintrayUser someUser --bintrayKey abcdefghijklmnopqrstuvwxyz0123456789ABCD --bintrayAccount someAccount --bintrayRepo someRepo --bintrayPackage somePackage --bintrayFile /path/to/the.rpm --bintrayContext /path/to/the.specFile
 ```
 
-The line `$WORKSPACE/../FlossWare-scripts/bash/openshift/openshift-push-to-gitrepo.sh` will commit and tag your spec file and push it out to either [GitHub] (https://github.com/) or [Bitbucket] (https://bitbucket.org/).  All git commit messages since the last tag will be included in the `%changelog` section.
+The line `$WORKSPACE/../FlossWare-scripts/bash/openshift/openshift-push-to-gitrepo.sh` will commit and tag your spec file and push it out to either [GitHub] (https://github.com/) or [Bitbucket] (https://bitbucket.org/).  The tag is generated from the spec file (using the `Version` dash `Release`) and a comment is added to [Git] (http://git-scm.com).  Additionally, git commit messages since the last tag will be included in the `%changelog` section.
 
 As an example:
 
@@ -190,7 +190,7 @@ As an example:
 - Broke the build.
 ```
 
-Please note, supply the appropriate values to the `rpm-publish.sh` script based upon your [Bintray] (https://bintray.com) account.
+Please note, supply the appropriate values to the `rpm-publish.sh` script based upon your [Bintray] (https://bintray.com) account - see the Bintray section below for more information.
 
 ##### All in One Build
 
@@ -206,10 +206,10 @@ $WORKSPACE/../FlossWare-scripts/bash/bintray/rpm-publish.sh --bintrayUser someUs
 
 ### Bintray
 
-We've include a number of scripts to simplify interacting with the [Bintray API] (https://bintray.com/docs/api).  While the API is fairly easy, we wanted a simple and consistent command line way to create, list and delete artifacts.  While not all command line parameters are used in each script, the following bulleted list denotes the supported command line options (some familiarity with [Bintray] (https://bintray.com) may make the command line parameters more obvious):
+We've included a number of scripts to create, list and delete artifacts using the [Bintray API] (https://bintray.com/docs/api).  While not all command line parameters are used by each script, the following bulleted list denotes the recognized options (some familiarity with [Bintray] (https://bintray.com) may provide better clarity):
 * `--bintrayUser` - your user name.
 * `--bintrayKey` - your API key.
-* `--bintrayAccount` - your account name.
+* `--bintrayAccount` - your account name (really your organization name).
 * `--bintrayRepo` - the repo type like maven, rpm, etc.
 * `--bintrayLicenses` - for now, a single entry license name you use when creating a package.  For example GPL-3.0.
 * `--bintrayPackage` - the package name.
@@ -218,11 +218,11 @@ We've include a number of scripts to simplify interacting with the [Bintray API]
 * `--bintrayFile` - the actual local artifact you will publish.
 * `--bintrayContext` - this is a [FlossWare Scripts] (https://github.com/FlossWare/scripts) specific item and it denotes the context in which you are working.  For example, if you are publishing RPMs, its the spec file used to build the RPM or a `pom.xml`.
 
-Any of the scripts support the `--help` command line argument which will emit the aforementioned names and descriptions to the console.
+All of the scripts support the `--help` command line argument which will emit the aforementioned names and descriptions to the console.
 
 #### Scripts
 
-Our scripts are divided into utilities and commands.  The commands perform an action but those actions may require related functionality which is encapsulated in utilties.  For example. the two version commands [version-create.sh] (https://github.com/FlossWare/scripts/blob/master/bash/bintray/version-create.sh) and [version-delete.sh] (https://github.com/FlossWare/scripts/blob/master/bash/bintray/version-delete.sh) both require a repo, package and version to work correctly.  This functionality is encapsulated in the [version-utils.sh] (https://github.com/FlossWare/scripts/blob/master/bash/bintray/bintray-version-util.sh) script.
+Our scripts are divided into utilities and commands.  The commands perform an action but those actions may require related functionality which is encapsulated in utilties.  For example, the version commands [version-create.sh] (https://github.com/FlossWare/scripts/blob/master/bash/bintray/version-create.sh) and [version-delete.sh] (https://github.com/FlossWare/scripts/blob/master/bash/bintray/version-delete.sh) both require a repo, package and version to work correctly.  This functionality is encapsulated in the [version-utils.sh] (https://github.com/FlossWare/scripts/blob/master/bash/bintray/bintray-version-util.sh) script.
 
 All commands require the following parameters:  `--bintrayUser`, `--bintrayKey` and `--bintrayAccount`.
 
@@ -270,7 +270,6 @@ The following unit tests have high test coverage:
 * [json-utils.sh] (https://github.com/FlossWare/scripts/blob/master/bash/json-utils.sh)
 * [maven-utils.sh] (https://github.com/FlossWare/scripts/blob/master/bash/maven-utils.sh)
 * [rpm-utils.sh] (https://github.com/FlossWare/scripts/blob/master/bash/rpm-utils.sh)
-
 
 
 ### Miscellaneous
