@@ -61,7 +61,6 @@ bintray-param-usage() {
     echo "  --bintrayLicenses     the licenses for your bintray packages"
     echo "  --bintrayPackage      package name"
     echo "  --bintrayDescription  description"
-    echo "  --bintrayName         the name (for package, version, etc)"
     echo "  --bintrayVersion      the version"
     echo "  --bintrayFile         the file"
     echo "  --bintrayContext      the context file in which --file is being pushed (for example a spec file)"
