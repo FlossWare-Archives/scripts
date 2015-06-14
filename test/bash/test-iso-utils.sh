@@ -29,7 +29,7 @@
 # Test extracting an ISO
 #
 test-extract-iso() {
-    which genisoimage 2>/dev/null
+    which genisoimage 1>/dev/null 2>/dev/null
     if [ $? -ne 0 ]
     then
         warning-msg "No genisoimage - skipping test"
@@ -39,6 +39,8 @@ test-extract-iso() {
     EXTRACT_DIR=`mktemp -u` 
     CONTENT_DIR=`mktemp -u`
     ISO_FILE=`mktemp -u`.iso
+
+    cd
 
     mkdir -p ${CONTENT_DIR}
     echo "Hello world" > ${CONTENT_DIR}/testfile.txt

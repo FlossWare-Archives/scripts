@@ -29,5 +29,6 @@ run-test-suite() {
     . `dirname ${BASH_SOURCE[0]}`/test-jenkins-utils.sh &&
     . `dirname ${BASH_SOURCE[0]}`/test-json-utils.sh    &&
     . `dirname ${BASH_SOURCE[0]}`/test-maven-utils.sh   &&
-    . `dirname ${BASH_SOURCE[0]}`/test-rpm-utils.sh 
+    . `dirname ${BASH_SOURCE[0]}`/test-rpm-utils.sh     &&
+    . `dirname ${BASH_SOURCE[0]}`/test-iso-utils.sh
 }
