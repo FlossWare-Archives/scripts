@@ -249,6 +249,20 @@ ensure-dir-exists() {
 }
 
 #
+# Remove a directory if it exists.
+#
+# Required params:
+#   $1 - the directory to remove if it exists.
+#
+remove-dir-if-exists() {
+    ensure-total-params 1 $* &&
+    if [ -d $1 ]
+    then
+        rmdir $1
+    fi  
+}
+
+#
 # Using params, separate them with commas.
 #
 # Optional params:

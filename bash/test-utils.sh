@@ -103,6 +103,44 @@ assert-not-blank() {
 }
 
 #
+# Asserting a file exists
+#
+assert-file-exists() {
+    if [ "$1" = "" ]
+    then
+        emitTestFailMsg "No file presented"
+
+        exit 1
+    elif [ -f $1 ]
+    then
+        emitTestPassMsg "File exists [$1]"
+    else
+        emitTestFailMsg "File does not exist [$1]"
+
+        exit 1
+    fi  
+}
+
+#
+# Asserting a file exists
+#
+assert-file-not-exists() {
+    if [ "$1" = "" ]
+    then
+        emitTestFailMsg "No file presented"
+
+        exit 1
+    elif [ ! -f $1 ]
+    then
+        emitTestPassMsg "File does not exist [$1]"
+    else
+        emitTestFailMsg "File does exist [$1]"
+
+        exit 1
+    fi  
+}
+
+#
 # Will execute whatever is handed in as params.  If a failure arises
 # it will exit with a 1, otherwise exits with a 0.  This is ensuring
 # the commands are successfully executed.

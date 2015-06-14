@@ -95,6 +95,18 @@ test-ensure-dir-exists() {
 }
 
 #
+# Test a dir exists.
+#
+test-remove-dir-if-exists() {
+    TEST_DIR=`mktemp -u`
+    mkdir -p ${TEST_DIR}
+
+    assert-failure remove-dir-if-exists &&
+    assert-success remove-dir-if-exists ${TEST_DIR} &&
+    assert-success remove-dir-if-exists `mktemp -u`
+}
+
+#
 # Test separating with commas
 #
 test-separate-with-commas() {
@@ -185,6 +197,8 @@ unit-test-should-pass test-ensure-max-params
 unit-test-should-pass test-ensure-file-exists
 
 unit-test-should-pass test-ensure-dir-exists
+
+unit-test-should-pass test-remove-dir-if-exists
 
 unit-test-should-pass test-separate-with-commas
 
