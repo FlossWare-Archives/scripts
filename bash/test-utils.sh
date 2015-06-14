@@ -194,6 +194,8 @@ unit-test-teardown() {
 # Run a test
 #
 unit-test() {
+    CURRENT_TEST_DIR=`pwd`
+
     unit-test-setup
 
     expected_status=$1
@@ -220,6 +222,8 @@ unit-test() {
     fi  
 
     unit-test-teardown
+
+    cd ${CURRENT_TEST_DIR}
 }
 
 #
