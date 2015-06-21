@@ -25,6 +25,26 @@
 . `dirname ${BASH_SOURCE[0]}`/common-utils.sh
 
 #
+# Unmount a mount point.  If not mounted, will skip.
+#
+# Required params:
+#   $1..$N - the dirs to unmount.
+#
+unmount() {
+    ensure-min-params 1 $* &&
+
+    for aDir in $*
+    do
+        info-msg "Attempting to unmount [$1]" &&
+        sudo mountpoint -q $1 
+        if [ $? -eq 0 ]
+        then
+            umount $1
+        fi
+    done
+}
+
+#
 # Extract an ISO
 #
 # Required params:
@@ -38,12 +58,18 @@ extractIso() {
 	isoName=`basename $1` &&
 	isoDir=/tmp/iso/${isoName} &&
 
+	unmount ${isoDir} &&
+
 	remove-dir-if-exists ${isoDir} &&
 	mkdir -p ${isoDir} $2 &&
 
+    info-msg "Attempting to mount [${isoDir}]" &&
 	sudo mount $1 ${isoDir} -t iso9660 -o loop &&
+
+    info-msg "Extracting files to [$2]" &&
 	rsync -av ${isoDir}/* $2 &&
-	sudo umount ${isoDir} &&
+
+	unmount ${isoDir} &&
 
 	rmdir ${isoDir}
 }

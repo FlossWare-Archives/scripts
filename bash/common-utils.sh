@@ -209,12 +209,13 @@ ensure-min-params() {
 #   $2..$N - the params to count.
 #
 ensure-max-params() {
+info-msg "Found [$@]"
     MAX=`compute-default-value 0 $1`
     shift
 
     if [ $# -gt ${MAX} ]
     then
-        error-msg "Wrong number of maximum parameters - had ${MAX}"
+        error-msg "Wrong number of maximum parameters - expected ${MAX} but found $#"
     fi
 }
 
