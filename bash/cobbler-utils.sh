@@ -116,7 +116,7 @@ repo-add() {
 
     info-msg "Adding repo [$1]" &&
 
-    cobbler repo add --name="$1" --arch="$2" --mirror="$3"
+    cobbler repo add --name="$1" --arch="$2" --mirror="$3" --mirror-locally="0"
 
     if [ $? -ne 0 ]
     then
