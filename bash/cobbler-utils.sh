@@ -91,7 +91,7 @@ distro-add() {
 
     info-msg "Attempting to import [$1]" &&
 
-    cobbler import --name=$1 --path=$3
+    cobbler import --name="$1" --path="$3"
 }
 
 # -----------------------------------------------------------------------------------
@@ -116,7 +116,7 @@ repo-add() {
 
     info-msg "Adding repo [$1]" &&
 
-    cobbler repo add --name=$1 --arch=$2 --mirror=$3
+    cobbler repo add --name="$1" --arch="$2" --mirror="$3"
 
     if [ $? -ne 0 ]
     then
@@ -137,7 +137,7 @@ repo-remove() {
 
     for aRepo in $*
     do
-        cobbler repo remove --name=${aRepo}
+        cobbler repo remove --name="${aRepo}"
 
         if [ $? -ne 0 ]
         then
@@ -191,15 +191,15 @@ profile-add() {
     info-msg "Attempting to add profile [$1]" &&
 
     case $# in
-        6) cobbler profile add --name=$1 --distro=$2 --repos=$3 --kickstart=$4 --ksmeta=$5 --kopts=$6
+        6) cobbler profile add --name="$1" --distro="$2" --repos="$3" --kickstart="$4" --ksmeta="$5" --kopts="$6"
             ;;
-        5) cobbler profile add --name=$1 --distro=$2 --repos=$3 --kickstart=$4 --ksmeta=$5
+        5) cobbler profile add --name="$1" --distro="$2" --repos="$3" --kickstart="$4" --ksmeta="$5"
             ;;
-        4) cobbler profile add --name=$1 --distro=$2 --repos=$3 --kickstart=$4
+        4) cobbler profile add --name="$1" --distro="$2" --repos="$3" --kickstart="$4"
             ;;
-        3) cobbler profile add --name=$1 --distro=$2 --repos=$3
+        3) cobbler profile add --name="$1" --distro="$2" --repos="$3"
             ;;
-        *) cobbler profile add --name=$1 --distro=$2
+        *) cobbler profile add --name="$1" --distro="$2"
             ;;
     esac
 
@@ -222,7 +222,12 @@ profile-remove() {
 
     for aProfile in $*
     do
-        cobbler profile find --name=${aProfile} && cobbler profile remove --name=${aProfile}
+        cobbler profile remove --name=${aProfile}
+
+        if [ $? -ne 0 ]
+        then
+            warning-msg "Trouble removing profile [${aProfile}]"
+        fi
     done &&
 
     cobbler sync
@@ -271,15 +276,15 @@ system-add() {
     info-msg "Attempting to add system [$1]" &&
 
     case $# in
-        6) cobbler system add --name=$1 --profile=$2 --mac=$3 --interface=$4 --ksmeta=$5 --kickstart=$6
+        6) cobbler system add --name="$1" --profile="$2" --mac="$3" --interface="$4" --ksmeta="$5" --kickstart="$6"
             ;;
-        5) cobbler system add --name=$1 --profile=$2 --mac=$3 --interface=$4 --ksmeta=$5
+        5) cobbler system add --name="$1" --profile="$2" --mac="$3" --interface="$4" --ksmeta="$5"
             ;;
-        4) cobbler system add --name=$1 --profile=$2 --mac=$3 --interface=$4
+        4) cobbler system add --name="$1" --profile="$2" --mac="$3" --interface="$4"
             ;;
-        3) cobbler system add --name=$1 --profile=$2 --mac=$3
+        3) cobbler system add --name="$1" --profile="$2" --mac="$3"
             ;;
-        *) cobbler system add --name=$1 --profile=$2
+        *) cobbler system add --name="$1" --profile="$2"
             ;;
     esac
 
@@ -302,11 +307,11 @@ system-remove() {
 
     for aSystem in $*
     do
-        cobbler system remove --name=${aSystem}
+        cobbler system remove --name="${aSystem}"
 
         if [ $? -ne 0 ]
         then
-            warnging-msg "Trouble removing system [${aSystem}]"
+            warning-msg "Trouble removing system [${aSystem}]"
         fi
 
     done &&
