@@ -65,7 +65,7 @@ distro-remove() {
 #
 distro-remove-all() {
     DISTROS=`distro-list` &&
-    if [ "${DISTROS}" == '' ]
+    if [ "${DISTROS}" == "" ]
     then
         warning-msg "No distros found to remove!" &&
 
@@ -153,7 +153,7 @@ repo-remove() {
 #
 repo-remove-all() {
     REPOS=`repo-list` &&
-    if [ "${REPOS}" == '' ]
+    if [ "${REPOS}" == "" ]
     then
         warning-msg "No repos found to remove!" &&
 
@@ -238,7 +238,7 @@ profile-remove() {
 #
 profile-remove-all() {
     PROFILES=`profile-list` &&
-    if [ "${PROFILES}" == '' ]
+    if [ "${PROFILES}" == "" ]
     then
         warning-msg "No profiles found to remove!" &&
 
@@ -324,7 +324,7 @@ system-remove() {
 #
 system-remove-all() {
     SYSTEMS=`system-list` &&
-    if [ "${SYSTEMS}" == '' ]
+    if [ "${SYSTEMS}" == "" ]
     then
         warning-msg "No systems found to remove!" &&
 
