@@ -1,0 +1,10 @@
+---
+
+- name: Install postfix
+  yum:  name=postfix state=present
+
+- name: Configure postfix
+  template: src=main.cf dest=/etc/postfix/main.cf
+
+- name: Ensure postfix is running
+  service: name=postfix state=restarted enabled=true

@@ -1,0 +1,10 @@
+---
+
+- name: Install dovecot
+  yum:  name=dovecot state=present
+
+- name: Configure dovecot
+  template: src=dovecot.conf dest=/etc/dovecot.conf
+
+- name: Ensure dovecot is running
+  service: name=dovecot state=restarted enabled=true

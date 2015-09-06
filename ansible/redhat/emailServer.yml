@@ -1,0 +1,12 @@
+---
+
+#
+# sudo ansible-playbook -l [host | group] [-k] emailServer.yml
+#
+
+- name: Setup an email server
+  hosts: all
+
+  roles:
+  - { role: dovecot }
+  - { role: postfix }
