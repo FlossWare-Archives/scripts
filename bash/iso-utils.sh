@@ -39,9 +39,28 @@ unmount() {
         sudo mountpoint -q $1 
         if [ $? -eq 0 ]
         then
-            umount $1
+            sudo umount $1
         fi
     done
+}
+
+#
+# Mount an ISO
+#
+# Required params:
+#   $1 - the fully qualified path and file name of the ISO to extract
+#   $2 - the directory where to mount
+#
+mountIso() {
+    ensure-total-params 2 $* &&
+    ensure-file-exists $1 &&
+
+	unmount $2 &&
+
+	create-dir $2 &&
+
+    info-msg "Attempting to mount [$2]" &&
+	sudo mount $1 $2 -t iso9660 -o loop 
 }
 
 #
@@ -58,18 +77,13 @@ extractIso() {
 	isoName=`basename $1` &&
 	isoDir=/tmp/iso/${isoName} &&
 
-	unmount ${isoDir} &&
+    mountIso $1 ${isoDir} &&
 
-	remove-dir-if-exists ${isoDir} &&
-	mkdir -p ${isoDir} $2 &&
-
-    info-msg "Attempting to mount [${isoDir}]" &&
-	sudo mount $1 ${isoDir} -t iso9660 -o loop &&
-
+    create-dir $2 &&
     info-msg "Extracting files to [$2]" &&
 	rsync -av ${isoDir}/* $2 &&
 
-	unmount ${isoDir} &&
+    unmount ${isoDir} &&
 
 	rmdir ${isoDir}
 }

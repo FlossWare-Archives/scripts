@@ -107,6 +107,27 @@ test-remove-dir-if-exists() {
 }
 
 #
+# Test creating a dir.
+#
+test-create-dir() {
+    TEST_FILE=`mktemp -u`
+    TEST_DIR=`mktemp -u`
+
+    touch ${TEST_FILE}
+
+    assert-failure create-dir ${TEST_FILE} &&
+    info-msg "Removing [${TEST_FILE}]" &&
+    rm ${TEST_FILE} &&
+
+    #
+    # This will create the dir twice - both should
+    # succeed.
+    #
+    assert-success create-dir ${TEST_DIR} &&
+    assert-success create-dir ${TEST_DIR}
+}
+
+#
 # Test separating with commas
 #
 test-separate-with-commas() {
@@ -199,6 +220,8 @@ unit-test-should-pass test-ensure-file-exists
 unit-test-should-pass test-ensure-dir-exists
 
 unit-test-should-pass test-remove-dir-if-exists
+
+unit-test-should-pass test-create-dir
 
 unit-test-should-pass test-separate-with-commas
 

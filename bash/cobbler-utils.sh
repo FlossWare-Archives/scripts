@@ -30,6 +30,26 @@
 # -----------------------------------------------------------------------------------
 
 #
+# Kick off a cobbler command.
+#
+cobbler-exec() {
+    info-msg "Executing:  cobbler [$*]" &&
+
+    ensure-min-params 1 $* &&
+
+    cobbler $* &&
+
+    RETURN_CODE=$? &&
+
+    if [ ${RETURN_CODE} -ne 0 ]
+    then
+        warning-msg "Trouble executing [${RETURN_CODE}]:  cobbler [$*]"
+    fi &&
+
+    return ${RETURN_CODE}
+}
+
+#
 # List all distros
 #
 distro-list() {
@@ -43,9 +63,9 @@ distro-list() {
 #   $1..$N - distro names.
 #
 distro-remove() {
-    ensure-min-params 1 $* &&
-
     info-msg "Removing distros [$*]" &&
+
+    ensure-min-params 1 $* &&
 
     for aDistro in $*
     do
@@ -64,7 +84,7 @@ distro-remove() {
 # Remove all distros.
 #
 distro-remove-all() {
-    DISTROS=`distro-list` &&
+    DISTROS=`distro-list | tr -s '\n' ' '` &&
     if [ "${DISTROS}" == "" ]
     then
         warning-msg "No distros found to remove!" &&
@@ -76,22 +96,54 @@ distro-remove-all() {
 }
 
 #
-# Add a distroy (imports its ISO).
+# Add a distro (imports its ISO).
 #
 # Required params:
 #   $1 - the name of the distro.
 #   $2 - the fully qualified path and file name of the ISO to import.
-#   $3 - the fully qualified path where to extract the contents of the ISO for import.
 #
 distro-add() {
-    ensure-total-params 3 $* &&
-    extractIso $2 $3 &&
+    info-msg "Adding distro [$1]" &&
+
+    ensure-total-params 2 $* &&
+
+    MOUNT_PT=`dirname $2`/$1/ &&
 
     distro-remove $1 &&
 
-    info-msg "Attempting to import [$1]" &&
+    info-msg "Using dir [${MOUNT_PT}] as the mount point for [$2]" &&
 
-    cobbler import --name="$1" --path="$3"
+    mountIso $2 ${MOUNT_PT} &&
+
+    info-msg "Attempting to import [$1] from [${MOUNT_PT}]" &&
+
+    cobbler import --name="$1" --path="${MOUNT_PT}"
+
+    RETURN_CODE=$?
+
+    unmount ${MOUNT_PT} 
+
+    rmdir ${MOUNT_PT}
+
+    return ${RETURN_CODE}
+}
+
+#
+# Add a "live" distro (imports its ISO).
+#
+# Required params:
+#   $1 - the name of the distro.
+#   $2 - the fully qualified path and file name of the ISO to import.
+#
+distro-add-live() {
+    ensure-total-params 2 $* &&
+
+    KERNEL="/var/www/cobbler/ks_mirror/$1/isolinux/vmlinuz" &&
+    INITRD="/var/www/cobbler/ks_mirror/$1/isolinux/initrd.img" &&
+
+    distro-add $1 $2 || info-msg "Imported - adding distro [$1]"  &&
+
+    cobbler distro add --name="$1" --kernel="${KERNEL}" --initrd="${INITRD}" --kopts="root=live:http://`hostname`/cobbler/ks_mirror/$1/LiveOS/squashfs.img" && info-msg "Added distro [$1]"
 }
 
 # -----------------------------------------------------------------------------------
@@ -108,15 +160,14 @@ repo-list() {
 #
 # Required params:
 #   $1 - the name of the repo.
-#   $2 - architecture.
-#   $3 - the URL
+#   $2 - the URL
 #
 repo-add() {
-    ensure-total-params 3 $* &&
-
     info-msg "Adding repo [$1]" &&
 
-    cobbler repo add --name="$1" --arch="$2" --mirror="$3" --mirror-locally="0"
+    ensure-total-params 2 $* &&
+
+    cobbler repo add --name="$1" --mirror="$2" --mirror-locally="0"
 
     if [ $? -ne 0 ]
     then
@@ -131,9 +182,9 @@ repo-add() {
 #   $1..$N - the repos to remove
 #
 repo-remove() {
-    ensure-min-params 1 $* &&
-
     info-msg "Removing repos [$*]" &&
+
+    ensure-min-params 1 $* &&
 
     for aRepo in $*
     do
@@ -173,52 +224,15 @@ profile-list() {
 }
 
 #
-# Add a profile
-#
-# Required params:
-#   $1 - the name of the profile
-#   $2 - the distro
-#
-# Optional params:
-#   $3 - the repos
-#   $4 - ths kickstart
-#   $5 - the ksmeta data
-#   $6 - the kopts
-#
-profile-add() {
-    ensure-min-params 2 $1 $2 $3 $4 $5 $6 &&
-
-    info-msg "Attempting to add profile [$1]" &&
-
-    case $# in
-        6) cobbler profile add --name="$1" --distro="$2" --repos="$3" --kickstart="$4" --ksmeta="$5" --kopts="$6"
-            ;;
-        5) cobbler profile add --name="$1" --distro="$2" --repos="$3" --kickstart="$4" --ksmeta="$5"
-            ;;
-        4) cobbler profile add --name="$1" --distro="$2" --repos="$3" --kickstart="$4"
-            ;;
-        3) cobbler profile add --name="$1" --distro="$2" --repos="$3"
-            ;;
-        *) cobbler profile add --name="$1" --distro="$2"
-            ;;
-    esac
-
-    if [ $? -ne 0 ]
-    then
-        warning-msg "Trouble adding profile [$1]"
-    fi
-}
-
-#
 # Remove profiles
 #
 # Required params:
 #   $1..$N - the profiles to remove
 #
 profile-remove() {
-    ensure-min-params 1 $* &&
-
     info-msg "Removing profiles [$*]" &&
+
+    ensure-min-params 1 $* &&
 
     for aProfile in $*
     do
@@ -255,43 +269,6 @@ profile-remove-all() {
 #
 system-list() {
     cobbler system list
-}
-
-#
-# Add a system
-#
-# Required params:
-#   $1 - the name of the system
-#   $2 - the profile
-#
-# Optional params:
-#   $3 - the mac address
-#   $4 - the interface
-#   $5 - the ksmeta data
-#   $6 - ths kickstart
-#
-system-add() {
-    ensure-min-params 2 $1 $2 &&
-
-    info-msg "Attempting to add system [$1]" &&
-
-    case $# in
-        6) cobbler system add --name="$1" --profile="$2" --mac="$3" --interface="$4" --ksmeta="$5" --kickstart="$6"
-            ;;
-        5) cobbler system add --name="$1" --profile="$2" --mac="$3" --interface="$4" --ksmeta="$5"
-            ;;
-        4) cobbler system add --name="$1" --profile="$2" --mac="$3" --interface="$4"
-            ;;
-        3) cobbler system add --name="$1" --profile="$2" --mac="$3"
-            ;;
-        *) cobbler system add --name="$1" --profile="$2"
-            ;;
-    esac
-
-    if [ $? -ne 0 ]
-    then
-        warning-msg "Troubling adding system [$1]"
-    fi
 }
 
 #

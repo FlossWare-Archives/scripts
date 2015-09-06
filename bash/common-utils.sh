@@ -209,7 +209,6 @@ ensure-min-params() {
 #   $2..$N - the params to count.
 #
 ensure-max-params() {
-info-msg "Found [$@]"
     MAX=`compute-default-value 0 $1`
     shift
 
@@ -261,6 +260,29 @@ remove-dir-if-exists() {
     then
         rmdir $1
     fi  
+}
+
+#
+# Create a dir if it doesn't exist.
+#
+# Required params:
+#   $1 - the directory to remove if it exists.
+#
+create-dir() {
+    ensure-total-params 1 $* &&
+
+    if [ -f $1 ]
+    then
+        error-msg "Cannot create dir [$1] as it is a file"
+        exit 1
+    elif [ -d $1 ]
+    then
+        info-msg "Dir [$1] exists - will not attempt creation"
+        return
+    fi
+
+    info-msg "Creating dir [$1]" &&
+    mkdir -p $1
 }
 
 #
