@@ -9,10 +9,13 @@
   - yum-utils
   - python-ctypes
 
-- name: Configure cobbler modules
+- name: Configure cobbler configuration for modules
   template: src=modules.conf dest=/etc/cobbler/modules.conf
 
-- name: Configure cobbler users
+- name: Configure cobbler configuration for settings
+  template: src=settings dest=/etc/cobbler/settings
+
+- name: Configure cobbler configuration for users
   template: src=users.digest dest=/etc/cobbler/users.digest
   when: cobbler_htdigest_user != "" and cobbler_htdigest_md5 != ""
 
