@@ -42,4 +42,5 @@ The variables defiend below correspond to the sections defined in the modules.co
 
 #### /etc/cobbler/users.digest
 For the users.digest file,
-* cobbler_htdigest - if defined assumes our htdigest MD5 value.
+* cobbler_htdigest_user - if defined assumes our htdigest user value.
+* cobbler_htdigest_md5 - if defined assumes our htdigest MD5 value.
