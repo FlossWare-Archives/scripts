@@ -1,13 +1,9 @@
 ---
 
-- name: Install alpine
-  yum:  name=alpine state=present
-
-- name: Install fetchmail
-  yum:  name=fetchmail state=present
-
-- name: Install hunspell
-  yum:  name=hunspell state=present
-
-- name: Install hunspell English
-  yum:  name=hunspell-en state=present
+- name: Install client apps
+  yum:  name={{ item }} state=present
+  with_items:
+  - alpine
+  - fetchmail
+  - hunspell
+  - hunspell-en
