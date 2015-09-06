@@ -1,0 +1,23 @@
+---
+
+- name: Install Cobbler
+  yum:  name={{ item }} state=present
+  with_items:
+  - httpd
+  - koan
+  - cobbler
+  - yum-utils
+  - python-ctypes
+
+- name: Configure cobbler modules
+  template: src=modules.conf dest=/etc/cobbler/modules.conf
+
+- name: Configure cobbler users
+  template: src=users.digest dest=/etc/cobbler/users.digest
+  when: cobbler_htdigest_user != "" and cobbler_htdigest_md5 != ""
+
+- name: Ensure Cobbler is running
+  service: name=cobblerd state=restarted enabled=true
+
+- name: Ensure Apache is running
+  service: name=httpd state=restarted enabled=true

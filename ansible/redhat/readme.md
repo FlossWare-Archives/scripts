@@ -25,3 +25,21 @@ This playbook will install:
 * [alpine] (http://www.washington.edu/alpine) as an email client.
 * [fetchmail] (http://www.fetchmail.info) to retrieve emails and drop them locally.
 * hunspell and hunspell English
+
+## cobbler.yml
+This playbook will setup cobbler, installing and configuring it.  *Please note:  Apache will also be installed.*
+
+### Variables
+
+#### /etc/cobbler/modules.conf
+The variables defiend below correspond to the sections defined in the modules.conf file and are defaulte to the following values.  We are preceeding each variable to represent those sections with *cobbler_*.
+
+* cobbler_authentication = *authn_configfile*
+* cobbler_authorization = *authz_allowall*
+* cobbler_dns = *manage_bind*
+* cobbler_dhcp = *manage_isc*
+* cobbler_tftpd = *manage_in_tftpd*
+
+#### /etc/cobbler/users.digest
+For the users.digest file,
+* cobbler_htdigest - if defined assumes our htdigest MD5 value.

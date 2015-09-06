@@ -1,0 +1,1 @@
+{{ cobbler_htdigest_user }}:Cobbler:{{ cobbler_htdigest_md5 }}

@@ -1,0 +1,9 @@
+---
+
+cobbler_authentication: authn_configfile
+cobbler_authorization:  authz_allowall
+cobbler_dns:            manage_bind
+cobbler_dhcp:           manage_isc
+cobbler_tftpd:          manage_in_tftpd
+cobbler_htdigest_user:  ""
+cobbler_htdigest_md5:   ""
