@@ -37,7 +37,7 @@ cobbler-exec() {
 
     ensure-min-params 1 $* &&
 
-    cobbler $* &&
+    cobbler "$@" &&
 
     RETURN_CODE=$? &&
 
@@ -102,28 +102,49 @@ distro-remove-all() {
 #   $1 - the name of the distro.
 #   $2 - the fully qualified path and file name of the ISO to import.
 #
+# Optional params:
+#   $3..$N - any additional cobbler params.
+#
 distro-add() {
     info-msg "Adding distro [$1]" &&
 
-    ensure-total-params 2 $* &&
+    ensure-min-params 2 $* &&
 
-    MOUNT_PT=`dirname $2`/$1/ &&
+    DISTRO_NAME=$1 &&
+    shift
+    ISO=$1 &&
+    shift &&
 
-    distro-remove $1 &&
+    MOUNT_PT=`dirname ${ISO}`/${DISTRO_NAME}/ &&
 
-    info-msg "Using dir [${MOUNT_PT}] as the mount point for [$2]" &&
+    distro-remove ${DISTRO_NAME} &&
 
-    mountIso $2 ${MOUNT_PT} &&
+    info-msg "Using dir [${MOUNT_PT}] as the mount point for [${ISO}]" &&
 
-    info-msg "Attempting to import [$1] from [${MOUNT_PT}]" &&
+    mountIso ${ISO} ${MOUNT_PT} &&
 
-    cobbler import --name="$1" --path="${MOUNT_PT}"
+    info-msg "Attempting to import [${DISTRO_NAME}] from [${MOUNT_PT}]" &&
 
-    RETURN_CODE=$?
+    cobbler-exec import --name="${DISTRO_NAME}" --path="${MOUNT_PT}" &&
+
+    RETURN_CODE=$? 
 
     unmount ${MOUNT_PT} 
 
     rmdir ${MOUNT_PT}
+
+    if [ "${RETURN_CODE}" != "0" ]
+    then
+        return `expr "${RETURN_CODE}"`
+    fi
+
+    if [ $# -gt 0 ]
+    then
+        cobbler-exec distro edit --name="${DISTRO_NAME}" --in-place "$@"
+        RETURN_CODE=$? 
+    fi
+
+    cobbler-exec distro edit --name="${DISTRO_NAME}" --in-place --ksmeta="tree=http://@@server@@/cblr/links/${DISTRO_NAME}" 
 
     return ${RETURN_CODE}
 }
@@ -135,15 +156,30 @@ distro-add() {
 #   $1 - the name of the distro.
 #   $2 - the fully qualified path and file name of the ISO to import.
 #
+# Optional params:
+#   $3..$N - additional params for Cobbler
+#
 distro-add-live() {
-    ensure-total-params 2 $* &&
+    ensure-min-params 2 $* &&
 
-    KERNEL="/var/www/cobbler/ks_mirror/$1/isolinux/vmlinuz" &&
-    INITRD="/var/www/cobbler/ks_mirror/$1/isolinux/initrd.img" &&
+    DISTRO_NAME=$1 &&
+    shift &&
+    ISO=$1 &&
+    shift
 
-    distro-add $1 $2 || info-msg "Imported - adding distro [$1]"  &&
+    KERNEL="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/isolinux/vmlinuz" &&
+    INITRD="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/isolinux/initrd.img" &&
 
-    cobbler distro add --name="$1" --kernel="${KERNEL}" --initrd="${INITRD}" --kopts="root=live:http://`hostname`/cobbler/ks_mirror/$1/LiveOS/squashfs.img" && info-msg "Added distro [$1]"
+    distro-add ${DISTRO_NAME} ${ISO} || info-msg "Imported - adding distro [${DISTRO_NAME}]"  &&
+
+    cobbler-exec distro add --name="${DISTRO_NAME}" --kernel="${KERNEL}" --initrd="${INITRD}" --kopts="root=live:http://`hostname`/cobbler/ks_mirror/${DISTRO_NAME}/LiveOS/squashfs.img" && info-msg "Added distro [${DISTRO_NAME}]" &&
+
+    if [ $# -gt 0 ]
+    then
+        cobbler-exec distro edit --name="${DISTRO_NAME}" --in-place "$@"
+    fi &&
+
+    cobbler-exec distro edit --name="${DISTRO_NAME}" --in-place --ksmeta="${KSMETA_VALUE} tree=http://@@server@@/cblr/links/${DISTRO_NAME}" 
 }
 
 # -----------------------------------------------------------------------------------
@@ -355,4 +391,3 @@ remove-all() {
 }
 
 # -----------------------------------------------------------------------------------
-
