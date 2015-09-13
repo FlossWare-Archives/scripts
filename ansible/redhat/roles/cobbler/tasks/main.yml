@@ -6,8 +6,13 @@
   - httpd
   - koan
   - cobbler
+  - cobbler-web
   - yum-utils
   - python-ctypes
+  - syslinux-extlinux
+  - livecd-tools
+  - xinetd
+  - tftp-server
 
 - name: Configure cobbler configuration for modules
   template: src=modules.conf dest=/etc/cobbler/modules.conf
@@ -19,8 +24,11 @@
   template: src=users.digest dest=/etc/cobbler/users.digest
   when: cobbler_htdigest_user != "" and cobbler_htdigest_md5 != ""
 
+- name: Ensure Apache is running
+  service: name=httpd state=restarted enabled=true
+
 - name: Ensure Cobbler is running
   service: name=cobblerd state=restarted enabled=true
 
-- name: Ensure Apache is running
-  service: name=httpd state=restarted enabled=true
+- name: Ensure xinetd is running
+  service: name=xinetd state=restarted enabled=true
