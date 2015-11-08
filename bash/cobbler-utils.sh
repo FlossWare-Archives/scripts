@@ -150,36 +150,166 @@ distro-add() {
 }
 
 #
-# Add a "live" distro (imports its ISO).
+# Add an atomic distro
 #
 # Required params:
 #   $1 - the name of the distro.
 #   $2 - the fully qualified path and file name of the ISO to import.
 #
 # Optional params:
-#   $3..$N - additional params for Cobbler
+#   $3..$N - any additional cobbler params.
 #
-distro-add-live() {
+distro-add-atomic() {
+    info-msg "Adding Atomic distro [$1]" &&
+
     ensure-min-params 2 $* &&
 
+    # ------------------------------------------------
+
     DISTRO_NAME=$1 &&
-    shift &&
-    ISO=$1 &&
     shift
+    ISO=$1 &&
+    shift &&
 
-    KERNEL="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/isolinux/vmlinuz" &&
-    INITRD="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/isolinux/initrd.img" &&
+    distro-remove ${DISTRO_NAME} &&
 
-    distro-add ${DISTRO_NAME} ${ISO} || info-msg "Imported - adding distro [${DISTRO_NAME}]"  &&
+    # ------------------------------------------------
 
-    cobbler-exec distro add --name="${DISTRO_NAME}" --kernel="${KERNEL}" --initrd="${INITRD}" --kopts="root=live:http://`hostname`/cobbler/ks_mirror/${DISTRO_NAME}/LiveOS/squashfs.img" && info-msg "Added distro [${DISTRO_NAME}]" &&
+    INSTALL_DIR=`dirname ${ISO}`/${DISTRO_NAME} &&
+
+    info-msg "Cleaning up and creating Atomic install dir [${INSTALL_DIR}]" &&
+
+    rm -rf ${INSTALL_DIR} &&
+
+    mkdir -p ${INSTALL_DIR} &&
+    cd ${INSTALL_DIR} &&
+
+    # ------------------------------------------------
+
+    #
+    # First get the images...
+    #
+    info-msg "Extracting Atomic images [${DISTRO_NAME}]" &&
+
+    /usr/bin/livecd-iso-to-pxeboot ${ISO} &&
+
+    mkdir -p /var/www/cobbler/ks_mirror/${DISTRO_NAME} &&
+
+    cp ${INSTALL_DIR}/tftpboot/{vmlinuz,initrd.img} /var/www/cobbler/ks_mirror/${DISTRO_NAME} &&
+
+    rm /var/www/cobbler/links/${DISTRO_NAME}
+
+    ln -s /var/www/cobbler/ks_mirror/${DISTRO_NAME} /var/www/cobbler/links/${DISTRO_NAME} &&
+
+    # ------------------------------------------------
+
+    MOUNT_PT=${INSTALL_DIR}/iso &&
+
+    info-msg "Using dir [${MOUNT_PT}] as the mount point for Atomic [${ISO}]" &&
+
+    mountIso ${ISO} ${MOUNT_PT} &&
+
+    info-msg "Attempting to import [${DISTRO_NAME}] from [${MOUNT_PT}]" &&
+
+    cobbler-exec import --name="${DISTRO_NAME}" --path="${MOUNT_PT}"
+
+    # ------------------------------------------------
+
+    info-msg "Adding/editing Atomic distro [${DISTRO_NAME}]" &&
+
+    cobbler distro add  --name="${DISTRO_NAME}" --kernel="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/vmlinuz" --initrd="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/initrd.img" &&
+    cobbler distro edit --name="${DISTRO_NAME}" --in-place --ksmeta="tree=http://@@server@@/cblr/links/${DISTRO_NAME}" "$@"
+
+    # ------------------------------------------------
+
+    RETURN_CODE=$? 
+
+    unmount ${MOUNT_PT} 
+
+    rmdir ${MOUNT_PT}
+
+    if [ "${RETURN_CODE}" != "0" ]
+    then
+        return `expr "${RETURN_CODE}"`
+    fi
 
     if [ $# -gt 0 ]
     then
         cobbler-exec distro edit --name="${DISTRO_NAME}" --in-place "$@"
-    fi &&
+        RETURN_CODE=$? 
+    fi
 
-    cobbler-exec distro edit --name="${DISTRO_NAME}" --in-place --ksmeta="${KSMETA_VALUE} tree=http://@@server@@/cblr/links/${DISTRO_NAME}" 
+    cobbler-exec distro edit --name="${DISTRO_NAME}" --in-place --ksmeta="tree=http://@@server@@/cblr/links/${DISTRO_NAME}" 
+
+    return ${RETURN_CODE}
+
+}
+
+#
+# Add a live distro
+#
+# Required params:
+#   $1 - the name of the distro.
+#   $2 - the fully qualified path and file name of the ISO to import.
+#
+# Optional params:
+#   $3..$N - any additional cobbler params.
+#
+distro-add-live() {
+    info-msg "Adding live distro [$1]" &&
+
+    ensure-min-params 2 $* &&
+
+    # ------------------------------------------------
+
+    DISTRO_NAME=$1 &&
+    shift
+    ISO=$1 &&
+    shift &&
+
+    distro-remove ${DISTRO_NAME} &&
+
+    # ------------------------------------------------
+
+    INSTALL_DIR=`dirname ${ISO}`/${DISTRO_NAME} &&
+
+    info-msg "Cleaning up and creating Live install dir [${INSTALL_DIR}]" &&
+
+    rm -rf ${INSTALL_DIR} &&
+
+    mkdir -p ${INSTALL_DIR} &&
+    cd ${INSTALL_DIR} &&
+
+    # ------------------------------------------------
+
+    #
+    # First get the images...
+    #
+    info-msg "Extracting Live images [${DISTRO_NAME}]" &&
+
+    /usr/bin/livecd-iso-to-pxeboot ${ISO} &&
+
+    mkdir -p /var/www/cobbler/ks_mirror/${DISTRO_NAME} &&
+
+    cp ${INSTALL_DIR}/tftpboot/{vmlinuz0,initrd0.img} /var/www/cobbler/ks_mirror/${DISTRO_NAME} &&
+
+    rm /var/www/cobbler/links/${DISTRO_NAME}
+
+    ln -s /var/www/cobbler/ks_mirror/${DISTRO_NAME} /var/www/cobbler/links/${DISTRO_NAME} &&
+
+    # ------------------------------------------------
+
+    info-msg "Adding/editing Live distro [${DISTRO_NAME}]" &&
+
+    cobbler distro add  --name="${DISTRO_NAME}" --kernel="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/vmlinuz0" --initrd="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/initrd0.img" &&
+    cobbler distro edit --name="${DISTRO_NAME}" --in-place --kopts="rootflags=loop !ksdevice !text root=live:/`basename ${ISO}` rootfstype=iso9660 !lang"
+
+    # ------------------------------------------------
+
+    RETURN_CODE=$? 
+
+    return ${RETURN_CODE}
+
 }
 
 # -----------------------------------------------------------------------------------
