@@ -69,7 +69,7 @@ distro-remove() {
 
     for aDistro in $*
     do
-            cobbler distro remove --name=${aDistro}
+            cobbler-exec distro remove --name=${aDistro}
 
             if [ $? -ne 0 ]
             then
@@ -77,7 +77,7 @@ distro-remove() {
             fi
     done &&
 
-    cobbler sync
+    cobbler-exec sync
 }
 
 #
@@ -217,8 +217,8 @@ distro-add-atomic() {
 
     info-msg "Adding/editing Atomic distro [${DISTRO_NAME}]" &&
 
-    cobbler distro add  --name="${DISTRO_NAME}" --kernel="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/vmlinuz" --initrd="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/initrd.img" &&
-    cobbler distro edit --name="${DISTRO_NAME}" --in-place --ksmeta="tree=http://@@server@@/cblr/links/${DISTRO_NAME}" "$@"
+    cobbler-exec distro add  --name="${DISTRO_NAME}" --kernel="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/vmlinuz" --initrd="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/initrd.img" &&
+    cobbler-exec distro edit --name="${DISTRO_NAME}" --in-place --ksmeta="tree=http://@@server@@/cblr/links/${DISTRO_NAME}" "$@"
 
     # ------------------------------------------------
 
@@ -301,8 +301,8 @@ distro-add-live() {
 
     info-msg "Adding/editing Live distro [${DISTRO_NAME}]" &&
 
-    cobbler distro add  --name="${DISTRO_NAME}" --kernel="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/vmlinuz0" --initrd="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/initrd0.img" &&
-    cobbler distro edit --name="${DISTRO_NAME}" --in-place --kopts="rootflags=loop !ksdevice !text root=live:/`basename ${ISO}` rootfstype=iso9660 !lang"
+    cobbler-exec distro add  --name="${DISTRO_NAME}" --kernel="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/vmlinuz0" --initrd="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/initrd0.img" &&
+    cobbler-exec distro edit --name="${DISTRO_NAME}" --in-place --kopts="rootflags=loop !ksdevice !text root=live:/`basename ${ISO}` rootfstype=iso9660 !lang"
 
     # ------------------------------------------------
 
@@ -334,7 +334,7 @@ repo-remove() {
 
     for aRepo in $*
     do
-        cobbler repo remove --name="${aRepo}"
+        cobbler-exec repo remove --name="${aRepo}"
 
         if [ $? -ne 0 ]
         then
@@ -342,7 +342,7 @@ repo-remove() {
         fi
     done &&
 
-    cobbler sync
+    cobbler-exec sync
 }
 
 #
@@ -382,7 +382,7 @@ profile-remove() {
 
     for aProfile in $*
     do
-        cobbler profile remove --name=${aProfile}
+        cobbler-exec profile remove --name=${aProfile}
 
         if [ $? -ne 0 ]
         then
@@ -390,7 +390,7 @@ profile-remove() {
         fi
     done &&
 
-    cobbler sync
+    cobbler-exec sync
 }
 
 #
@@ -430,7 +430,7 @@ system-remove() {
 
     for aSystem in $*
     do
-        cobbler system remove --name="${aSystem}"
+        cobbler-exec system remove --name="${aSystem}"
 
         if [ $? -ne 0 ]
         then
@@ -439,7 +439,7 @@ system-remove() {
 
     done &&
 
-    cobbler sync
+    cobbler-exec sync
 }
 
 #
@@ -476,7 +476,7 @@ system-create-iso() {
 
     info-msg "Attempting to create an ISO using systems [${SYSTEMS}]" &&
 
-    cobbler buildiso --systems="${SYSTEMS}"
+    cobbler-exec buildiso --systems="${SYSTEMS}"
 
     if [ $? -ne 0 ]
     then
