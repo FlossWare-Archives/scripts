@@ -322,26 +322,6 @@ repo-list() {
 }
 
 #
-# Add a repo.
-#
-# Required params:
-#   $1 - the name of the repo.
-#   $2 - the URL
-#
-repo-add() {
-    info-msg "Adding repo [$1]" &&
-
-    ensure-total-params 2 $* &&
-
-    cobbler repo add --name="$1" --mirror="$2" --mirror-locally="0"
-
-    if [ $? -ne 0 ]
-    then
-        warning-msg "Trouble adding repo [$1]"
-    fi
-}
-
-#
 # Remove repos.
 #
 # Required params:
