@@ -37,7 +37,7 @@ cobbler-exec() {
 
     ensure-min-params 1 $* &&
 
-    cobbler "$@" &&
+    cobbler "$@"
 
     RETURN_CODE=$? &&
 
