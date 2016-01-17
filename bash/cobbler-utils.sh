@@ -138,13 +138,15 @@ distro-add() {
         return `expr "${RETURN_CODE}"`
     fi
 
-    if [ $# -gt 0 ]
+    cobbler-exec distro edit --name="${DISTRO_NAME}" --ksmeta="tree=http://@@server@@/cblr/links/${DISTRO_NAME}" --kopts=''
+
+    RETURN_CODE=$?
+
+    if [ $# -gt ${RETURN_CODE} ]
     then
         cobbler-exec distro edit --name="${DISTRO_NAME}" --in-place "$@"
         RETURN_CODE=$? 
     fi
-
-    cobbler-exec distro edit --name="${DISTRO_NAME}" --in-place --ksmeta="tree=http://@@server@@/cblr/links/${DISTRO_NAME}" 
 
     return ${RETURN_CODE}
 }
