@@ -1,0 +1,8 @@
+---
+
+- name: Install Kubernetes master
+  yum: name={{ item }} state=installed
+  with_items:
+      - kubernetes-master
+      - flannel
+      - etcd

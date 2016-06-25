@@ -1,24 +1,24 @@
 # Red Hat Based Provisioning
 The [Ansible playbooks] (http://docs.ansible.com/ansible/playbooks_variables.html) found here are solely for configuring Red Hat based systems.
 
-## emailServer.yml
-This playbook will setup an email server, installing and configuring:
-* [dovecot] (http://www.dovecot.org) for pop3.
-* [postfix] (http://www.postfix.org) for sending/receiving email.
+## dovecot
+This role will install/configure [dovecot] (http://www.dovecot.org) for pop3.
+
+## Postfix
+This role will install/configure [postfix] (http://www.postfix.org) for sending/receiving email.
+The variables denoted below are the same name/values one uses to configure postfix.  However, those are preceeded with *postfix_*.
 
 ### Variables
 
-#### Postfix
-The variables denoted below are the same name/values one uses to configure postfix.  However, those are preceeded with *postfix_*.
-
-##### Optional
+#### Optional
 * postfix_myhostname
 * postfix_mydomain
 
-##### Required
+#### Required
 * postfix_myorigin
 * postfix_proxy_interfaces
 * postfix_relayhost
+
 
 ## emailClient.yml
 This playbook will install:
