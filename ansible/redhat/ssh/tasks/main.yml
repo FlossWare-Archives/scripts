@@ -1,0 +1,16 @@
+---
+
+- name: Let us print
+  debug: msg="my value {{ flossware_ssh }}"
+
+- name: Create id.rsa
+  template: src=id_rsa  dest=/root/.ssh/id_rsa
+  with_items:  "{{ flossware_ssh }}"
+
+- name: Create id.pub
+  template: src=id_rsa.pub dest=/root/.ssh/id_rsa.pub
+  with_items:  "{{ flossware_ssh }}"
+
+- name: Create authorized_keys
+  template: src=authorized_keys dest=/root/.ssh/authorized_keys
+  with_items:  "{{ flossware_ssh }}"
