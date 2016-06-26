@@ -1,0 +1,19 @@
+---
+
+- name: Install KVM virtualization
+  yum:  name={{ item }} state=present
+  with_items:
+  - kvm
+  - virt-manager
+  - libvirt
+  - virt-install
+  - qemu-kvm
+  - xauth
+  - dejavu-lgc-sans-fonts
+  - "@Virtualization"
+
+- name: Update all
+  yum: name=* state=latest
+
+- name: Ensure libvirtd is running
+  service: name=libvirtd state=restarted enabled=true
