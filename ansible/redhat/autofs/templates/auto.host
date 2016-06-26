@@ -1,0 +1,3 @@
+{% for share in item.shares %}
+{{ share }}
+{% endfor %}

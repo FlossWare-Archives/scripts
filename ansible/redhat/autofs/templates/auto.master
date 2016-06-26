@@ -1,0 +1,3 @@
+{% for host in autofs_master %}
+/mnt/{{ host.name }}  /etc/auto.{{ host.name }}
+{% endfor %}
