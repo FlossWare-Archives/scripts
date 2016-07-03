@@ -1,0 +1,21 @@
+---
+
+#
+# Validate variables...
+#
+- name: Ensure we have a rhel_rhn_user value
+  fail: msg="Must provide a rhel_rhn_user variable!"
+  when: rhel_rhn_user == ""
+
+- name: Ensure we have a rhel_rhn_pass value
+  fail: msg="Must provide a rhel_rhn_password variable!"
+  when: rhel_rhn_password == ""
+
+#
+# Setup Subscription Manager
+#
+- name: Unsubscribe to Subscription Manager
+  redhat_subscription: state=absent username={{ rhel_rhn_user }} password={{ rhel_rhn_password }}
+
+- name: Setup Subscription Manager
+  redhat_subscription: state=present username={{ rhel_rhn_user }} password={{ rhel_rhn_password }} autosubscribe=true

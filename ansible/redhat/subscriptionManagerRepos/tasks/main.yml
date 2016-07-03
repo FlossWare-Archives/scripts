@@ -1,0 +1,11 @@
+---
+
+#
+# Setup repos
+#
+- name: Disable all yum repos
+  shell: /usr/bin/subscription-manager repos --disable='*'
+
+- name: Enable yum repos
+  shell: /usr/bin/subscription-manager repos --enable="{{ item }}"
+  with_items: "{{ repos }}"
