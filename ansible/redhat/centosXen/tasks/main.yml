@@ -3,15 +3,7 @@
 - name: Install Xen yum repo
   yum: name="centos-release-xen" state=present
 
-- name: Update all
-  yum: name=* state=latest
-
 - name: Install Xen virtualization
   yum:  name={{ item }} state=present
   with_items:
   - xen
-  - "@Virtualization"
-  - libvirt
-
-- name: Ensure libvirtd is running
-  service: name=libvirtd state=restarted enabled=true
