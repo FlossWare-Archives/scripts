@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 
 #
 # This file is part of the FlossWare family of open source software.
@@ -19,30 +19,24 @@
 #
 
 #
-# For Open Shift work, this will setup configuration.
+# This script will install Ansible at Openshift.  Note this script has to be run
+# at your openshift instance.
 #
 # To use:
-#  . openshift-config.sh
+#   openshift-install-ansible
 #
 
-export PATH=`dirname ${BASH_SOURCE[0]}`:`dirname ${BASH_SOURCE[0]}`/..:${PATH}
+# --------------------------------------------------------------------
+# Installing ansible
+# --------------------------------------------------------------------
 
-# ---------------------------------------------------------
+. `dirname ${BASH_SOURCE[0]}`/openshift-config.sh
 
-export OPEN_SHIFT_SSH_DIR=${HOME}/app-root/runtime/.ssh
+echo "127.0.0.1" > ${OPENSHIFT_DATA_DIR}/ansible_hosts
 
-export OPEN_SHIFT_LIB_DIR=${OPENSHIFT_DATA_DIR}/lib
+mkdir -p ${ANSIBLE_LOCAL_TEMP}
 
-export OPEN_SHIFT_BIN_DIR=${OPENSHIFT_DATA_DIR}/bin
+cp `dirname ${BASH_SOURCE[0]}`/openshift-ansible.cfg ${ANSIBLE_CONFIG}
 
-export PATH=${OPEN_SHIFT_BIN_DIR}:${PATH}
-
-# ---------------------------------------------------------
-
-export PYTHONPATH=${PYTHONPATH}:${OPEN_SHIFT_LIB_DIR}/python2.7
-
-# ---------------------------------------------------------
-
-export ANSIBLE_INVENTORY=${OPENSHIFT_DATA_DIR}/ansible_hosts
-export ANSIBLE_LOCAL_TEMP=${OPENSHIFT_DATA_DIR}/.ansible
-export ANSIBLE_CONFIG=${OPENSHIFT_DATA_DIR}/ansible.cfg
+pip install ansible
+pip install --upgrade ansible setuptools
