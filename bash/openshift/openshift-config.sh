@@ -28,3 +28,6 @@
 export PATH=`dirname ${BASH_SOURCE[0]}`:`dirname ${BASH_SOURCE[0]}`/..:${PATH}
 
 export OPEN_SHIFT_SSH_DIR=${HOME}/app-root/runtime/.ssh
+export OPEN_SHIFT_BIN_DIR=$OPENSHIFT_DATA_DIR/bin
+
+export PATH=${OPEN_SHIFT_BIN_DIR}:${PATH}
