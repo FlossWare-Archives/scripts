@@ -1,0 +1,7 @@
+---
+
+#
+# Setup firewalld
+#
+- name: Set firewall state.  By default, stopped.
+  service: name=firewalld state={{ firewall_state }}

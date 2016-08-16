@@ -1,3 +1,2 @@
 ---
-selinux_state:  "disabled"
 firewall_state: "stopped"

@@ -1,0 +1,7 @@
+---
+
+#
+# Setup selinux
+#
+- name: Set selinux to either enabled or disabled.  By default, disabled.
+  selinux: state={{ selinux_state }}
