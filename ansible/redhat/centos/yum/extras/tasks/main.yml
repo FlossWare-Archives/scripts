@@ -1,0 +1,4 @@
+---
+
+- name: Enable extras repo
+  shell:  yum-config-manager --enable extras

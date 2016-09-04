@@ -1,0 +1,4 @@
+---
+
+- name: Enable centosplus repo
+  shell:  yum-config-manager --enable centosplus

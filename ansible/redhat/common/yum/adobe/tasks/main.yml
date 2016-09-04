@@ -1,0 +1,4 @@
+---
+
+- name: Install the Adobe yum repo
+  yum: name="yum install -y http://linuxdownload.adobe.com/linux/x86_64/adobe-release-x86_64-1.0-1.noarch.rpm" state=present

@@ -1,0 +1,6 @@
+---
+
+dependencies:
+  - centos/yum/centosplus
+  - centos/yum/extras
+  - centos/yum/updates

@@ -1,0 +1,4 @@
+---
+dependencies:
+  - rhel/subscriptionManager/register
+  - rhel/subscriptionManager/repos

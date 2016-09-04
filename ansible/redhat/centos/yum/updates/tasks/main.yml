@@ -1,0 +1,4 @@
+---
+
+- name: Enable updates repo
+  shell:  yum-config-manager --enable updates
