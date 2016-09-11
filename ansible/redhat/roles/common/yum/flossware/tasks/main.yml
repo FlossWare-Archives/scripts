@@ -1,0 +1,3 @@
+---
+- name: Copy FlossWare Bintray yum repo file
+  copy: src=bintray-flossware-rpm.repo dest=/etc/yum.repos.d
