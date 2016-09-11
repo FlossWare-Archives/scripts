@@ -1,5 +1,0 @@
----
-dependencies:
-  - kvm
-  - virtualization
-  - bridge

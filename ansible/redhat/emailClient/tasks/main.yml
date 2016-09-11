@@ -1,9 +1,0 @@
----
-
-- name: Install client apps
-  yum:  name={{ item }} state=present
-  with_items:
-  - alpine
-  - fetchmail
-  - hunspell
-  - hunspell-en

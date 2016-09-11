@@ -1,0 +1,9 @@
+---
+
+- name: Install client email
+  yum:  name={{ item }} state=present
+  with_items:
+  - alpine
+  - fetchmail
+  - hunspell
+  - hunspell-en

@@ -1,0 +1,10 @@
+---
+
+- name: Setup RHEL host to use KVM
+  hosts: all
+
+  roles:
+  - operatingSystem/rhel/subscriptionManager
+  - common/security
+  - common/yum/epel
+  - cloud/kvm

@@ -1,0 +1,10 @@
+---
+
+- name: Setup CentOS host to use Xen
+  hosts: all
+
+  roles:
+  - common/security
+  - common/yum/epel
+  - operatingSystem/centos/yum
+  - operatingSystem/centos/xen

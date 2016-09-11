@@ -1,0 +1,7 @@
+---
+
+- name: Install KDE related groups
+  yum:  name={{ item }} state=present
+  with_items:
+    - "@KDE Plasma Workspaces"
+    - "@KDE Desktop"

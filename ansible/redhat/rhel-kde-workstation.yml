@@ -1,0 +1,10 @@
+---
+
+- name: Setup a RHEL KDE workstation 
+  hosts: all
+
+  roles:
+  - operatingSystem/rhel/subscriptionManager
+  - common/security
+  - common/yum/epel
+  - common/workstation/kde

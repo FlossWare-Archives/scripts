@@ -1,0 +1,5 @@
+---
+
+dependencies:
+  - operatingSystem/rhel/subscriptionManager/register
+  - operatingSystem/rhel/subscriptionManager/repos
