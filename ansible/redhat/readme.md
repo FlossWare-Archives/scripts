@@ -15,20 +15,20 @@ We make liberal use of directory structures to leverage the notion of a sub role
 * centosXenVirtualization
 
 By using subdirectories, we have much clearer (and cleaner) naming conventions.  To illustrate, we fixed the aforementioned by defining sub roles as:
-* operatingSystem/centos/xen
-* cloud/virtualization
+* [operatingSystem/centos/xen](https://github.com/FlossWare/scripts/tree/master/ansible/redhat/roles/operatingSystem/centos/xen)
+* [cloud/virtualization](https://github.com/FlossWare/scripts/tree/master/ansible/redhat/roles/cloud/virtualization)
 
 #### Dependent Roles
 As mentioned above, we only utilize [dependent roles](http://docs.ansible.com/ansible/playbooks_roles.html#role-dependencies) when two or more roles leverage a common piece of functionality.  As an example both ```cloud/kvm``` and ```operatingSystem/cents/xen``` require the same "virtualization" functionality.
 
 #### Layout
 Our current layout consists of:
-* cloud: these are cloud-y kind of roles like virtualization and cobbler.
-* common: common functionality one might use for things like email servers, setting up autofs, etc.
-* operatingSystem: breaking up specific operating system roles for CentOS and RHEL (like Subscription Manager functionality).
+* [cloud](https://github.com/FlossWare/scripts/tree/master/ansible/redhat/roles/cloud): these are cloud-y kind of roles like [virtualization](https://en.wikipedia.org/wiki/Virtualization) and [Cobbler](https://en.wikipedia.org/wiki/Virtualization).
+* [common](https://github.com/FlossWare/scripts/tree/master/ansible/redhat/roles/common): common functionality one might use for things like email servers, setting up [autofs](https://wiki.archlinux.org/index.php/Autofs), etc.
+* [operatingSystem](https://github.com/FlossWare/scripts/tree/master/ansible/redhat/roles/operatingSystem): breaking up specific operating system roles for CentOS and RHEL (like Subscription Manager functionality).
 
 ## How To
-Presently the only way to utilize our scripts is to clone this git repo.  Simple do so and add the cloned directory to your ```/etc/ansible/ansible.cfg``` ```roles_path```.  For example:  ```roles_path = /home/sfloess/Development/github/FlossWare/scripts/ansible/redhat/roles```
+Presently the only way to utilize our scripts is to clone this git repo.  Simply do so and add the cloned directory to your ```/etc/ansible/ansible.cfg``` ```roles_path```.  For example:  ```roles_path = /home/sfloess/Development/github/FlossWare/scripts/ansible/redhat/roles```
 
 ## Documentation
 Please see the [wiki pages](https://github.com/FlossWare/scripts/wiki) for descriptions of roles and playbooks.
