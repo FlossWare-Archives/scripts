@@ -15,13 +15,13 @@
   - tftp-server
 
 - name: Configure cobbler configuration for modules
-  template: src=modules.conf dest=/etc/cobbler/modules.conf
+  template: src=modules.conf.j2 dest=/etc/cobbler/modules.conf
 
 - name: Configure cobbler configuration for settings
-  template: src=settings dest=/etc/cobbler/settings
+  template: src=settings.j2 dest=/etc/cobbler/settings
 
 - name: Configure cobbler configuration for users
-  template: src=users.digest dest=/etc/cobbler/users.digest
+  template: src=users.digest.j2 dest=/etc/cobbler/users.digest
   when: cobbler_htdigest_user != "" and cobbler_htdigest_md5 != ""
 
 - name: Ensure Apache is running

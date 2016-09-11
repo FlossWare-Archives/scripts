@@ -9,10 +9,10 @@
     - nfs-utils
 
 - name: Create auto.master
-  template: src=auto.master dest=/etc/auto.master
+  template: src=auto.master.j2 dest=/etc/auto.master
 
 - name: Create auto.host files
-  template: src=auto.host dest="/etc/auto.{{ item.name }}"
+  template: src=auto.host.j2 dest="/etc/auto.{{ item.name }}"
   with_items: "{{ autofs_master }}"
 
 - name: Ensure autofs is running

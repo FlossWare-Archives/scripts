@@ -4,7 +4,7 @@
   yum:  name=dovecot state=present
 
 - name: Configure dovecot
-  template: src=dovecot.conf dest=/etc/dovecot.conf
+  template: src=dovecot.conf.j2 dest=/etc/dovecot.conf
 
 - name: Ensure dovecot is running
   service: name=dovecot state=restarted enabled=true
