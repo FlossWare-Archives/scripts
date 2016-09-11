@@ -1,0 +1,3 @@
+---
+- name: Copy Solenopsis Bintray yum repo file
+  copy: src=bintray-solenopsis-rpm.repo dest=/etc/yum.repos.d

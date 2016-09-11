@@ -1,0 +1,7 @@
+#bintraybintray-solenopsis-rpm - packages by solenopsis from Bintray
+[bintraybintray-solenopsis-rpm]
+name=bintray-solenopsis-rpm
+baseurl=https://dl.bintray.com/solenopsis/rpm
+gpgcheck=0
+repo_gpgcheck=0
+enabled=1
