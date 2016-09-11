@@ -1,4 +1,4 @@
 ---
 dependencies:
-  - common/postfix
-  - common/dovecot
+  - common/email/server/postfix
+  - common/email/server/dovecot

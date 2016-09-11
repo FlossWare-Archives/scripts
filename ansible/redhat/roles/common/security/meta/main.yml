@@ -1,4 +1,4 @@
 ---
 dependencies:
-  - common/firewalld
-  - common/selinux
+  - common/security/firewalld
+  - common/security/selinux
