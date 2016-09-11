@@ -1,0 +1,7 @@
+#bintraybintray-flossware-rpm - packages by flossware from Bintray
+[bintraybintray-flossware-rpm]
+name=bintray-flossware-rpm
+baseurl=https://dl.bintray.com/flossware/rpm
+gpgcheck=0
+repo_gpgcheck=0
+enabled=1
