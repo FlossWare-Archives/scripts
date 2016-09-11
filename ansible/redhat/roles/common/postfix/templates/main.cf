@@ -156,7 +156,11 @@ proxy_interfaces = {{ postfix_proxy_interfaces }}
 #
 # See also below, section "REJECTING MAIL FOR UNKNOWN LOCAL USERS".
 #
-mydestination = $myhostname, $myhostname.$mydomain, localhost.$mydomain, localhost, localhost.localdomain, flossware.homelinux.org
+{% if postfix_mydestination %}
+mydestination = $myhostname, $myhostname.$mydomain, localhost.$mydomain, localhost, localhost.localdomain
+{% else %}
+mydestination = $myhostname, $myhostname.$mydomain, localhost.$mydomain, localhost, localhost.localdomain, {{ postfix_mydestination }}
+{% endif %}
 
 # REJECTING MAIL FOR UNKNOWN LOCAL USERS
 #
