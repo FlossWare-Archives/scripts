@@ -25,7 +25,7 @@ As mentioned above, we only utilize [dependent roles](http://docs.ansible.com/an
 Our current layout consists of:
 * [cloud](https://github.com/FlossWare/scripts/tree/master/ansible/redhat/roles/cloud): these are cloud-y kind of roles like [virtualization](https://en.wikipedia.org/wiki/Virtualization) and [Cobbler](http://cobbler.github.io/).
 * [common](https://github.com/FlossWare/scripts/tree/master/ansible/redhat/roles/common): common functionality one might use for things like email servers, setting up [autofs](https://wiki.archlinux.org/index.php/Autofs), etc.
-* [operatingSystem](https://github.com/FlossWare/scripts/tree/master/ansible/redhat/roles/operatingSystem): breaking up specific operating system roles for CentOS and RHEL (like Subscription Manager functionality).
+* [operatingSystem](https://github.com/FlossWare/scripts/tree/master/ansible/redhat/roles/operatingSystem): breaking up specific operating system roles for CentOS and RHEL (like [Subscription Manager](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/5/html/5.7_Release_Notes/subscriptionentitlement.html) functionality).
 
 ## How To
 Presently the only way to utilize our scripts is to clone this git repo.  Simply do so and add the cloned directory to your ```/etc/ansible/ansible.cfg``` ```roles_path```.  For example:  ```roles_path = /home/sfloess/Development/github/FlossWare/scripts/ansible/redhat/roles```
