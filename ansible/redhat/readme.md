@@ -23,7 +23,7 @@ As mentioned above, we only utilize [dependent roles](http://docs.ansible.com/an
 
 #### Layout
 Our current layout consists of:
-* [cloud](https://github.com/FlossWare/scripts/tree/master/ansible/redhat/roles/cloud): these are cloud-y kind of roles like [virtualization](https://en.wikipedia.org/wiki/Virtualization) and [Cobbler](https://en.wikipedia.org/wiki/Virtualization).
+* [cloud](https://github.com/FlossWare/scripts/tree/master/ansible/redhat/roles/cloud): these are cloud-y kind of roles like [virtualization](https://en.wikipedia.org/wiki/Virtualization) and [Cobbler](http://cobbler.github.io/).
 * [common](https://github.com/FlossWare/scripts/tree/master/ansible/redhat/roles/common): common functionality one might use for things like email servers, setting up [autofs](https://wiki.archlinux.org/index.php/Autofs), etc.
 * [operatingSystem](https://github.com/FlossWare/scripts/tree/master/ansible/redhat/roles/operatingSystem): breaking up specific operating system roles for CentOS and RHEL (like Subscription Manager functionality).
 
