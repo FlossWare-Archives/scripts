@@ -10,7 +10,7 @@ There are a few playbooks included that highlight some common use cases we've us
 For the most part, most roles are mutually exclusive and do "a thing."  However, we do utilize [dependent roles](http://docs.ansible.com/ansible/playbooks_roles.html#role-dependencies) where two or more roles leverage the same functionality.  There are some exceptions to this rule - notably the ```common/bridge``` role stands on its own.
 
 #### Sub Roles
-We make liberal use of directory structures to leverage the notion of a sub role.  While technically these are roles unto themselves, having a cohesive directory structure elliminates "interesting" naming convension.  As an example, our initial effort had directories like:
+We make liberal use of directory structures to leverage the notion of a sub role.  While technically these are roles unto themselves, having a cohesive directory structure elliminates "interesting" naming convention.  As an example, our initial effort had directories like:
 * centosXen
 * centosXenVirtualization
 
