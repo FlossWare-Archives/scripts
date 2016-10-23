@@ -1,0 +1,60 @@
+#
+# This file is part of the FlossWare family of open source software.
+#
+# FlossWare is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 3
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+#
+---
+
+- name: Install libraries
+  yum:  name={{ item }} state=latest
+  with_items:
+    - subversion
+    - binutils
+    - bzip2
+    - gcc
+    - gcc-c++
+    - gawk
+    - gettext
+    - flex
+    - ncurses-devel
+    - zlib-devel
+    - zlib-static
+    - make
+    - patch
+    - unzip
+    - perl-ExtUtils-MakeMaker
+    - glibc
+    - glibc-devel
+    - glibc-static
+    - quilt
+    - ncurses-libs
+    - sed
+    - sdcc
+    - intltool
+    - sharutils
+    - bison
+    - wget
+    - git-core
+    - openssl-devel
+    - xz
+
+- name: Clone git repo
+  git: repo="git://github.com/openwrt/openwrt.git" dest="{{ dest }}" version="{{ branch }}"
+
+- name: Update feeds
+  shell: "{{ dest }}/scripts/feeds {{ item }} -a"
+  with_items:
+    - update
+    - install
