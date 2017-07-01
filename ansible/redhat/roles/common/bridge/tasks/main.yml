@@ -37,7 +37,7 @@
   lineinfile: dest=/etc/sysconfig/network-scripts/ifcfg-{{ bridge_interface }} state=present regexp="^BRIDGE=" line="BRIDGE={{ bridge_name }}"
 
 - name: Define bridge
-  template: src=ifcfg-bridge.j2 dest=//etc/sysconfig/network-scripts/ifcfg-{{ bridge_name }}
+  template: src=ifcfg-bridge.j2 dest=/etc/sysconfig/network-scripts/ifcfg-{{ bridge_name }}
 
 - name: Set packet forwarding if not present
   lineinfile: dest=/usr/lib/sysctl.d/00-system.conf state=absent line="net.ipv4.ip_forward = 1"
