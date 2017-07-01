@@ -18,3 +18,4 @@
 ---
 rhel_rhn_user:      ""
 rhel_rhn_password:  ""
+rhel_rhn_pool_ids:  ""
