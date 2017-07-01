@@ -18,7 +18,10 @@
 ---
 
 - name: Install KDE related groups
-  yum:  name={{ item }} state=present
+  yum:  name="{{ item }}" state=present
   with_items:
+    - "@X Window System"
+    - "@Desktop"
+    - "@Desktop Platform"
     - "@KDE Plasma Workspaces"
     - "@KDE Desktop"
