@@ -17,7 +17,7 @@
 #
 ---
 
-- name: Setup a RHEL VM
+- name: Setup a RHEL Subscriptions
   hosts: all
 
   roles:

@@ -16,5 +16,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #
 ---
-rhel_rhn_user:     ""
-rhel_rhn_password: ""
+
+- name: Setup RHEL as an OpenWRT build system
+  hosts: all
+
+  roles:
+  - common/openWrtBuildSystem
