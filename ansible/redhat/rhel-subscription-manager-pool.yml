@@ -19,8 +19,6 @@
 
 - name: Setup a RHEL Subscriptions
   hosts: all
-  vars:
-    rhel_rhn_pool: 8a85f9815cef6b5f015cf04135146143
 
   roles:
   - operatingSystem/rhel/subscriptionManager
