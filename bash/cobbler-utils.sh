@@ -196,6 +196,7 @@ distro-add-atomic() {
     /usr/bin/livecd-iso-to-pxeboot ${ISO} &&
 
     mkdir -p /var/www/cobbler/ks_mirror/${DISTRO_NAME} &&
+    mkdir -p /var/www/cobbler/links &&
 
     cp ${INSTALL_DIR}/tftpboot/{vmlinuz,initrd.img} /var/www/cobbler/ks_mirror/${DISTRO_NAME} &&
 
@@ -292,6 +293,7 @@ distro-add-rhev() {
     /usr/bin/livecd-iso-to-pxeboot ${ISO} &&
 
     mkdir -p /var/www/cobbler/ks_mirror/${DISTRO_NAME} &&
+    mkdir -p /var/www/cobbler/links &&
 
     cp ${INSTALL_DIR}/tftpboot/{vmlinuz0,initrd0.img} /var/www/cobbler/ks_mirror/${DISTRO_NAME} &&
 
