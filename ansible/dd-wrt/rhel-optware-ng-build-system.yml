@@ -17,8 +17,11 @@
 #
 ---
 
-- name: Setup RHEL as an OpenWRT build system
+- name: Setup RHEL as an Optware-ng build system
   hosts: all
 
   roles:
-  - common/openWrtBuildSystem
+  - operatingSystem/rhel/subscriptionManager
+  - common/security
+  - common/yum/epel
+  - optware-ng
