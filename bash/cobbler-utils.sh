@@ -191,18 +191,18 @@ distro-add-atomic() {
     #
     # First get the images...
     #
-    info-msg "Extracting Atomic images [${DISTRO_NAME}]" &&
+    #info-msg "Extracting Atomic images [${DISTRO_NAME}]" &&
 
-    /usr/bin/livecd-iso-to-pxeboot ${ISO} &&
+    #/usr/bin/livecd-iso-to-pxeboot ${ISO} &&
 
-    mkdir -p /var/www/cobbler/ks_mirror/${DISTRO_NAME} &&
-    mkdir -p /var/www/cobbler/links &&
+    #mkdir -p /var/www/cobbler/ks_mirror/${DISTRO_NAME} &&
+    #mkdir -p /var/www/cobbler/links &&
 
-    cp ${INSTALL_DIR}/tftpboot/{vmlinuz,initrd.img} /var/www/cobbler/ks_mirror/${DISTRO_NAME} &&
+    #cp ${INSTALL_DIR}/tftpboot/{vmlinuz,initrd.img} /var/www/cobbler/ks_mirror/${DISTRO_NAME} &&
 
-    rm /var/www/cobbler/links/${DISTRO_NAME}
+    #rm /var/www/cobbler/links/${DISTRO_NAME}
 
-    ln -s /var/www/cobbler/ks_mirror/${DISTRO_NAME} /var/www/cobbler/links/${DISTRO_NAME} &&
+    #ln -s /var/www/cobbler/ks_mirror/${DISTRO_NAME} /var/www/cobbler/links/${DISTRO_NAME} &&
 
     # ------------------------------------------------
 
@@ -211,6 +211,17 @@ distro-add-atomic() {
     info-msg "Using dir [${MOUNT_PT}] as the mount point for Atomic [${ISO}]" &&
 
     mountIso ${ISO} ${MOUNT_PT} &&
+
+    info-msg "Extracting Atomic images [${DISTRO_NAME}]" &&
+
+    mkdir -p /var/www/cobbler/ks_mirror/${DISTRO_NAME} &&
+    mkdir -p /var/www/cobbler/links &&
+
+    cp ${MOUNT_PT}/images/pxeboot/{vmlinuz,initrd.img} /var/www/cobbler/ks_mirror/${DISTRO_NAME} &&
+
+    rm /var/www/cobbler/links/${DISTRO_NAME}
+
+    ln -s /var/www/cobbler/ks_mirror/${DISTRO_NAME} /var/www/cobbler/links/${DISTRO_NAME} &&
 
     info-msg "Attempting to import [${DISTRO_NAME}] from [${MOUNT_PT}]" &&
 
@@ -288,18 +299,18 @@ distro-add-rhev() {
     #
     # First get the images...
     #
-    info-msg "Extracting RHEV images [${DISTRO_NAME}]" &&
+    #info-msg "Extracting RHEV images [${DISTRO_NAME}]" &&
 
-    /usr/bin/livecd-iso-to-pxeboot ${ISO} &&
+    #/usr/bin/livecd-iso-to-pxeboot ${ISO} &&
 
-    mkdir -p /var/www/cobbler/ks_mirror/${DISTRO_NAME} &&
-    mkdir -p /var/www/cobbler/links &&
+    #mkdir -p /var/www/cobbler/ks_mirror/${DISTRO_NAME} &&
+    #mkdir -p /var/www/cobbler/links &&
 
-    cp ${INSTALL_DIR}/tftpboot/{vmlinuz0,initrd0.img} /var/www/cobbler/ks_mirror/${DISTRO_NAME} &&
+    #cp ${INSTALL_DIR}/tftpboot/{vmlinuz0,initrd0.img} /var/www/cobbler/ks_mirror/${DISTRO_NAME} &&
 
-    rm /var/www/cobbler/links/${DISTRO_NAME}
+    #rm /var/www/cobbler/links/${DISTRO_NAME}
 
-    ln -s /var/www/cobbler/ks_mirror/${DISTRO_NAME} /var/www/cobbler/links/${DISTRO_NAME} &&
+    #ln -s /var/www/cobbler/ks_mirror/${DISTRO_NAME} /var/www/cobbler/links/${DISTRO_NAME} &&
 
     # ------------------------------------------------
 
@@ -309,6 +320,17 @@ distro-add-rhev() {
 
     mountIso ${ISO} ${MOUNT_PT} &&
 
+    info-msg "Extracting RHEV images [${DISTRO_NAME}]" &&
+
+    mkdir -p /var/www/cobbler/ks_mirror/${DISTRO_NAME} &&
+    mkdir -p /var/www/cobbler/links &&
+
+    cp ${MOUNT_PT}/images/pxeboot/{vmlinuz,initrd.img} /var/www/cobbler/ks_mirror/${DISTRO_NAME} &&
+
+    rm /var/www/cobbler/links/${DISTRO_NAME}
+
+    ln -s /var/www/cobbler/ks_mirror/${DISTRO_NAME} /var/www/cobbler/links/${DISTRO_NAME} &&
+
     info-msg "Attempting to import [${DISTRO_NAME}] from [${MOUNT_PT}]" &&
 
     cobbler-exec import --name="${DISTRO_NAME}" --path="${MOUNT_PT}"
@@ -317,7 +339,7 @@ distro-add-rhev() {
 
     info-msg "Adding/editing RHEV distro [${DISTRO_NAME}]" &&
 
-    cobbler-exec distro add  --name="${DISTRO_NAME}" --kernel="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/vmlinuz0" --initrd="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/initrd0.img" &&
+    cobbler-exec distro add  --name="${DISTRO_NAME}" --kernel="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/vmlinuz" --initrd="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/initrd.img" "$@" &&
     cobbler-exec distro edit --name="${DISTRO_NAME}" --in-place --ksmeta="tree=http://@@server@@/cblr/links/${DISTRO_NAME}" "$@"
 
     # ------------------------------------------------
@@ -385,24 +407,53 @@ distro-add-live() {
     #
     # First get the images...
     #
+    #info-msg "Extracting Live images [${DISTRO_NAME}]" &&
+
+    #/usr/bin/livecd-iso-to-pxeboot ${ISO} &&
+
+    #mkdir -p /var/www/cobbler/ks_mirror/${DISTRO_NAME} &&
+
+    #cp ${INSTALL_DIR}/tftpboot/{vmlinuz0,initrd0.img} /var/www/cobbler/ks_mirror/${DISTRO_NAME} &&
+
+    #rm /var/www/cobbler/links/${DISTRO_NAME}
+
+    #ln -s /var/www/cobbler/ks_mirror/${DISTRO_NAME} /var/www/cobbler/links/${DISTRO_NAME} &&
+
+    MOUNT_PT=${INSTALL_DIR}/iso &&
+
+    info-msg "Using dir [${MOUNT_PT}] as the mount point for Live [${ISO}]" &&
+
+    mountIso ${ISO} ${MOUNT_PT} &&
+
     info-msg "Extracting Live images [${DISTRO_NAME}]" &&
 
-    /usr/bin/livecd-iso-to-pxeboot ${ISO} &&
-
     mkdir -p /var/www/cobbler/ks_mirror/${DISTRO_NAME} &&
+    mkdir -p /var/www/cobbler/links &&
 
-    cp ${INSTALL_DIR}/tftpboot/{vmlinuz0,initrd0.img} /var/www/cobbler/ks_mirror/${DISTRO_NAME} &&
+    cp ${MOUNT_PT}/isolinux/{vmlinuz,initrd.img} /var/www/cobbler/ks_mirror/${DISTRO_NAME} &&
 
     rm /var/www/cobbler/links/${DISTRO_NAME}
 
     ln -s /var/www/cobbler/ks_mirror/${DISTRO_NAME} /var/www/cobbler/links/${DISTRO_NAME} &&
 
+    info-msg "Attempting to import [${DISTRO_NAME}] from [${MOUNT_PT}]" &&
+
+    #cobbler-exec import --name="${DISTRO_NAME}" --path="${MOUNT_PT}" --arch=x86_64 --os-version=Fedora26 --breed=rhel
+
+    unmount ${MOUNT_PT} 
+
     # ------------------------------------------------
 
     info-msg "Adding/editing Live distro [${DISTRO_NAME}]" &&
 
-    cobbler-exec distro add  --name="${DISTRO_NAME}" --kernel="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/vmlinuz0" --initrd="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/initrd0.img" &&
-    cobbler-exec distro edit --name="${DISTRO_NAME}" --in-place --kopts="rootflags=loop !ksdevice !text root=live:/`basename ${ISO}` rootfstype=iso9660 !lang"
+    cobbler-exec distro add  --name="${DISTRO_NAME}" --kernel="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/vmlinuz" --initrd="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/initrd.img" --kopts="rootflags=loop !ksdevice !text root=live:/`basename ${ISO}` rootfstype=iso9660 !lang" --ksmeta="tree=http://@@server@@/cblr/links/${DISTRO_NAME}" &&
+    #cobbler-exec distro edit --name="${DISTRO_NAME}" --in-place --kopts="rootflags=loop !ksdevice !text root=live:/`basename ${ISO}` rootfstype=iso9660 !lang" --ksmeta="tree=http://@@server@@/cblr/links/${DISTRO_NAME}" "$@"
+    #cobbler-exec profile add  --name="${DISTRO_NAME}" --distro="${DISTRO_NAME}" --kopts="rootflags=loop !ksdevice !text root=live:/`basename ${ISO}` rootfstype=iso9660 !lang" --ksmeta="tree=http://@@server@@/cblr/links/${DISTRO_NAME}" "$@"
+    cobbler-exec profile add  --name="${DISTRO_NAME}" --distro="${DISTRO_NAME}" --kopts="rootflags=loop !ksdevice !text root=live:/`basename ${ISO}` rootfstype=iso9660 !lang" --ksmeta="tree=http://@@server@@/cblr/links/${DISTRO_NAME}"
+
+
+    #cobbler-exec distro add  --name="${DISTRO_NAME}" --kernel="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/vmlinuz" --initrd="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/initrd.img" --kopts="rootflags=loop !ksdevice !text root=live:${ISO} rootfstype=iso9660 !lang" "$@" &&
+    #cobbler-exec distro edit --name="${DISTRO_NAME}" --in-place --ksmeta="tree=http://@@server@@/cblr/links/${DISTRO_NAME}" "$@"
 
     # ------------------------------------------------
 
