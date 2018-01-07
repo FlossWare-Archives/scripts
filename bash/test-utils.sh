@@ -306,7 +306,5 @@ test-suite-end() {
     emitTestInfoMsg "========================================================="
     echo
 
-    $*
-
     exit ${EXIT}
 }
