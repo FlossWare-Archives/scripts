@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 #
 # This file is part of the FlossWare family of open source software.
@@ -26,6 +26,9 @@
 #   openshift-git-push-to-git.sh
 #
 
+. `dirname ${BASH_SOURCE[0]}`/../gitrepo-utils.sh
 . `dirname ${BASH_SOURCE[0]}`/../git-utils.sh
+
+convertGitRemote
 
 git push origin `compute-git-current-branch` --tags
