@@ -75,9 +75,9 @@ distro-remove() {
             then
                 warning-msg "Trouble removing distro [${aDistro}]"
             fi
-    done &&
+    done 
 
-    cobbler-exec sync
+    #cobbler-exec sync
 }
 
 #
@@ -148,6 +148,9 @@ distro-add() {
         RETURN_CODE=$? 
     fi
 
+    rm -f /var/www/cobbler/links/${DISTRO_NAME} 
+    ln -s /var/www/cobbler/ks_mirror/${DISTRO_NAME} /var/www/cobbler/links/${DISTRO_NAME} 
+
     return ${RETURN_CODE}
 }
 
@@ -193,6 +196,7 @@ distro-add-atomic() {
     #
     info-msg "Extracting Atomic images [${DISTRO_NAME}]" &&
 
+    info-msg /usr/bin/livecd-iso-to-pxeboot ${ISO}
     /usr/bin/livecd-iso-to-pxeboot ${ISO} &&
 
     mkdir -p /var/www/cobbler/ks_mirror/${DISTRO_NAME} &&
@@ -438,9 +442,9 @@ repo-remove() {
         then
             warning-msg "Trouble removing repo [${aRepo}]"
         fi
-    done &&
+    done 
 
-    cobbler-exec sync
+    #cobbler-exec sync
 }
 
 #
@@ -486,9 +490,9 @@ profile-remove() {
         then
             warning-msg "Trouble removing profile [${aProfile}]"
         fi
-    done &&
+    done
 
-    cobbler-exec sync
+    #cobbler-exec sync
 }
 
 #
@@ -535,9 +539,9 @@ system-remove() {
             warning-msg "Trouble removing system [${aSystem}]"
         fi
 
-    done &&
+    done 
 
-    cobbler-exec sync
+    #cobbler-exec sync
 }
 
 #
