@@ -16,16 +16,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #
 ---
-
-- name: Install virtualization
-  yum:  name={{ item }} state=present
-  with_items:
-  - libvirt
-  - virt-manager
-  - virt-install
-
-- name: Update all
-  yum: name=* state=latest
-
-- name: Ensure libvirtd is running
-  service: name=libvirtd state=restarted enabled=true
+dependencies:
+  - operatingSystem/fedora/bridge
+  - operatingSystem/fedora/kvm

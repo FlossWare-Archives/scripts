@@ -17,15 +17,9 @@
 #
 ---
 
-- name: Install virtualization
-  yum:  name={{ item }} state=present
-  with_items:
-  - libvirt
-  - virt-manager
-  - virt-install
+- name: Setup RHEL host to use KVM
+  hosts: all
 
-- name: Update all
-  yum: name=* state=latest
-
-- name: Ensure libvirtd is running
-  service: name=libvirtd state=restarted enabled=true
+  roles:
+  - common/security
+  - cloud/kvm

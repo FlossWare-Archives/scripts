@@ -20,12 +20,4 @@
 - name: Install virtualization
   yum:  name={{ item }} state=present
   with_items:
-  - libvirt
-  - virt-manager
-  - virt-install
-
-- name: Update all
-  yum: name=* state=latest
-
-- name: Ensure libvirtd is running
-  service: name=libvirtd state=restarted enabled=true
+  - "@Virtualization"
