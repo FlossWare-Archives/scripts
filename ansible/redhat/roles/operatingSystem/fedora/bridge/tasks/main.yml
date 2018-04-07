@@ -17,24 +17,13 @@
 #
 ---
 #
-# Validate variables...
+# Enable port-forwarding
 #
-- name: Ensure an interface is defined
-  fail: msg="Must provide a bridge_interface variable!"
-  when: bridge_interface == ""
+- name: Set packet forwarding if not present
+  lineinfile: dest=/usr/lib/sysctl.d/50-default.conf state=absent line="net.ipv4.ip_forward = 1"
 
-- name: Ensure a name is defined
-  fail: msg="Must provide a bridge_name variable!"
-  when: bridge_name == ""
+- name: Set packet forwarding if present
+  lineinfile: dest=/usr/lib/sysctl.d/50-default.conf state=present regexp="^net.ipv4.ip_forward = 0" line="net.ipv4.ip_forward = 1"
 
-#
-# Setup bridge...
-#
-- name: Install bridge utils
-  yum: name=bridge-utils state=latest
-
-- name: Change ethernet adapter to bridge
-  lineinfile: dest=/etc/sysconfig/network-scripts/ifcfg-{{ bridge_interface }} state=present regexp="^BRIDGE=" line="BRIDGE={{ bridge_name }}"
-
-- name: Define bridge
-  template: src=ifcfg-bridge.j2 dest=/etc/sysconfig/network-scripts/ifcfg-{{ bridge_name }}
+- name: Invoke sysctl for packet forwarding
+  command: /usr/sbin/sysctl -p

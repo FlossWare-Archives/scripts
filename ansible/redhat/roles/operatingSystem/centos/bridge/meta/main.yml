@@ -16,25 +16,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #
 ---
-#
-# Validate variables...
-#
-- name: Ensure an interface is defined
-  fail: msg="Must provide a bridge_interface variable!"
-  when: bridge_interface == ""
 
-- name: Ensure a name is defined
-  fail: msg="Must provide a bridge_name variable!"
-  when: bridge_name == ""
-
-#
-# Setup bridge...
-#
-- name: Install bridge utils
-  yum: name=bridge-utils state=latest
-
-- name: Change ethernet adapter to bridge
-  lineinfile: dest=/etc/sysconfig/network-scripts/ifcfg-{{ bridge_interface }} state=present regexp="^BRIDGE=" line="BRIDGE={{ bridge_name }}"
-
-- name: Define bridge
-  template: src=ifcfg-bridge.j2 dest=/etc/sysconfig/network-scripts/ifcfg-{{ bridge_name }}
+dependencies:
+  - common/bridge
