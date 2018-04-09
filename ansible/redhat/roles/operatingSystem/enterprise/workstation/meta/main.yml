@@ -17,10 +17,5 @@
 #
 ---
 
-- name: Install client email
-  package:  name={{ item }} state=present
-  with_items:
-  - alpine
-  - fetchmail
-  - hunspell
-  - hunspell-en
+dependencies:
+  - common/workstation

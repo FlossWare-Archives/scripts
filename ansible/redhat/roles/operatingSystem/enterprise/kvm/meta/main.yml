@@ -16,11 +16,5 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #
 ---
-
-- name: Install client email
-  package:  name={{ item }} state=present
-  with_items:
-  - alpine
-  - fetchmail
-  - hunspell
-  - hunspell-en
+dependencies:
+  - cloud/kvm

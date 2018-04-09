@@ -31,7 +31,7 @@
 # Setup bridge...
 #
 - name: Install bridge utils
-  yum: name=bridge-utils state=latest
+  package: name=bridge-utils state=latest
 
 - name: Change ethernet adapter to bridge
   lineinfile: dest=/etc/sysconfig/network-scripts/ifcfg-{{ bridge_interface }} state=present regexp="^BRIDGE=" line="BRIDGE={{ bridge_name }}"

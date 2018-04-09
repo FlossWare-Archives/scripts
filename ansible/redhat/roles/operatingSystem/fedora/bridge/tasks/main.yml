@@ -25,5 +25,11 @@
 - name: Set packet forwarding if present
   lineinfile: dest=/usr/lib/sysctl.d/50-default.conf state=present regexp="^net.ipv4.ip_forward = 0" line="net.ipv4.ip_forward = 1"
 
+- name: Set packet forwarding if not present
+  lineinfile: dest=/etc/sysconfig/network state=absent line="FORWARD_IPV4=true"
+
+- name: Set packet forwarding if present
+  lineinfile: dest=/etc/sysconfig/network state=present regexp="^FORWARD_IPV4=" line="FORWARD_IPV4=true"
+
 - name: Invoke sysctl for packet forwarding
   command: /usr/sbin/sysctl -p

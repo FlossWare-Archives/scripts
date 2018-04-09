@@ -17,4 +17,4 @@
 #
 ---
 - name: Install yum tools
-  yum: name=yum-utils state=present
+  package: name=yum-utils state=present
