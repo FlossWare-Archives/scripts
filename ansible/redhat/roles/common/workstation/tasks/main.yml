@@ -20,7 +20,9 @@
   package:  name={{ item }} state=present
   with_items:
     - "firefox"
+    - "google-chrome-stable"
     - "icedtea-web"
+    - "tigervnc"
     - "tigervnc-server"
     - "vim-enhanced"
     - "gvim"
@@ -31,3 +33,4 @@
     - "git"
     - "htop"
     - "maven"
+    - "@LibreOffice"

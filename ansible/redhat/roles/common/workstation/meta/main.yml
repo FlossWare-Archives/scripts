@@ -16,12 +16,5 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #
 ---
-
-- name: Install LXDE related groups
-  package:  name="{{ item }}" state=present
-  with_items:
-    - "@Basic Desktop"
-    - "@LXDE Desktop"
-    - pulseaudio
-    - pavucontrol
-    - lxmusic
+dependencies:
+  - common/yum/google-chrome
