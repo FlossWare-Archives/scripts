@@ -22,6 +22,7 @@
   with_items:
     - "@Basic Desktop"
     - "@LXDE Desktop"
+    - gnome-screenshot
     - pulseaudio
     - pavucontrol
     - lxmusic
