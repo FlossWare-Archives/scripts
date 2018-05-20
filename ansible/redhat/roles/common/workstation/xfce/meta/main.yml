@@ -16,21 +16,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #
 ---
-- name: Install workstation related artifacts
-  package:  name={{ item }} state=present
-  with_items:
-    - "firefox"
-    - "google-chrome-stable"
-    - "icedtea-web"
-    - "tigervnc"
-    - "tigervnc-server"
-    - "vim-enhanced"
-    - "gvim"
-    - "meld"
-    - "rpm-build"
-    - "java-1.8.0-openjdk-devel"
-    - "terminator"
-    - "git"
-    - "htop"
-    - "maven"
-      #- "@LibreOffice"
+
+dependencies:
+  - common/workstation

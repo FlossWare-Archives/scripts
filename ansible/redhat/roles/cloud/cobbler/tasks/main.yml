@@ -25,7 +25,7 @@
   - cobbler
   - cobbler-web
   - yum-utils
-  - python-ctypes
+    #- python-ctypes
   - syslinux-extlinux
   - livecd-tools
   - xinetd
