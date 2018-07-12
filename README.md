@@ -2,6 +2,8 @@
 
 Welcome to FlossWare Scripts!  This represents a collection of reusable scripts we hope you will find useful.
 
+![Build Status](http://flossware.no-ip.org:58080/buildStatus/icon?job=FlossWare-scripts&style=plastic)
+
 ## History
 
 This project got its start as a way to provide scripts for [Jenkins](http://jenkins-ci.org) as part of our [Continuous Delivery](http://en.wikipedia.org/wiki/Continuous_delivery) initiative.  We currently use an [OpenShift](https://www.openshift.com) instance of [Jenkins](https://jenkins-camponotus.rhcloud.com) and faced challenges publishing artifacts from our [Github Project](https://github.com/FlossWare/java) to [Bintray](https://bintray.com/flossware/maven/java/view).  We realized that we needed a repository of reusable scripts (presently bash functions) as well as provide [Jenkins](http://jenkins-ci.org) and [OpenShift](https://www.openshift.com) scripts that others can we reuse - ideally side stepping issues we discovered thereby helping folks to get on with "the business at hand."
