@@ -1,5 +1,7 @@
 # Scripts
 
+:warning: *_This project is being deprecated soon!  The bash scripts will be going to the [bash project](https://github.com/FlossWare/bash) and ansible to the [ansible project](https://github.com/FlossWare/ansible)!!!_*
+
 Welcome to FlossWare Scripts!  This represents a collection of reusable scripts we hope you will find useful.
 
 ![Build Status](http://flossware.no-ip.org:58080/buildStatus/icon?job=FlossWare-scripts&style=plastic)
