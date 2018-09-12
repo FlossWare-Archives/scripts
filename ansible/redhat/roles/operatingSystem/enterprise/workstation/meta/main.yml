@@ -18,4 +18,5 @@
 ---
 
 dependencies:
+  - operatingSystem/enterprise/nux-desktop
   - common/workstation

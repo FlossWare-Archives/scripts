@@ -16,24 +16,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #
 ---
-- name: Install the Adobe yum repo
-  package: name="http://linuxdownload.adobe.com/linux/x86_64/adobe-release-x86_64-1.0-1.noarch.rpm" state=present
 
-  #- name: Install the Nux desktop yum repo
-  #package: name="http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm" state=present
+- name: Install Docker
+  package:  name=docker state=present
 
-- name: Install workstation related artifacts
-  package:  name={{ item }} state=present
-  with_items:
-      # - "fvwm"
-    - "flash-plugin"
-    - "vlc"
-    - "smplayer"
-    - "ffmpeg"
-      #    - "HandBrake-gui"
-    - "HandBrake-cli"
-    - "libdvdcss"
-    - "gstreamer-plugins-ugly"
-    - "gstreamer-plugins-bad-nonfree"
-    - "gstreamer1-plugins-ugly"
-    - "gstreamer1-plugins-bad-freeworld"
+- name: Ensure Docker is running
+  service: name=docker state=restarted enabled=true

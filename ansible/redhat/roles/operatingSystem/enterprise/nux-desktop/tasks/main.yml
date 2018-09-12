@@ -18,4 +18,4 @@
 ---
 
 - name: Install the Nux Desktop yum repo
-  template: src=nux-desktop.repo.j2 dest=/etc/yum.repos.d/nux-desktop.repo
+  template: src=nux-desktop.repo.j2 dest=/etc/yum.repos.d/nux-dextop.repo

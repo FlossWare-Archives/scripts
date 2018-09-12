@@ -17,10 +17,12 @@
 #
 ---
 
-- name: Setup a RHEL VM
+- name: Setup Fedora host to use KVM
   hosts: all
 
   roles:
-  - operatingSystem/rhel/subscriptionManager
   - common/security
-  - common/yum/epel
+  - common/autofs
+  - operatingSystem/fedora/lxde
+  - operatingSystem/fedora/virtualization
+  - cloud/kvm
