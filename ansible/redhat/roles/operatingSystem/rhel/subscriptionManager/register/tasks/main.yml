@@ -39,5 +39,5 @@
   when: rhel_rhn_pool == ''
 
 - name: Setup Subscription Manager Pool
-  redhat_subscription: state=present username={{ rhel_rhn_user }} password={{ rhel_rhn_password }} pool={{ rhel_rhn_pool }}
+  redhat_subscription: state=present username={{ rhel_rhn_user }} password={{ rhel_rhn_password }} pool_ids={{ rhel_rhn_pool }} force_register=true
   when: rhel_rhn_pool != ''

@@ -18,7 +18,7 @@
 ---
 
 - name: Install dovecot
-  yum:  name=dovecot state=present
+  package:  name=dovecot state=present
 
 - name: Configure dovecot
   template: src=dovecot.conf.j2 dest=/etc/dovecot.conf

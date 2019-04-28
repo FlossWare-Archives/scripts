@@ -16,6 +16,5 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #
 ---
-
-- name: Install the Nux Desktop yum repo
-  template: src=nux-desktop.repo.j2 dest=/etc/yum.repos.d/nux-desktop.repo
+dependencies:
+  - common/yum/google-chrome

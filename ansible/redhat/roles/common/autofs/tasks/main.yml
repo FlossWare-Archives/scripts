@@ -18,12 +18,14 @@
 ---
 
 - name: Install filesystem libraries
-  yum:  name={{ item }} state=latest
+  package:  name={{ item }} state=latest
   with_items:
     - autofs
     - cifs-utils
     - samba-client
     - nfs-utils
+    - fuse-sshfs
+    - fuse-encfs
 
 - name: Create auto.master
   template: src=auto.master.j2 dest=/etc/auto.master

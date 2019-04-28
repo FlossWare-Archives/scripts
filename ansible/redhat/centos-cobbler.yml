@@ -21,7 +21,6 @@
   hosts: all
 
   roles:
-  - common/security
   - common/yum/epel
   - operatingSystem/centos/yum
   - cloud/cobbler
