@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash  -x
 
 #
 # This file is part of the FlossWare family of open source software.
@@ -75,6 +75,16 @@ test-get-deb-package() {
 }
 
 #
+# Test retrieving the full deb version.
+#
+test-get-deb-full-version() {
+    assert-failure get-deb-version &&
+    assert-failure get-deb-version 1 2 3 &&
+    assert-failure get-deb-version `mktemp -u` &&
+    assert-equals "1.2-234" "`get-deb-full-version ${TEST_DIR}/test.deb`"
+}
+
+#
 # Test retrieving the deb version.
 #
 test-get-deb-version() {
@@ -141,9 +151,23 @@ test-compute-next-deb-release() {
 test-compute-deb-version-bump-msg() {
     assert-failure compute-deb-version-bump-msg &&
     assert-failure compute-deb-version-bump-msg foo &&
-    info-msg "`compute-deb-version-bump-msg ${TEST_DIR}/test.deb`"
     assert-equals "Version bump [1.2-234]" "`compute-deb-version-bump-msg ${TEST_DIR}/test.deb`"
 }
+
+#
+# Test incrementing an deb release
+#
+test-increment-deb-release() {
+    assert-failure increment-deb-release &&
+    assert-failure increment-deb-release foo &&
+
+    increment-deb-release ${TEST_DIR}/test.deb &&
+
+    assert-equals "1.2-235" "`get-deb-release ${TEST_DIR}/test.deb`" &&
+    assert-equals "235" "`get-deb-release ${TEST_DIR}/test.deb`"
+}
+
+
 
 #
 # Test computing the deb date
@@ -186,16 +210,6 @@ test-compute-deb-change-log-entry-a-change() {
 
     echo "`compute-deb-change-log-entry ${TEST_DIR}/test.deb`" | grep "1.2-4" &&
     echo "`compute-deb-change-log-entry ${TEST_DIR}/test.deb`" | grep "Blah 2"
-}
-
-#
-# Test incrementing an deb release
-#
-test-increment-deb-release() {
-    assert-failure increment-deb-release &&
-    assert-failure increment-deb-release foo &&
-    increment-deb-release ${TEST_DIR}/test.deb &&
-    assert-equals "4" "`get-deb-release ${TEST_DIR}/test.deb`"
 }
 
 #
@@ -288,21 +302,22 @@ test-git-update-deb-deb() {
 
 # ----------------------------------------------------
 
-unit-test-should-pass test-get-deb-package
-unit-test-should-pass test-get-deb-version
-unit-test-should-pass test-get-deb-release
-unit-test-should-pass test-compute-full-deb-version-str
-unit-test-should-pass test-compute-last-full-deb-version
-unit-test-should-pass test-compute-next-full-deb-version
-unit-test-should-pass test-compute-full-deb-version
-unit-test-should-pass test-compute-next-deb-release
-unit-test-should-pass test-compute-deb-version-bump-msg
+#unit-test-should-pass test-get-deb-package
+#unit-test-should-pass test-get-deb-full-version
+#unit-test-should-pass test-get-deb-version
+#unit-test-should-pass test-get-deb-release
+#unit-test-should-pass test-compute-full-deb-version-str
+#unit-test-should-pass test-compute-last-full-deb-version
+#unit-test-should-pass test-compute-next-full-deb-version
+#unit-test-should-pass test-compute-full-deb-version
+#unit-test-should-pass test-compute-next-deb-release
+#unit-test-should-pass test-compute-deb-version-bump-msg
+unit-test-should-pass test-increment-deb-release
 
 #unit-test-should-pass test-compute-deb-date
 #unit-test-should-pass test-compute-deb-change-log-entry-no-changes
 #unit-test-should-pass test-compute-deb-change-log-entry-a-change
 #unit-test-should-pass test-compute-next-deb-release
-#unit-test-should-pass test-increment-deb-release
 #unit-test-should-pass test-git-add-deb-changelog-no-changes
 #unit-test-should-pass test-git-add-deb-changelog-a-change
 #unit-test-should-pass test-git-tag-from-deb

@@ -40,6 +40,21 @@ get-deb-package() {
 }
 
 #
+# Retrieve the full version from a deb file.  The deb file is
+# found as param 1.
+#
+# Requried params:
+#   $1 - the deb file name
+#
+get-deb-full-version() {
+    ensure-min-params 1 $* &&
+    ensure-max-params 1 $* &&
+    ensure-file-exists $1  &&
+
+    cat $1 | grep "Version:" | sed -e 's/Version://'  | tr -d ' '
+}
+
+#
 # Retrieve the version from a deb file.  The deb file is
 # found as param 1.
 #
@@ -54,7 +69,7 @@ get-deb-version() {
     ensure-file-exists $1  &&
     local DELIM=`compute-default-value "-" $2` &&
 
-    cat $1 | grep "Version:" | sed -e 's/Version://' | cut -f 1 -d "${DELIM}" | tr -d ' '
+    echo `get-deb-full-version $1` | cut -f 1 -d "${DELIM}" | tr -d ' '
 }
 
 #
@@ -72,7 +87,7 @@ get-deb-release() {
     ensure-file-exists $1  &&
     local DELIM=`compute-default-value "-" $2` &&
 
-    cat $1 | grep "Version:" | sed -e 's/Version://' | cut -f 2 -d "${DELIM}" | tr -d ' '
+    echo `get-deb-full-version $1` | cut -f 2 -d "${DELIM}" | tr -d ' '
 }
 
 #
@@ -162,9 +177,10 @@ compute-next-deb-release() {
 #   $1 - the deb file
 #
 compute-deb-version-bump-msg() {
-    local VERSION=`compute-full-deb-version $1` &&
-    local MSG="Version bump [${VERSION}]" &&
-    echo "${MSG}"
+    ensure-min-params 1 $* &&
+    ensure-max-params 1 $* &&
+    ensure-file-exists $*  &&
+    echo "Version bump [`compute-full-deb-version $1`]"
 }
 
 #
@@ -173,11 +189,16 @@ compute-deb-version-bump-msg() {
 # Requried params:
 #   $1 - the deb file
 #
+# Optional params:
+#   $2 - the delimiter.  By default its is a dash.
+#
 increment-deb-release() {
-    local NEW_RELEASE=`compute-next-deb-release $1` &&
+    local DELIM=`compute-default-value "-" $2` &&
+    local VERSION=`compute-next-deb-release $1 $2` &&
+    local NEW_RELEASE=`compute-next-deb-release $1 $2` &&
     local UNIQUE_FILE=`mktemp -u` &&
 
-    sed -e "s/^Release:\( \)*\([0-9]\)\+/Release: ${NEW_RELEASE}/g" $1 > ${UNIQUE_FILE} &&
+    sed -e "s/^Version:\( \)*\([0-9]\)\+/Version: ${VERSION}${DELIM}${NEW_RELEASE}/g" $1 > ${UNIQUE_FILE} &&
     mv ${UNIQUE_FILE} $1
 }
 
