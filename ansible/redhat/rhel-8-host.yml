@@ -1,5 +1,3 @@
-#!/bin/bash
-
 #
 # This file is part of the FlossWare family of open source software.
 #
@@ -17,19 +15,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #
+---
 
-#
-# Tests our scripts
-#
+- name: Setup RHEL Host
+  hosts: all
 
-run-test-suite() {
-    . `dirname ${BASH_SOURCE[0]}`/test-common-utils.sh  &&
-    . `dirname ${BASH_SOURCE[0]}`/test-gitrepo-utils.sh &&
-    . `dirname ${BASH_SOURCE[0]}`/test-git-utils.sh     &&
-    . `dirname ${BASH_SOURCE[0]}`/test-jenkins-utils.sh &&
-    . `dirname ${BASH_SOURCE[0]}`/test-json-utils.sh    &&
-    . `dirname ${BASH_SOURCE[0]}`/test-maven-utils.sh   &&
-    . `dirname ${BASH_SOURCE[0]}`/test-rpm-utils.sh     &&
-    . `dirname ${BASH_SOURCE[0]}`/test-deb-utils.sh     &&
-    . `dirname ${BASH_SOURCE[0]}`/test-iso-utils.sh
-}
+  roles:
+      #- operatingSystem/rhel/subscriptionManager
+  - common/security
+  - common/yum/epel

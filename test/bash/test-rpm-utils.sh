@@ -171,7 +171,7 @@ test-compute-rpm-change-log-entry-a-change() {
 #
 # Test computing a version bump message
 #
-test-compute-next-rpm-release() {
+test-compute-rpm-version-bump-msg() {
     assert-failure compute-rpm-version-bump-msg &&
     assert-failure compute-rpm-version-bump-msg foo &&
     assert-equals "Version bump [1.2-3]" "`compute-rpm-version-bump-msg ${TEST_DIR}/test.spec`"
@@ -287,7 +287,7 @@ unit-test-should-pass test-compute-next-rpm-release
 unit-test-should-pass test-compute-rpm-date
 unit-test-should-pass test-compute-rpm-change-log-entry-no-changes
 unit-test-should-pass test-compute-rpm-change-log-entry-a-change
-unit-test-should-pass test-compute-next-rpm-release
+unit-test-should-pass test-compute-rpm-version-bump-msg
 unit-test-should-pass test-increment-rpm-release
 unit-test-should-pass test-git-add-rpm-changelog-no-changes
 unit-test-should-pass test-git-add-rpm-changelog-a-change

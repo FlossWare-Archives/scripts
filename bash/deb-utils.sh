@@ -19,42 +19,64 @@
 #
 
 #
-# DEB utilities
+# Debian utilities
 #
 
 . `dirname ${BASH_SOURCE[0]}`/common-utils.sh
 . `dirname ${BASH_SOURCE[0]}`/git-utils.sh
 
 #
-# Retrieve the version from an DEB.  The DEB is
+# Retrieve the package from a deb file.  The deb file is
 # found as param 1.
 #
 # Requried params:
 #   $1 - the deb file name
+#
+get-deb-package() {
+    ensure-min-params 1 $* &&
+    ensure-file-exists $1  &&
+
+    cat $1 | grep "Package:" | sed -e 's/Package://' | tr -d ' '
+}
+
+#
+# Retrieve the version from a deb file.  The deb file is
+# found as param 1.
+#
+# Requried params:
+#   $1 - the deb file name
+#
+# Optional params:
+#   $2 - the delimiter.  By default its is a dash.
 #
 get-deb-version() {
     ensure-min-params 1 $* &&
     ensure-file-exists $1  &&
+    local DELIM=`compute-default-value "-" $2` &&
 
-    cat $1 | grep "Version:" | sed -e 's/Version://' | tr -d ' '
+    cat $1 | grep "Version:" | sed -e 's/Version://' | cut -f 1 -d "${DELIM}" | tr -d ' '
 }
 
 #
-# Retrieve the release from an DEB.  The DEB is
+# Retrieve the release from a deb file.  The deb file is
 # found as param 1.
 #
 # Requried params:
 #   $1 - the deb file name
 #
+# Optional params:
+#   $2 - the delimiter.  By default its is a dash.
+#
 get-deb-release() {
     ensure-min-params 1 $* &&
     ensure-file-exists $1  &&
+    local DELIM=`compute-default-value "-" $2` &&
 
-    cat $1 | grep "Release:" | sed -e 's/Release://' | tr -d ' '
+    cat $1 | grep "Version:" | sed -e 's/Version://' | cut -f 2 -d "${DELIM}" | tr -d ' '
 }
 
 #
-# This will compute an DEB version.
+# This will compute a deb file version.
 #
 # Requried params:
 #   $1 - the version.
@@ -65,7 +87,7 @@ get-deb-release() {
 #
 compute-full-deb-version-str() {
     ensure-min-params 2 $* &&
-    DELIM=`compute-default-value "-" $3` &&
+    local DELIM=`compute-default-value "-" $3` &&
 
     echo "$1${DELIM}$2"
 }
@@ -82,9 +104,9 @@ compute-full-deb-version-str() {
 #   $3 - the delimiter.  By default its is a dash.
 #
 compute-last-full-deb-version() {
-    VERSION=`get-deb-version $1` &&
-    RELEASE=`get-deb-release $1` &&
-    LAST_RELEASE=`decrement-value ${RELEASE}` &&
+    local VERSION=`get-deb-version $1` &&
+    local RELEASE=`get-deb-release $1 $3` &&
+    local LAST_RELEASE=`decrement-value ${RELEASE}` &&
 
     compute-full-deb-version-str ${VERSION} ${LAST_RELEASE} $3
 }
@@ -99,9 +121,9 @@ compute-last-full-deb-version() {
 #   $2 - the delimiter.  By default its is a dash.
 #
 compute-next-full-deb-version() {
-    VERSION=`get-deb-version $1` &&
-    RELEASE=`get-deb-release $1` &&
-    NEXT_RELEASE=`increment-value ${RELEASE}` &&
+    local VERSION=`get-deb-version $1` &&
+    local RELEASE=`get-deb-release $1` &&
+    local NEXT_RELEASE=`increment-value ${RELEASE}` &&
 
     compute-full-deb-version-str ${VERSION} ${NEXT_RELEASE} $2
 }
@@ -116,8 +138,8 @@ compute-next-full-deb-version() {
 #   $2 - the delimiter.  By default its is a dash.
 #
 compute-full-deb-version() {
-    VERSION=`get-deb-version $1` &&
-    RELEASE=`get-deb-release $1` &&
+    local VERSION=`get-deb-version $1` &&
+    local RELEASE=`get-deb-release $1` &&
 
     compute-full-deb-version-str ${VERSION} ${RELEASE} $2
 }
@@ -129,7 +151,7 @@ compute-full-deb-version() {
 #   $1 - the deb file
 #
 compute-next-deb-release() {
-    RELEASE=`get-deb-release $1` &&
+    local RELEASE=`get-deb-release $1` &&
     increment-value ${RELEASE}
 }
 
@@ -140,8 +162,8 @@ compute-next-deb-release() {
 #   $1 - the deb file
 #
 compute-deb-version-bump-msg() {
-    VERSION=`compute-full-deb-version $1` &&
-    MSG="Version bump [${VERSION}]" &&
+    local VERSION=`compute-full-deb-version $1` &&
+    local MSG="Version bump [${VERSION}]" &&
     echo "${MSG}"
 }
 
@@ -152,19 +174,19 @@ compute-deb-version-bump-msg() {
 #   $1 - the deb file
 #
 increment-deb-release() {
-    NEW_RELEASE=`compute-next-deb-release $1` &&
-    UNIQUE_FILE=`mktemp -u` &&
+    local NEW_RELEASE=`compute-next-deb-release $1` &&
+    local UNIQUE_FILE=`mktemp -u` &&
 
     sed -e "s/^Release:\( \)*\([0-9]\)\+/Release: ${NEW_RELEASE}/g" $1 > ${UNIQUE_FILE} &&
     mv ${UNIQUE_FILE} $1
 }
 
 #
-# Create a tag from an DEB.  The DEB is expected to be
+# Create a tag from a deb file.  The deb file is expected to be
 # a param presented to this function.
 #
 git-tag-from-deb() {
-    TAG=`compute-full-deb-version $*` &&
+    local TAG=`compute-full-deb-version $*` &&
 
     git tag ${TAG}
 }
@@ -174,14 +196,14 @@ git-tag-from-deb() {
 # pom.xml version...
 #
 git-msg-from-deb() {
-    MSG="`compute-deb-version-bump-msg $*`" &&
+    local MSG="`compute-deb-version-bump-msg $*`" &&
     git commit -am "${MSG}"
 }
 
 #
-# Auto increment and commit the spec file..
+# Auto increment and commit the deb file..
 #
-git-update-deb-spec() {
+git-update-deb() {
     increment-deb-release $* &&
     git-msg-from-deb $* &&
     git-tag-from-deb $*

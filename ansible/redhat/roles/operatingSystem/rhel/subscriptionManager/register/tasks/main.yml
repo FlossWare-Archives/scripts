@@ -32,11 +32,20 @@
 # Setup Subscription Manager
 #
 - name: Unsubscribe to Subscription Manager
-  redhat_subscription: state=absent username={{ rhel_rhn_user }} password={{ rhel_rhn_password }}
+  shell: subscription-manager unregister
+  ignore_errors: true
+  #redhat_subscription: state=absent username={{ rhel_rhn_user }} password={{ rhel_rhn_password }}
 
 - name: Setup Subscription Manager
-  redhat_subscription: state=present username={{ rhel_rhn_user }} password={{ rhel_rhn_password }} autosubscribe=true
-  when: rhel_rhn_pool == ''
+  shell: subscription-manager register --username='rhn-support-sfloess' --password='f10$$W@r3' --auto-attach
+
+    #- name: Setup Subscription Manager
+    #redhat_subscription: 
+  #state: present
+  #username: "{{ rhel_rhn_user }}"
+  #  password: "{{ rhel_rhn_password }}"
+    #auto_attach: true
+    #  when: rhel_rhn_pool == ''
 
 - name: Setup Subscription Manager Pool
   redhat_subscription: state=present username={{ rhel_rhn_user }} password={{ rhel_rhn_password }} pool_ids={{ rhel_rhn_pool }} force_register=true

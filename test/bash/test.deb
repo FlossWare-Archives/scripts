@@ -1,0 +1,9 @@
+Package: FlossWare
+Version: 1.2-234
+Section: base
+Priority: optional
+Architecture: all
+Depends: openjdk-8-jdk
+Maintainer: Scot P. Floess <flossware@gmail.com>
+Description: My test debian control file
+ Used for testing
