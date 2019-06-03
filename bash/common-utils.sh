@@ -189,7 +189,7 @@ compute-caller-string() {
 
     local FILE=`basename ${RAW_FILE} | cut -d '.' -f 1`
 
-    echo "${FILE}.${FUNCTION}() at ${LINE}"
+    echo "${FILE}.${FUNCTION}() at line ${LINE}"
 }
 
 #
