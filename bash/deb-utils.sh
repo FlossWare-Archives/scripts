@@ -153,6 +153,10 @@ compute-next-full-deb-version() {
 #   $2 - the delimiter.  By default its is a dash.
 #
 compute-full-deb-version() {
+    ensure-min-params 1 $* &&
+    ensure-max-params 2 $* &&
+    ensure-file-exists $*  &&
+
     local VERSION=`get-deb-version $1` &&
     local RELEASE=`get-deb-release $1` &&
 
@@ -180,6 +184,7 @@ compute-deb-version-bump-msg() {
     ensure-min-params 1 $* &&
     ensure-max-params 1 $* &&
     ensure-file-exists $*  &&
+
     echo "Version bump [`compute-full-deb-version $1`]"
 }
 
@@ -193,12 +198,16 @@ compute-deb-version-bump-msg() {
 #   $2 - the delimiter.  By default its is a dash.
 #
 increment-deb-release() {
+    ensure-min-params 1 $* &&
+    ensure-max-params 2 $* &&
+    ensure-file-exists $*  &&
+
     local DELIM=`compute-default-value "-" $2` &&
-    local VERSION=`compute-next-deb-release $1 $2` &&
-    local NEW_RELEASE=`compute-next-deb-release $1 $2` &&
+    local VERSION=`get-deb-version $1 $2` &&
+    local NEW_RELEASE=`compute-next-deb-release $1 ${DELIM}` &&
     local UNIQUE_FILE=`mktemp -u` &&
 
-    sed -e "s/^Version:\( \)*\([0-9]\)\+/Version: ${VERSION}${DELIM}${NEW_RELEASE}/g" $1 > ${UNIQUE_FILE} &&
+    sed -e "s/^Version:.*/Version: ${VERSION}${DELIM}${NEW_RELEASE}/g" $1 > ${UNIQUE_FILE} &&
     mv ${UNIQUE_FILE} $1
 }
 
@@ -207,6 +216,10 @@ increment-deb-release() {
 # a param presented to this function.
 #
 git-tag-from-deb() {
+    ensure-min-params 1 $* &&
+    ensure-max-params 2 $* &&
+    ensure-file-exists $*  &&
+
     local TAG=`compute-full-deb-version $*` &&
 
     git tag ${TAG}

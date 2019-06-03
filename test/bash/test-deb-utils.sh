@@ -1,4 +1,4 @@
-#!/bin/bash  -x
+#!/bin/bash 
 
 #
 # This file is part of the FlossWare family of open source software.
@@ -160,96 +160,11 @@ test-compute-deb-version-bump-msg() {
 test-increment-deb-release() {
     assert-failure increment-deb-release &&
     assert-failure increment-deb-release foo &&
+    assert-failure increment-deb-release foo - alphabeta &&
 
     increment-deb-release ${TEST_DIR}/test.deb &&
 
-    assert-equals "1.2-235" "`get-deb-release ${TEST_DIR}/test.deb`" &&
-    assert-equals "235" "`get-deb-release ${TEST_DIR}/test.deb`"
-}
-
-
-
-#
-# Test computing the deb date
-#
-test-compute-deb-date() {
-    assert-not-blank "`compute-deb-date`"
-}
-
-#
-# Test computing the log entries with no changes
-#
-test-compute-deb-change-log-entry-no-changes() {
-    assert-failure compute-deb-change-log-entry && 
-    assert-failure compute-deb-change-log-entry foo.deb && 
-
-    touch foo &&
-    git add foo &&
-    git commit -m 'Blah' &&
-    git tag 1.2-3 &&
-
-    echo "`compute-deb-change-log-entry ${TEST_DIR}/test.deb`" | grep "1.2-4" &&
-    echo "`compute-deb-change-log-entry ${TEST_DIR}/test.deb`" | grep "\- No changes."
-}
-
-#
-# Test computing the log entries with a change
-#
-test-compute-deb-change-log-entry-a-change() {
-    assert-failure compute-deb-change-log-entry && 
-    assert-failure compute-deb-change-log-entry foo.deb && 
-
-    touch foo &&
-    git add foo &&
-    git commit -m 'Blah' &&
-    git tag 1.2-3 &&
-
-    touch alpha &&
-    git add alpha &&
-    git commit -m 'Blah 2' &&
-
-    echo "`compute-deb-change-log-entry ${TEST_DIR}/test.deb`" | grep "1.2-4" &&
-    echo "`compute-deb-change-log-entry ${TEST_DIR}/test.deb`" | grep "Blah 2"
-}
-
-#
-# Test adding an deb change log with no changes
-#
-test-git-add-deb-changelog-no-changes() {
-    assert-failure git-add-deb-changelog && 
-    assert-failure git-add-deb-changelog foo.deb && 
-
-    touch foo &&
-    git add foo &&
-    git commit -m 'Blah' &&
-    git tag 1.2-3 &&
-
-    git-add-deb-changelog ${TEST_DIR}/test.deb &&
-
-    cat ${TEST_DIR}/test.deb | grep "1.2-4" &&
-    cat ${TEST_DIR}/test.deb | grep "\- No changes."
-}
-
-#
-# Test adding an deb change log with a changes
-#
-test-git-add-deb-changelog-a-change() {
-    assert-failure git-add-deb-changelog && 
-    assert-failure git-add-deb-changelog foo.deb && 
-
-    touch foo &&
-    git add foo &&
-    git commit -m 'Blah' &&
-    git tag 1.2-3 &&
-
-    touch alpha &&
-    git add alpha &&
-    git commit -m 'Blah 2' &&
-
-    git-add-deb-changelog ${TEST_DIR}/test.deb &&
-
-    cat ${TEST_DIR}/test.deb | grep "1.2-4" &&
-    cat ${TEST_DIR}/test.deb | grep "Blah 2"
+    assert-equals "1.2-235" "`get-deb-full-version ${TEST_DIR}/test.deb`"
 }
 
 #
@@ -264,8 +179,9 @@ test-git-tag-from-deb() {
     git commit -m 'Blah' &&
     git-tag-from-deb ${TEST_DIR}/test.deb &&
 
-    git tag | grep 1.2-3
+    git tag | grep 1.2-234
 }
+
 
 #
 # Test a version message bump.
@@ -302,6 +218,11 @@ test-git-update-deb-deb() {
 
 # ----------------------------------------------------
 
+sampleError() {
+    error-msg Scot was here
+}
+
+
 #unit-test-should-pass test-get-deb-package
 #unit-test-should-pass test-get-deb-full-version
 #unit-test-should-pass test-get-deb-version
@@ -312,15 +233,13 @@ test-git-update-deb-deb() {
 #unit-test-should-pass test-compute-full-deb-version
 #unit-test-should-pass test-compute-next-deb-release
 #unit-test-should-pass test-compute-deb-version-bump-msg
-unit-test-should-pass test-increment-deb-release
+#unit-test-should-pass test-increment-deb-release
+unit-test-should-pass test-git-tag-from-deb
 
-#unit-test-should-pass test-compute-deb-date
-#unit-test-should-pass test-compute-deb-change-log-entry-no-changes
-#unit-test-should-pass test-compute-deb-change-log-entry-a-change
-#unit-test-should-pass test-compute-next-deb-release
-#unit-test-should-pass test-git-add-deb-changelog-no-changes
-#unit-test-should-pass test-git-add-deb-changelog-a-change
-#unit-test-should-pass test-git-tag-from-deb
+sampleError
+
+
+
 #unit-test-should-pass test-git-msg-from-deb
 #unit-test-should-pass test-git-update-deb-deb
 
