@@ -169,30 +169,6 @@ compute-default-value() {
 }
 
 #
-# Compute caller string for functions who were called.
-#
-# Optional params:
-#   $1 - If defined is how far in the caller stack to use to compute
-#        the return value.
-#
-compute-caller-string() {
-    local CALLER=1
-
-    if [ $# -eq 1 ]
-    then
-        CALLER=$1
-    fi
-
-    local LINE=`caller ${CALLER} | cut -d ' ' -f 1`
-    local FUNCTION=`caller ${CALLER} | cut -d ' ' -f 2`
-    local RAW_FILE=`caller ${CALLER} | cut -d ' ' -f 3`
-
-    local FILE=`basename ${RAW_FILE} | cut -d '.' -f 1`
-
-    echo "${FILE}.${FUNCTION}() at line ${LINE}"
-}
-
-#
 # Ensure we have a total number of parameters.
 #
 # Optional params:
@@ -205,7 +181,7 @@ ensure-total-params() {
 
     if [ $# -lt "${TOTAL}" -o $# -gt "${TOTAL}" ]
     then
-        error-msg "`compute-caller-string 3`: Wrong number of total parameters - expected ${TOTAL}"
+        error-msg "Wrong number of total parameters - expected ${TOTAL}"
     fi
 }
 
@@ -222,7 +198,7 @@ ensure-min-params() {
 
     if [ $# -lt ${MIN} ]
     then
-        error-msg "`compute-caller-string 3`: Wrong number of minimum parameters - expected at least ${MIN}"
+        error-msg "Wrong number of minimum parameters - expected at least ${MIN}"
     fi
 }
 
@@ -239,7 +215,7 @@ ensure-max-params() {
 
     if [ $# -gt ${MAX} ]
     then
-        error-msg "`compute-caller-string 3`: Wrong number of maximum parameters - expected ${MAX} but found $#"
+        error-msg "Wrong number of maximum parameters - expected ${MAX} but found $#"
     fi
 }
 
@@ -254,7 +230,7 @@ ensure-file-exists() {
     if [ ! -e $1 ]
     then
         pwd
-        error-msg "`compute-caller-string 3`: File [$1] does not exist!" 1>&2
+        error-msg "File [$1] does not exist!" 1>&2
     fi
 }
 
@@ -269,7 +245,7 @@ ensure-dir-exists() {
     if [ ! -d $1 ]
     then
         pwd
-        error-msg "`compute-caller-string 3`: Directory [$1] does not exist!" 1>&2
+        error-msg "Directory [$1] does not exist!" 1>&2
     fi
 }
 
