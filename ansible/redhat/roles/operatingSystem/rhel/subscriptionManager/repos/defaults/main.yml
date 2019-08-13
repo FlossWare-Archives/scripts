@@ -17,6 +17,9 @@
 #
 ---
 repos:
-  - rhel-7-server-rpms
-  - rhel-7-server-extras-rpms
-  - rhel-7-server-optional-rpms  
+    #  - rhel-8-server-rpms
+    #  - rhel-8-server-extras-rpms
+    #  - rhel-8-server-optional-rpms  
+  - rhel-8-for-x86_64-supplementary-rpms
+  - rhel-8-for-x86_64-baseos-rpms
+  - rhel-8-for-x86_64-appstream-rpms

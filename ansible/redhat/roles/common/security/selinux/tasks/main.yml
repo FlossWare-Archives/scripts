@@ -18,7 +18,8 @@
 ---
 
 - name: Ensure selinux control package installed
-  package: name=libselinux-python state=present
+  package: name=python3-libselinux state=present
+  #package: name=libselinux-python state=present
 
 #
 # Setup selinux

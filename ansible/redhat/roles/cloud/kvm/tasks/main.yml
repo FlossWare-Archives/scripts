@@ -22,4 +22,4 @@
   with_items:
   - qemu-kvm
   - xauth
-  - dejavu-lgc-sans-fonts
+    #  - dejavu-lgc-sans-fonts
