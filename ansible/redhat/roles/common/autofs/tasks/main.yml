@@ -24,8 +24,8 @@
     - cifs-utils
     - samba-client
     - nfs-utils
-    - fuse-sshfs
-    - fuse-encfs
+      #- fuse-sshfs
+      #- fuse-encfs
 
 - name: Create auto.master
   template: src=auto.master.j2 dest=/etc/auto.master
