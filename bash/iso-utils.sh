@@ -60,6 +60,7 @@ mountIso() {
 	create-dir $2 &&
 
     info-msg "Attempting to mount [$2]" &&
+info-msg	"sudo mount $1 $2 -t iso9660 -o loop"
 	sudo mount $1 $2 -t iso9660 -o loop 
 }
 

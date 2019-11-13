@@ -35,7 +35,7 @@
 cobbler-exec() {
     info-msg "Executing:  cobbler [$*]" &&
 
-    ensure-min-params 1 $* &&
+#    ensure-min-params 1 $* &&
 
     cobbler "$@"
 
@@ -75,9 +75,9 @@ distro-remove() {
             then
                 warning-msg "Trouble removing distro [${aDistro}]"
             fi
-    done &&
+    done 
 
-    cobbler-exec sync
+    #cobbler-exec sync
 }
 
 #
@@ -123,9 +123,9 @@ distro-add() {
 
     mountIso ${ISO} ${MOUNT_PT} &&
 
-    info-msg "Attempting to import [${DISTRO_NAME}] from [${MOUNT_PT}]" &&
+    info-msg "Attempting to import [${DISTRO_NAME}] from [${MOUNT_PT}] -> [$@]" &&
 
-    cobbler-exec import --name="${DISTRO_NAME}" --path="${MOUNT_PT}" &&
+    cobbler-exec import --name="${DISTRO_NAME}" --path="${MOUNT_PT}" "$@" &&
 
     RETURN_CODE=$? 
 
@@ -220,7 +220,7 @@ distro-add-atomic() {
     info-msg "Adding/editing Atomic distro [${DISTRO_NAME}]" &&
 
     cobbler-exec distro add  --name="${DISTRO_NAME}" --kernel="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/vmlinuz" --initrd="/var/www/cobbler/ks_mirror/${DISTRO_NAME}/initrd.img" &&
-    cobbler-exec distro edit --name="${DISTRO_NAME}" --in-place --ksmeta="tree=http://@@server@@/cblr/links/${DISTRO_NAME}" "$@"
+    cobbler-exec distro edit --name="${DISTRO_NAME}" --in-place --ksmeta="tree=http://@@server@@/cblr/links/${DISTRO_NAME}" $@
 
     # ------------------------------------------------
 
@@ -438,9 +438,9 @@ repo-remove() {
         then
             warning-msg "Trouble removing repo [${aRepo}]"
         fi
-    done &&
+    done 
 
-    cobbler-exec sync
+    #cobbler-exec sync
 }
 
 #
@@ -486,9 +486,9 @@ profile-remove() {
         then
             warning-msg "Trouble removing profile [${aProfile}]"
         fi
-    done &&
+    done 
 
-    cobbler-exec sync
+    #cobbler-exec sync
 }
 
 #
@@ -535,9 +535,9 @@ system-remove() {
             warning-msg "Trouble removing system [${aSystem}]"
         fi
 
-    done &&
+    done 
 
-    cobbler-exec sync
+    #cobbler-exec sync
 }
 
 #

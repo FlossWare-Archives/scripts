@@ -20,7 +20,7 @@
 - name: Install KVM virtualization
   yum:  name={{ item }} state=present
   with_items:
-  - kvm
+  - libvirt-daemon-kvm
   - qemu-kvm
   - xauth
   - dejavu-lgc-sans-fonts

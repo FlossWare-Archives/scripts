@@ -282,6 +282,7 @@ create-dir() {
     fi
 
     info-msg "Creating dir [$1]" &&
+    info-msg "mkdir -p $1"
     mkdir -p $1
 }
 
